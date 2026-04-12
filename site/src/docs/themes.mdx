@@ -1,70 +1,111 @@
-A theme is a JSON file in `themes/` that maps names to CSS custom properties. Templates reference these variables — **no template ever hardcodes a color**. Swap the JSON, swap the visual identity.
+A theme is a JSON file in `themes/` that maps named tokens to CSS custom properties. Templates reference these tokens exclusively — **no template hardcodes a color or font**. Swap the JSON, swap the visual identity.
 
 ## Theme shape
 
+Every theme validates against the same Zod schema (`src/cli/utils/validator.ts`):
+
 ```json
 {
-  "name": "obsidian",
-  "label": "Obsidian",
+  "name": "terminal-green",
+  "displayName": "Terminal Green",
   "colors": {
-    "background": "#0B0F14",
-    "surface": "#11161F",
-    "text": "#E5EAF0",
-    "muted": "#9AA4B2",
-    "accent": "#22C55E",
-    "border": "#1F2A37"
+    "background":         "#0B0F14",
+    "headline":           "#E5EAF0",
+    "accent":             "#22C55E",
+    "body":               "#9AA4B2",
+    "label":              "#22C55E",
+    "blockquote-border":  "#22C55E",
+    "blockquote-text":    "#E5EAF0",
+    "callout-bg":         "#0F141B",
+    "callout-border":     "#1F2A37",
+    "bullet-dot":         "#22C55E",
+    "slide-counter-bg":   "#00000066",
+    "slide-counter-text": "#E5EAF0"
   },
-  "fonts": {
-    "heading": "JetBrains Mono",
-    "body": "IBM Plex Sans",
-    "weights": { "heading": 600, "body": 400 }
+  "typography": {
+    "font-headline":     "JetBrains Mono",
+    "font-headline-url": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700",
+    "font-body":         "IBM Plex Sans",
+    "font-body-url":     "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600",
+    "headline-size":     "clamp(3rem, 7vw, 5rem)",
+    "body-size":         "1rem",
+    "line-height":       "1.55"
   },
   "spacing": {
-    "padding": 72,
-    "blockGap": 24
-  },
-  "radius": 14
+    "padding":   "64px",
+    "block-gap": "1.75rem"
+  }
 }
 ```
 
-## Available variables
+## Field reference
 
-All 20+ CSS custom properties injected at `:root` of the rendered card:
+### Top level
+| Field | Type | Notes |
+|-------|------|-------|
+| `name` | string | Stable slug (matches filename) |
+| `displayName` | string | Human-readable label (shown in the studio picker) |
+| `colors` | object | 12 color tokens (below) |
+| `typography` | object | 7 typography tokens (below) |
+| `spacing` | object | 2 spacing tokens (below) |
 
-### Colors
-- `--color-bg` — page background
-- `--color-surface` — raised surfaces (callouts, quote borders)
-- `--color-text` — primary text
-- `--color-muted` — secondary text, attributions
-- `--color-accent` — CTA, callout highlights
-- `--color-border` — dividers, strokes
+### `colors` (all required; hex strings)
+| Token | Role |
+|-------|------|
+| `background` | Card background |
+| `headline` | Headline block text |
+| `accent` | `accent` / `accent-italic` parts, bullet dots, borders |
+| `body` | Body text, text-block content |
+| `label` | Bullet-list labels, callout labels |
+| `blockquote-border` | Left bar on blockquote blocks |
+| `blockquote-text` | Blockquote text color |
+| `callout-bg` | Callout surface fill |
+| `callout-border` | Callout outer border |
+| `bullet-dot` | Bullet-list marker color |
+| `slide-counter-bg` | Deck counter chip background (supports rgba, e.g. `#00000066`) |
+| `slide-counter-text` | Deck counter chip text |
 
-### Fonts
-- `--font-heading` — heading family
-- `--font-body` — body family
-- `--font-weight-heading` — heading weight (100–900)
-- `--font-weight-body` — body weight
+### `typography` (all required except `*-url`)
+| Token | Role |
+|-------|------|
+| `font-headline` | Heading family name |
+| `font-headline-url` | *(optional)* Google Fonts CSS URL for the heading family |
+| `font-body` | Body family name |
+| `font-body-url` | *(optional)* Google Fonts CSS URL for the body family |
+| `headline-size` | Base headline size (accepts `clamp(...)`, `rem`, `px`) |
+| `body-size` | Base body size |
+| `line-height` | Body line-height (unitless) |
 
-### Spacing
-- `--padding` — card padding (px, scales with size)
-- `--block-gap` — gap between blocks (px)
-- `--radius` — corner radius for surfaces
-
-### Dimension-aware scales (computed, don't set these)
-- `--type-scale` — font-size multiplier based on card area
-- `--headline-scale` — headline multiplier
-- `--space-scale` — spacing multiplier
+### `spacing` (both required; CSS length strings)
+| Token | Role |
+|-------|------|
+| `padding` | Card inner padding |
+| `block-gap` | Gap between stacked blocks |
 
 ## Built-in themes
 
+Twelve themes ship in the repo:
+
 | Name | Vibe |
 |------|------|
-| `obsidian` | Dark slate, mint accent. The default. |
-| `dawn` | Warm paper, graphite text, rust accent. |
-| `slate` | Neutral cool gray, disciplined and editorial. |
-| `paper` | Off-white with fine rule borders. |
+| `terminal-green` | Deep charcoal + mint accent. Matches the project's brand identity. |
+| `brand-midnight` | Slate navy + violet accent. Space Grotesk + IBM Plex Mono. |
+| `paper-cream` | Warm cream paper with oxblood accent. EB Garamond display. Editorial. |
+| `noir-crimson` | Pure black + crimson italics. Fraunces serif. Dramatic. |
+| `dark-orange` | Stone black + orange. Playfair Display + JetBrains Mono. |
+| `dark-teal` | Near-black + teal. Playfair Display + JetBrains Mono. |
+| `oceanic` | Deep navy + coral accent. Instrument Serif. Calm but striking. |
+| `sunset-rose` | Dusty peach + hot pink. Bricolage Grotesque. Playful. |
+| `brutal-white` | Pure white + electric yellow + Archivo Black. Brutalist. |
+| `kyoto` | Washi-paper cream + vermillion. Shippori Mincho. Zen. |
+| `mono-slate` | Stone gray monochrome. Syne + JetBrains Mono. Restrained. |
+| `light-minimal` | Near-white + sky-blue accent. Inter throughout. |
 
-Inspect any theme with `bun quoteforge themes show <name>`.
+Inspect any theme from the CLI:
+
+```bash
+bun quoteforge themes show terminal-green
+```
 
 ## Creating a theme
 
@@ -72,10 +113,10 @@ Inspect any theme with `bun quoteforge themes show <name>`.
 bun quoteforge themes create my-brand
 ```
 
-Creates `themes/my-brand.json` from the default skeleton. Edit the colors, save, and reference by name in your cards:
+Creates `themes/my-brand.json` from a default skeleton that validates against the schema above. Edit the tokens, save, and reference by name in your content:
 
 ```json
-{ "theme": "my-brand", "template": "quote", ... }
+{ "theme": "my-brand", "template": "quote", "size": "instagram-sq", "blocks": [...] }
 ```
 
 ## Validate before shipping
@@ -84,18 +125,10 @@ Creates `themes/my-brand.json` from the default skeleton. Edit the colors, save,
 bun quoteforge themes validate themes/my-brand.json
 ```
 
-Catches malformed hex codes, missing required fields, and font-weight typos before they ship to rendering.
+Catches malformed hex codes, missing required tokens, and typos in font-URL query strings before they reach Puppeteer.
 
-## Brand kit pattern
+## Common mistakes
 
-For multi-brand setups, prefix theme names:
-
-```
-themes/
-├── acme-light.json
-├── acme-dark.json
-├── beta-light.json
-└── beta-dark.json
-```
-
-Then in your content, reference by brand: `"theme": "acme-dark"`.
+- **Using `background-color` instead of `background`.** The token is named `background` to match the CSS property, but the JSON key drops the suffix.
+- **Nesting `fonts` or using `label` at the top level.** Earlier drafts used those names; the real schema uses `typography` and `displayName`.
+- **Setting `padding: 64` without a unit.** All spacing tokens are full CSS length strings — include `px`, `rem`, or `%`.

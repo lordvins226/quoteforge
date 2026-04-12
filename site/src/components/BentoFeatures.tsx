@@ -20,29 +20,29 @@ const FEATURES: Feature[] = [
   },
   {
     icon: Layers,
-    title: "Deck mode",
-    description: "Carousels with shared defaults, per-slide overrides, numbered exports, and ZIP bundling.",
+    title: "Carousels, batched",
+    description: "Build multi-slide decks with shared defaults. One command gives you numbered PNGs and a ZIP.",
   },
   {
     icon: Palette,
-    title: "Themeable",
-    description: "20 CSS variables. No hardcoded colors. Bring your own theme JSON.",
+    title: "12 themes, or your own",
+    description: "Ship with twelve curated palettes, or drop a JSON file into themes/ to define your brand.",
   },
   {
     icon: MonitorPlay,
-    title: "Studio",
-    description: "WYSIWYG editor with live preview, drag-and-drop blocks, undo/redo, and theme builder.",
+    title: "Visual editor",
+    description: "Prefer clicking to typing? The bundled studio gives you live preview, drag-and-drop blocks, undo/redo, and a theme builder.",
     span: "md:col-span-2",
   },
   {
     icon: Package,
-    title: "14 sizes",
-    description: "Twitter, Instagram, Facebook, Story, LinkedIn, and six more baked in.",
+    title: "17 platform sizes",
+    description: "Twitter, Instagram, Facebook, Threads, LinkedIn, Story — each size pre-tuned for its platform.",
   },
   {
     icon: Gauge,
-    title: "Fast",
-    description: "Puppeteer browser pool, parallel slide rendering, <1s per card.",
+    title: "Under a second",
+    description: "A reused headless browser pool renders slides in parallel. Typical card: <1s.",
   },
 ];
 

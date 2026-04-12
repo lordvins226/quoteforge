@@ -133,7 +133,7 @@ quoteforge/
 │       │   └── themes.ts             # GET /themes · POST /themes · PUT /themes/:name
 │       └── ws.ts                     # WebSocket broadcast on content change
 │
-├── web/                              # Vite + React WYSIWYG studio
+├── studio/                              # Vite + React WYSIWYG studio
 │   ├── index.html
 │   ├── vite.config.ts
 │   ├── src/
@@ -972,7 +972,7 @@ a pixel-perfect replica of the reference image. `--size facebook-post` produces 
 
 ### Phase 4 — Web UI Core (Day 4–6, ~6h)
 
-- [ ] Vite + React in `web/`
+- [ ] Vite + React in `studio/`
 - [ ] `studio` command (proxies Vite through Bun, single port 4242)
 - [ ] WebSocket live sync
 - [ ] Card mode: BlockList + BlockEditor + ThemePicker + SizePicker + Toolbar
@@ -1230,15 +1230,15 @@ Start every Claude Code session with:
 > - SizePicker grouped by platform (§4 grouping), FB non-square warning in deck mode
 >
 > FORMAT:
-> 1. web/vite.config.ts
-> 2. web/src/types/index.ts
-> 3. web/src/store/cardStore.ts + deckStore.ts (full per §7.5)
-> 4. web/src/hooks/ — useCard, useDeck, useTheme, useLivePreview
-> 5. web/src/components/Editor/ — BlockList, BlockEditor, SlideList, SlideNav,
+> 1. studio/vite.config.ts
+> 2. studio/src/types/index.ts
+> 3. studio/src/store/cardStore.ts + deckStore.ts (full per §7.5)
+> 4. studio/src/hooks/ — useCard, useDeck, useTheme, useLivePreview
+> 5. studio/src/components/Editor/ — BlockList, BlockEditor, SlideList, SlideNav,
      >    ThemePicker, SizePicker (with platform groups), Toolbar
-> 6. web/src/components/Preview/ — PreviewPane, PreviewControls, DeckStrip
-> 7. web/src/components/ui/ — Button, Input, Select, ColorPicker, Modal, Toast
-> 8. web/src/App.tsx (mode switch)
+> 6. studio/src/components/Preview/ — PreviewPane, PreviewControls, DeckStrip
+> 7. studio/src/components/ui/ — Button, Input, Select, ColorPicker, Modal, Toast
+> 8. studio/src/App.tsx (mode switch)
 > 9. src/server/server.ts + routes/ (preview, export, export-deck, themes) + ws.ts
 > 10. src/cli/commands/studio.ts
 >
@@ -1271,13 +1271,13 @@ Start every Claude Code session with:
 > - Facebook size warning is non-blocking (yellow inline text, not a modal)
 >
 > FORMAT:
-> 1. web/src/components/Editor/ThemeEditorModal.tsx
-> 2. web/src/store/cardStore.ts — add past[], future[], undo(), redo()
-> 3. web/src/store/deckStore.ts — add past[], future[], undo(), redo()
-> 4. web/src/hooks/useKeyboardShortcuts.ts (Ctrl+S, Z, Y, E)
-> 5. web/src/components/ui/Toast.tsx — queue, auto-dismiss 4s
-> 6. web/src/components/ui/Modal.tsx — accessible wrapper
-> 7. web/src/hooks/useFontList.ts — Google Fonts API + sessionStorage cache
+> 1. studio/src/components/Editor/ThemeEditorModal.tsx
+> 2. studio/src/store/cardStore.ts — add past[], future[], undo(), redo()
+> 3. studio/src/store/deckStore.ts — add past[], future[], undo(), redo()
+> 4. studio/src/hooks/useKeyboardShortcuts.ts (Ctrl+S, Z, Y, E)
+> 5. studio/src/components/ui/Toast.tsx — queue, auto-dismiss 4s
+> 6. studio/src/components/ui/Modal.tsx — accessible wrapper
+> 7. studio/src/hooks/useFontList.ts — Google Fonts API + sessionStorage cache
 > 8. src/server/routes/themes.ts — POST + PUT /themes/:name
 > 9. README.md (install, CLI reference, size table with Facebook formats)
 >

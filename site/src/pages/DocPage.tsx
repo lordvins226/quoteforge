@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { lazy, Suspense, type ComponentType, type LazyExoticComponent } from "react";
 import { DocsLayout } from "../components/DocsLayout";
+import { ErrorBoundary } from "../components/ErrorBoundary";
 import { DOCS } from "../docs/manifest";
 import { NotFound } from "./NotFound";
 
@@ -21,9 +22,11 @@ export function DocPage() {
 
   return (
     <DocsLayout currentSlug={meta.slug} title={meta.title}>
-      <Suspense key={slug} fallback={<p className="text-fog-3 text-sm">Loading…</p>}>
-        <MDX />
-      </Suspense>
+      <ErrorBoundary key={slug}>
+        <Suspense fallback={<p className="text-fog-3 text-sm">Loading…</p>}>
+          <MDX />
+        </Suspense>
+      </ErrorBoundary>
     </DocsLayout>
   );
 }

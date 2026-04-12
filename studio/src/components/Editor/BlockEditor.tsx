@@ -72,7 +72,7 @@ function ItemsEditor({ items, onChange }: { items: LabeledItem[]; onChange: (ite
               updated[i] = { ...item, label: e.target.value };
               onChange(updated);
             }}
-            placeholder="Label"
+            placeholder="e.g. 01"
             className="w-24 bg-neutral-900 border border-neutral-700 rounded px-2 py-1.5 text-sm text-neutral-100 focus:outline-none focus:border-teal-500"
           />
           <input
@@ -82,7 +82,7 @@ function ItemsEditor({ items, onChange }: { items: LabeledItem[]; onChange: (ite
               updated[i] = { ...item, text: e.target.value };
               onChange(updated);
             }}
-            placeholder="Text"
+            placeholder="Item text"
             className="flex-1 bg-neutral-900 border border-neutral-700 rounded px-2 py-1.5 text-sm text-neutral-100 focus:outline-none focus:border-teal-500"
           />
           <Button variant="ghost" size="sm" onClick={() => onChange(items.filter((_, j) => j !== i))}>

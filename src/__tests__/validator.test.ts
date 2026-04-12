@@ -127,18 +127,19 @@ describe("Block schema — all 7 types", () => {
   });
 });
 
-describe("SizeName enum — all 14 sizes", () => {
+describe("SizeName enum — all 17 sizes", () => {
   const allSizes = [
     "twitter", "twitter-square",
     "linkedin", "linkedin-square",
     "instagram-sq", "instagram-port", "instagram-land",
     "facebook-post", "facebook-square", "facebook-cover",
     "facebook-event", "facebook-group-cover",
+    "threads-sq", "threads-port", "threads-land",
     "story", "custom",
   ];
 
-  test("has exactly 14 sizes", () => {
-    expect(Object.keys(SIZES)).toHaveLength(14);
+  test("has exactly 17 sizes", () => {
+    expect(Object.keys(SIZES)).toHaveLength(17);
   });
 
   test.each(allSizes)("accepts '%s'", (size) => {

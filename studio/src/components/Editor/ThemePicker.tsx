@@ -52,7 +52,7 @@ export function ThemePicker({ current, onChange }: ThemePickerProps) {
       </button>
 
       {open && (
-        <div role="listbox" aria-label="Select theme" className="absolute top-full left-0 mt-1 bg-neutral-800 border border-neutral-700 rounded-lg shadow-xl py-1 z-30 w-52">
+        <div role="listbox" aria-label="Select theme" className="absolute top-full left-0 mt-1 bg-neutral-800 border border-neutral-700 rounded-lg shadow-xl py-1 z-30 w-52 max-h-80 overflow-y-auto">
           {themes.map((theme) => (
             <button
               key={theme.name}

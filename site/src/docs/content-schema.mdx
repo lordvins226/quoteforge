@@ -1,4 +1,4 @@
-Every card and deck is a JSON document validated by Zod. Files are auto-detected by their `type` field: `"card"` (or missing) → single card, `"deck"` → carousel.
+Every card and deck is a JSON document validated by Zod. Files are auto-detected by their `type` field: `"deck"` → carousel, `"card"` (or no `type`) → single card.
 
 ## Card shape
 
@@ -6,25 +6,31 @@ Every card and deck is a JSON document validated by Zod. Files are auto-detected
 {
   "type": "card",
   "template": "manifesto",
-  "theme": "obsidian",
+  "theme": "terminal-green",
   "size": "instagram-sq",
   "blocks": [
-    { "type": "headline", "text": "Ship typographic cards from JSON." },
-    { "type": "text", "text": "Version them. Script them. Deploy them." },
-    { "type": "bullet-list", "items": ["Fast.", "Deterministic.", "Yours."] }
+    {
+      "id": "h",
+      "type": "headline",
+      "parts": [
+        { "text": "Ship typographic cards ", "style": "normal" },
+        { "text": "from JSON.", "style": "accent-italic" }
+      ]
+    }
   ]
 }
 ```
 
 **Fields:**
 
-| Field | Type | Notes |
-|-------|------|-------|
-| `type` | `"card"` | Optional — cards are the default |
-| `template` | `"manifesto" \| "quote" \| "list" \| "minimal"` | See [Templates](/docs/templates) |
-| `theme` | string | Name matching `themes/<name>.json` |
-| `size` | SizeName | One of 14 presets (see below) |
-| `blocks` | Block[] | Ordered list of content blocks |
+| Field | Type | Required | Notes |
+|-------|------|----------|-------|
+| `type` | `"card"` | optional | Cards are the default — omitting is fine |
+| `template` | string | yes | `"manifesto"`, `"quote"`, `"list"`, or `"minimal"` |
+| `theme` | string | yes | Name matching a file in `themes/` |
+| `size` | SizeName | yes | One of 14 presets (see below) |
+| `blocks` | Block[] | yes (≥1) | Ordered list of content blocks |
+| `meta` | object | optional | `title`, `created`, `tags` — used by the studio |
 
 ## Deck shape
 
@@ -33,80 +39,131 @@ Every card and deck is a JSON document validated by Zod. Files are auto-detected
   "type": "deck",
   "defaults": {
     "template": "quote",
-    "theme": "dawn",
+    "theme": "noir-crimson",
     "size": "instagram-sq"
   },
   "slides": [
-    { "blocks": [{ "type": "headline", "text": "Slide 1" }] },
-    { "blocks": [{ "type": "headline", "text": "Slide 2" }], "theme": "obsidian" }
+    { "id": "s1", "blocks": [{ "id": "h", "type": "headline", "parts": [{ "text": "Slide 1", "style": "normal" }] }] },
+    { "id": "s2", "theme": "terminal-green", "blocks": [{ "id": "h", "type": "headline", "parts": [{ "text": "Slide 2", "style": "normal" }] }] }
   ]
 }
 ```
 
-Each slide inherits `defaults`; any field can be overridden per-slide.
+Each slide inherits from `defaults`; any field on the slide overrides it. Slides require a unique `id`.
 
 ## Block types
 
-Seven block types, each with its own shape:
+Seven block types live in `BlockSchema`:
 
-### `headline`
+### `headline` — display text
 ```json
-{ "type": "headline", "text": "Bold statement", "size": "xl" }
+{
+  "id": "h",
+  "type": "headline",
+  "parts": [
+    { "text": "Bold statement.", "style": "normal" },
+    { "text": " Emphasis here.", "style": "accent-italic" }
+  ]
+}
 ```
 
-### `text`
+### `blockquote` — pull quotes with a border
 ```json
-{ "type": "text", "text": "Regular paragraph copy." }
+{
+  "id": "q",
+  "type": "blockquote",
+  "parts": [
+    { "text": "Short quote.", "style": "bold" }
+  ]
+}
 ```
 
-### `blockquote`
+### `text` — paragraph copy
 ```json
-{ "type": "blockquote", "text": "A quote.", "attribution": "— Author" }
+{ "id": "p", "type": "text", "content": "Plain-text paragraph." }
 ```
 
-### `bullet-list`
+### `bullet-list` — labeled rows
 ```json
-{ "type": "bullet-list", "items": ["First point", "Second point"] }
+{
+  "id": "list",
+  "type": "bullet-list",
+  "items": [
+    { "label": "01", "text": "First point" },
+    { "label": "02", "text": "Second point" }
+  ]
+}
 ```
 
-### `callout`
+### `callout` — boxed highlights (same shape as bullet-list)
 ```json
-{ "type": "callout", "variant": "tip", "text": "Helpful note." }
+{
+  "id": "call",
+  "type": "callout",
+  "items": [
+    { "label": "Tip", "text": "Keep bullet-list labels under 4 characters for visual balance." }
+  ]
+}
 ```
 
-Variants: `tip`, `warning`, `info`, `success`.
-
-### `divider`
+### `divider` — horizontal rule
 ```json
-{ "type": "divider" }
+{ "id": "d", "type": "divider" }
 ```
 
-### `spacer`
+### `spacer` — explicit vertical gap
 ```json
-{ "type": "spacer", "size": "md" }
+{ "id": "gap", "type": "spacer", "size": "md" }
 ```
+
+`size` is `"sm" | "md" | "lg"`.
+
+## Part styles
+
+`headline` and `blockquote` blocks hold an array of **parts**, each styled independently:
+
+| Style | Effect |
+|-------|--------|
+| `normal` | Default weight/color |
+| `bold` | Bold weight |
+| `italic` | Italic (same color) |
+| `accent` | Accent color, normal weight |
+| `accent-italic` | Accent color, italic |
+| `mono` | Monospace (uses body font family) |
+| `muted` | 60% opacity |
+
+This is what makes one line of text read with rhythm: a `normal` start, an `accent-italic` punchline.
 
 ## Sizes
 
-Fourteen presets, all CSS-pixel dimensions:
+Seventeen presets, all in CSS pixels:
 
-| Name | Dimensions | Platform |
-|------|-----------|----------|
-| `twitter` | 1200×675 | Twitter/X post |
-| `instagram-sq` | 1080×1080 | Instagram feed |
-| `story` | 1080×1920 | IG/FB Story |
-| `facebook-post` | 1200×630 | Facebook post |
-| `facebook-cover` | 1640×624 | Facebook cover |
-| `facebook-square` | 1080×1080 | Facebook carousel |
-| `facebook-event` | 1920×1080 | Event cover |
-| `facebook-group-cover` | 1640×856 | Group cover |
-| `linkedin-post` | 1200×627 | LinkedIn feed |
-| `linkedin-article` | 1200×644 | Article cover |
-| `pinterest` | 1000×1500 | Pinterest pin |
-| `youtube-thumb` | 1280×720 | YouTube thumbnail |
-| `og-image` | 1200×630 | Open Graph |
-| `custom` | any | User-defined (requires `width`/`height` at root) |
+| Name | Dimensions | Ratio | Platform |
+|------|-----------|-------|----------|
+| `twitter` | 1200×675 | 16:9 | Twitter post |
+| `twitter-square` | 1080×1080 | 1:1 | Twitter square |
+| `linkedin` | 1200×627 | 1.91:1 | LinkedIn post |
+| `linkedin-square` | 1080×1080 | 1:1 | LinkedIn square |
+| `instagram-sq` | 1080×1080 | 1:1 | Instagram square |
+| `instagram-port` | 1080×1350 | 4:5 | Instagram portrait |
+| `instagram-land` | 1080×566 | 1.91:1 | Instagram landscape |
+| `facebook-post` | 1200×630 | 1.91:1 | Facebook post / link |
+| `facebook-square` | 1080×1080 | 1:1 | Facebook carousel |
+| `facebook-cover` | 1640×624 | 2.63:1 | Facebook page cover |
+| `facebook-event` | 1920×1080 | 16:9 | Facebook event cover |
+| `facebook-group-cover` | 1640×856 | 1.91:1 | Facebook group cover |
+| `threads-sq` | 1080×1080 | 1:1 | Threads square |
+| `threads-port` | 1080×1350 | 4:5 | Threads portrait *(recommended)* |
+| `threads-land` | 1080×566 | 1.91:1 | Threads landscape |
+| `story` | 1080×1920 | 9:16 | Story (IG / FB / TW) |
+| `custom` | user-defined | free | Custom dimensions |
 
 ## Validation
 
-Use `bun quoteforge validate <file>` to check any card or deck without rendering. Errors point at the exact path and expected type.
+Check any card or deck without rendering it:
+
+```bash
+bun quoteforge validate content/my-card.json
+```
+
+Errors point at the exact path (e.g. `blocks[2].parts[0].style`) and the expected type, which makes template drift obvious before you spend a Puppeteer run on it.

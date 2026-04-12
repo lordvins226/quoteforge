@@ -13,6 +13,9 @@ export const SIZES = {
   "facebook-cover":        { w: 1640, h: 624,  ratio: "2.63:1", label: "Facebook page cover" },
   "facebook-event":        { w: 1920, h: 1080, ratio: "16:9",   label: "Facebook event cover" },
   "facebook-group-cover":  { w: 1640, h: 856,  ratio: "1.91:1", label: "Facebook group cover" },
+  "threads-sq":            { w: 1080, h: 1080, ratio: "1:1",    label: "Threads square" },
+  "threads-port":          { w: 1080, h: 1350, ratio: "4:5",    label: "Threads portrait" },
+  "threads-land":          { w: 1080, h: 566,  ratio: "1.91:1", label: "Threads landscape" },
   "story":                 { w: 1080, h: 1920, ratio: "9:16",   label: "Story (IG / FB / TW)" },
   "custom":                { w: 0,    h: 0,    ratio: "free",   label: "Custom dimensions" },
 } as const;

@@ -20,7 +20,7 @@ export function Hero() {
         <div>
           <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-mint/10 border border-mint/30 text-mint text-xs font-mono mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-mint animate-pulse" />
-            v1.0 — shipping soon
+            Open source · MIT
           </div>
           <h1 className="font-mono text-4xl md:text-6xl font-semibold tracking-tight text-fog leading-[1.05]">
             Social cards for<br />
@@ -28,8 +28,7 @@ export function Hero() {
             the <span className="text-mint">terminal</span>.
           </h1>
           <p className="mt-6 text-lg text-fog-2 max-w-[54ch] leading-relaxed">
-            QuoteForge is a developer-native CLI and studio for generating typographic quote cards, carousels, and
-            decks. JSON in, PNG out. Version it, script it, deploy it.
+            A CLI and studio for generating quote cards and carousels from JSON. Version the source, script the output, ship the PNG — no cloud, no drag-and-drop drift.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <a
@@ -48,7 +47,7 @@ export function Hero() {
             </Link>
           </div>
           <p className="mt-6 font-mono text-xs text-fog-3">
-            <span className="text-mint">✓</span> 14 sizes · 4 themes · deck mode · ZIP export · CLI + WYSIWYG studio
+            <span className="text-mint">✓</span> 17 sizes · 12 themes · carousel export · CLI + WYSIWYG studio
           </p>
         </div>
 
