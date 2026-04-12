@@ -33,7 +33,16 @@ const DEFAULT_META: RenderMeta = {
   },
 };
 
-function buildCssVars(theme: Theme): string {
+function buildCssVars(theme: Theme, dimensions: { w: number; h: number }): string {
+  const shortSide = Math.min(dimensions.w, dimensions.h);
+  const longSide = Math.max(dimensions.w, dimensions.h);
+  const aspectRatio = shortSide / longSide;
+  const areaScale = Math.sqrt(dimensions.w * dimensions.h) / 1080;
+  const aspectPenalty = Math.max(0.6, Math.pow(aspectRatio, 0.65));
+  const typeScale = +Math.min(areaScale * aspectPenalty * 1.5, 1.25).toFixed(3);
+  const headlineScale = +Math.min(typeScale * 1.06, 1.15).toFixed(3);
+  const spaceScale = +Math.max(0.9, Math.min(typeScale, 1.18)).toFixed(3);
+
   const vars: Record<string, string> = {
     "--bg": theme.colors.background,
     "--headline": theme.colors.headline,
@@ -54,6 +63,10 @@ function buildCssVars(theme: Theme): string {
     "--headline-size": theme.typography["headline-size"],
     "--body-size": theme.typography["body-size"],
     "--line-height": theme.typography["line-height"],
+    "--type-scale": String(typeScale),
+    "--headline-scale": String(headlineScale),
+    "--space-scale": String(spaceScale),
+    "--body-min": "14px",
   };
 
   return Object.entries(vars)
@@ -61,22 +74,6 @@ function buildCssVars(theme: Theme): string {
     .join("\n    ");
 }
 
-// TODO(human): Implement renderPart
-// Convert a Part ({text, style}) into an HTML string fragment.
-// This is the core content-to-presentation bridge — every block with
-// mixed inline styles (headline, blockquote) depends on this function.
-//
-// Parameters:
-//   part: Part — { text: string, style: PartStyle }
-//
-// Returns:
-//   string — an HTML fragment, e.g. '<span class="part-bold">Hello</span>'
-//
-// The text MUST be HTML-escaped (Nunjucks handles this if output via
-// template, but if you build raw HTML here you need to escape manually).
-//
-// See the PartStyle type for the 7 style variants: normal, bold, italic,
-// accent, accent-italic, mono, muted.
 export function renderPart(part: Part): string {
   const escapedText = part.text
     .replace(/&/g, "&amp;")
@@ -92,14 +89,17 @@ env.addGlobal("renderPart", renderPart);
 export function renderTemplate(
   content: CardContent,
   theme: Theme,
+  dimensions: { w: number; h: number } = { w: 1200, h: 675 },
   meta?: Partial<RenderMeta>,
 ): string {
   const resolvedMeta = { ...DEFAULT_META, ...meta };
   const fontImports = buildFontImports(theme);
-  const cssVars = buildCssVars(theme);
+  const cssVars = buildCssVars(theme, dimensions);
 
   const templatePath = `${content.template}/template.njk`;
+  const basePath = join(TEMPLATES_DIR, "_base.css");
   const stylePath = join(TEMPLATES_DIR, content.template, "style.css");
+  const baseCSS = readFileSync(basePath, "utf-8");
   const styleCSS = readFileSync(stylePath, "utf-8");
 
   return env.render(templatePath, {
@@ -108,6 +108,7 @@ export function renderTemplate(
     meta: resolvedMeta,
     cssVars,
     fontImports,
+    baseCSS,
     styleCSS,
   });
 }

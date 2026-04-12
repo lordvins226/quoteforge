@@ -13,8 +13,8 @@ export async function renderCard(
   meta?: Partial<RenderMeta>,
   browser?: Browser,
 ): Promise<Buffer> {
-  const html = renderTemplate(content, theme, meta);
   const dimensions = SIZES[size];
+  const html = renderTemplate(content, theme, dimensions, meta);
 
   const ownBrowser = !browser;
   const b = browser ?? await puppeteer.launch({ headless: true });

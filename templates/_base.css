@@ -1,0 +1,177 @@
+/* QuoteForge — Shared base CSS
+   Injected into all templates before template-specific styles.
+   Font sizes and spacing driven by computed --type-scale, --headline-scale,
+   --space-scale variables injected by the template engine based on card dimensions. */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  font-family: var(--font-body);
+  font-size: var(--body-size);
+  line-height: var(--line-height);
+  color: var(--body);
+  overflow: hidden;
+}
+
+/* Card container — fills viewport, content flows top to bottom */
+.card {
+  width: 100%;
+  height: 100vh;
+  padding: clamp(24px, calc(var(--padding) * var(--space-scale)), 72px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, calc(var(--gap) * var(--space-scale)), 48px);
+  position: relative;
+  overflow: hidden;
+}
+
+.block {
+  width: 100%;
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+}
+
+.block-headline {
+  flex: 0 0 auto;
+}
+
+.block-divider,
+.block-spacer {
+  flex: 0 0 auto;
+}
+
+/* ─── Typography — dimension-aware scaling ─── */
+
+.headline {
+  font-family: var(--font-headline);
+  font-size: clamp(30px, calc(var(--headline-size) * var(--headline-scale)), 128px);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--headline);
+}
+
+.part-normal       { color: var(--headline); }
+.part-bold         { font-weight: 700; }
+.part-italic       { font-style: italic; }
+.part-accent       { color: var(--accent); }
+.part-accent-italic { color: var(--accent); font-style: italic; }
+.part-mono         { font-family: var(--font-body); font-size: 0.85em; }
+.part-muted        { opacity: 0.6; }
+
+/* ─── Block styles — scaled font sizes ─── */
+
+.block-blockquote blockquote {
+  border-left: 4px solid var(--bq-border);
+  padding-left: calc(1.5rem * var(--space-scale));
+  color: var(--bq-text);
+  font-size: clamp(var(--body-min), calc(var(--body-size) * var(--type-scale)), 28px);
+  line-height: 1.6;
+}
+
+.block-text p {
+  color: var(--body);
+  font-size: clamp(var(--body-min), calc(var(--body-size) * var(--type-scale)), 32px);
+  line-height: 1.6;
+}
+
+.block-bullet-list ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: calc(0.5rem * var(--space-scale));
+}
+
+.block-bullet-list li {
+  display: flex;
+  align-items: baseline;
+  gap: calc(0.5rem * var(--space-scale));
+  font-size: clamp(var(--body-min), calc(var(--body-size) * var(--type-scale)), 28px);
+}
+
+.bullet-dot {
+  color: var(--bullet-dot);
+  font-size: 0.6em;
+  flex-shrink: 0;
+}
+
+.bullet-label {
+  color: var(--label);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.bullet-text {
+  color: var(--body);
+}
+
+.block-callout .callout-item {
+  background: var(--callout-bg);
+  border: 1px solid var(--callout-border);
+  border-radius: 8px;
+  padding: calc(0.8rem * var(--space-scale)) calc(1rem * var(--space-scale));
+  margin-bottom: calc(0.5rem * var(--space-scale));
+  font-size: clamp(var(--body-min), calc(var(--body-size) * var(--type-scale)), 28px);
+}
+
+.callout-label {
+  display: block;
+  color: var(--label);
+  font-weight: 700;
+  margin-bottom: 0.25em;
+}
+
+.callout-text {
+  color: var(--body);
+}
+
+/* ─── Divider ─── */
+
+.block-divider hr {
+  border: none;
+  border-top: 1px solid var(--callout-border);
+  width: 100%;
+}
+
+/* ─── Spacer — scaled heights ─── */
+
+.block-spacer--sm { height: calc(1rem * var(--space-scale)); }
+.block-spacer--md { height: calc(2rem * var(--space-scale)); }
+.block-spacer--lg { height: calc(3rem * var(--space-scale)); }
+
+/* ─── Slide counter ─── */
+
+.counter {
+  position: absolute;
+  font-family: var(--font-body);
+  font-size: clamp(11px, calc(0.8rem * var(--type-scale)), 16px);
+  z-index: 10;
+}
+
+.counter--bottom-right  { bottom: calc(1.5rem * var(--space-scale)); right: calc(1.5rem * var(--space-scale)); }
+.counter--bottom-left   { bottom: calc(1.5rem * var(--space-scale)); left: calc(1.5rem * var(--space-scale)); }
+.counter--bottom-center { bottom: calc(1.5rem * var(--space-scale)); left: 50%; transform: translateX(-50%); }
+.counter--top-right     { top: calc(1.5rem * var(--space-scale)); right: calc(1.5rem * var(--space-scale)); }
+
+.counter--pill {
+  background: var(--counter-bg);
+  color: var(--counter-text);
+  padding: 0.35em 0.75em;
+  border-radius: 100px;
+}
+
+.counter--plain {
+  color: var(--counter-text);
+}
+
+.counter--dots {
+  color: var(--counter-text);
+  letter-spacing: 0.3em;
+}

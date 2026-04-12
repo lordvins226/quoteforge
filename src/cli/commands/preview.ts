@@ -3,9 +3,9 @@ import chalk from "chalk";
 import { readFileSync, watch } from "node:fs";
 import { resolve, basename } from "node:path";
 import { execFile } from "node:child_process";
-import { detectAndValidate, ThemeSchema } from "../utils/validator.js";
+import { detectAndValidate, ThemeSchema, SIZES } from "../utils/validator.js";
 import { renderTemplate } from "../../renderer/template-engine.js";
-import type { CardContent, DeckContent, Theme } from "../utils/validator.js";
+import type { CardContent, DeckContent, Theme, SizeName } from "../utils/validator.js";
 
 function loadTheme(name: string): Theme {
   const raw = readFileSync(resolve("themes", `${name}.json`), "utf-8");
@@ -15,11 +15,13 @@ function loadTheme(name: string): Theme {
 function buildPreviewHTML(
   content: CardContent,
   theme: Theme,
+  size: SizeName,
   deckMode: boolean,
   slideIndex: number,
   totalSlides: number,
 ): string {
-  const cardHTML = renderTemplate(content, theme, {
+  const dimensions = SIZES[size] ?? { w: 1200, h: 675 };
+  const cardHTML = renderTemplate(content, theme, dimensions, {
     slideIndex,
     slideTotal: totalSlides,
     showCounter: false,
@@ -100,7 +102,7 @@ export const previewCommand = new Command("preview")
 
         if (result.kind === "card") {
           const theme = loadTheme(result.data.theme);
-          const html = buildPreviewHTML(result.data, theme, false, 0, 1);
+          const html = buildPreviewHTML(result.data, theme, result.data.size, false, 0, 1);
           return new Response(html, { headers: { "Content-Type": "text/html" } });
         }
 
@@ -122,7 +124,8 @@ export const previewCommand = new Command("preview")
           blocks: slide.blocks,
         };
 
-        const html = buildPreviewHTML(cardContent, theme, true, clampedIdx, deck.slides.length);
+        const sizeName = (slide.size ?? deck.defaults.size) as SizeName;
+        const html = buildPreviewHTML(cardContent, theme, sizeName, true, clampedIdx, deck.slides.length);
         return new Response(html, { headers: { "Content-Type": "text/html" } });
       },
     });
