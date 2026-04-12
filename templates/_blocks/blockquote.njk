@@ -1,0 +1,7 @@
+<div class="block block-blockquote">
+  <blockquote>
+    {%- for part in block.parts -%}
+      {{ renderPart(part) | safe }}
+    {%- endfor -%}
+  </blockquote>
+</div>

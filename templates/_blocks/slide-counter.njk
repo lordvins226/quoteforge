@@ -1,0 +1,7 @@
+{% if meta.showCounter %}
+<div class="counter counter--{{ meta.counter.position }} counter--{{ meta.counter.style }}">
+  {{ meta.counter.format
+     | replace('{current}', (meta.slideIndex + 1) | string)
+     | replace('{total}',   meta.slideTotal | string) }}
+</div>
+{% endif %}

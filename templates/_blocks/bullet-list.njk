@@ -1,0 +1,11 @@
+<div class="block block-bullet-list">
+  <ul>
+    {%- for item in block.items %}
+    <li>
+      <span class="bullet-dot">●</span>
+      <span class="bullet-label">{{ item.label }}</span>
+      <span class="bullet-text">{{ item.text }}</span>
+    </li>
+    {%- endfor %}
+  </ul>
+</div>

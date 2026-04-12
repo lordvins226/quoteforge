@@ -1,0 +1,7 @@
+<div class="block block-headline">
+  <h1 class="headline">
+    {%- for part in block.parts -%}
+      {{ renderPart(part) | safe }}
+    {%- endfor -%}
+  </h1>
+</div>
