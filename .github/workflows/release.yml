@@ -19,16 +19,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: macos-latest
+          - os: ubuntu-latest
             bun-target: bun-darwin-arm64
             triple: aarch64-apple-darwin
-          - os: macos-13
+          - os: ubuntu-latest
             bun-target: bun-darwin-x64
             triple: x86_64-apple-darwin
           - os: ubuntu-latest
             bun-target: bun-linux-x64
             triple: x86_64-unknown-linux-gnu
-          - os: ubuntu-24.04-arm
+          - os: ubuntu-latest
             bun-target: bun-linux-arm64
             triple: aarch64-unknown-linux-gnu
           - os: windows-latest
