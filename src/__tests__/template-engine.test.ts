@@ -12,10 +12,10 @@ function loadJSON(relPath: string): unknown {
 }
 
 describe("font-loader: buildFontImports", () => {
-  test("generates @import lines from theme font URLs", () => {
+  test("generates link tags from theme font URLs", () => {
     const theme = ThemeSchema.parse(loadJSON("themes/dark-teal.json"));
     const result = buildFontImports(theme);
-    expect(result).toContain("@import url(");
+    expect(result).toContain('<link rel="stylesheet"');
     expect(result).toContain("Playfair+Display");
     expect(result).toContain("JetBrains+Mono");
   });

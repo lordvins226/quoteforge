@@ -10,5 +10,5 @@ export function buildFontImports(theme: Theme): string {
     urls.push(theme.typography["font-body-url"]);
   }
 
-  return urls.map((url) => `@import url('${url}');`).join("\n");
+  return urls.map((url) => `<link rel="stylesheet" href="${url}">`).join("\n");
 }
