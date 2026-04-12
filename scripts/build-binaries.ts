@@ -35,18 +35,10 @@ async function sha256(file: string): Promise<string> {
 }
 
 async function adhocSignDarwin(binPath: string): Promise<void> {
-  if (process.platform === "darwin") {
-    await $`codesign --sign - --force ${binPath}`.quiet();
-    return;
+  if (process.platform !== "darwin") {
+    throw new Error("Darwin binaries must be ad-hoc signed on macOS with codesign.");
   }
-  try {
-    await $`rcodesign sign ${binPath}`.quiet();
-  } catch {
-    throw new Error(
-      "rcodesign is required to ad-hoc sign darwin binaries from non-macOS hosts. " +
-        "Install: https://github.com/indygreg/apple-platform-rs/releases (look for apple-codesign).",
-    );
-  }
+  await $`codesign --sign - --force ${binPath}`;
 }
 
 async function tarGz(binPath: string, archivePath: string, binName: string): Promise<void> {
