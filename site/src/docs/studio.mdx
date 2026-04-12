@@ -1,0 +1,62 @@
+The studio is a WYSIWYG editor that wraps the CLI renderer. Launch it, edit visually, export PNGs — all the while, your card is just JSON on disk.
+
+## Launch
+
+```bash
+bun quoteforge studio
+# → http://localhost:4242
+```
+
+Optional args:
+
+```bash
+bun quoteforge studio content/my-card.json  # pre-load a file
+bun quoteforge studio --port 5000            # custom port
+bun quoteforge studio --no-open              # don't auto-open browser
+```
+
+The command spawns two processes: the Vite dev server for the UI (your port) and the Bun API server for file I/O and preview rendering (your port + 1).
+
+## Layout
+
+Three panes:
+
+1. **Blocks** (left) — ordered list of content blocks. Click to select, drag to reorder, `+` to add.
+2. **Preview** (center) — live-rendered card at true aspect ratio. Updates on every keystroke via SSE.
+3. **Properties** (right) — edit the selected block, change template/theme/size, or open the theme editor.
+
+## Card vs deck mode
+
+Toggle the mode in the top bar. Card mode edits one card; deck mode edits a carousel of slides with shared defaults.
+
+In deck mode:
+- **Slide strip** at the bottom to switch between slides
+- **Defaults panel** for deck-level template, theme, size
+- **Per-slide overrides** — any field set on a slide wins over defaults
+
+## Keyboard shortcuts
+
+| Shortcut | Action |
+|---|---|
+| `Cmd/Ctrl + S` | Save to disk |
+| `Cmd/Ctrl + Z` | Undo |
+| `Cmd/Ctrl + Shift + Z` | Redo |
+| `Cmd/Ctrl + E` | Export PNG |
+| `Esc` | Close dropdown / deselect block |
+
+## Theme editor
+
+Open from the properties pane — a modal with color pickers, font selectors (Google Fonts API), spacing sliders, and a live preview. Save creates a new theme file in `themes/`.
+
+## Export
+
+- **Cards:** `Cmd+E` writes a single PNG to `outputs/`.
+- **Decks:** export produces numbered PNGs + a ZIP, same as `bun quoteforge slides`.
+
+## Under the hood
+
+- **State:** Zustand stores (`cardStore`, `deckStore`) with past/future arrays for undo/redo.
+- **Live preview:** server-sent events push re-rendered HTML as you type; the iframe hot-swaps without full reload.
+- **Filesystem:** all disk I/O goes through the Bun server — the React app never touches the filesystem directly.
+
+See [CLI Reference](/docs/cli) for the non-interactive equivalent of every studio action.

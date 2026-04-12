@@ -1,0 +1,26 @@
+{
+  "template": "minimal",
+  "theme": "kyoto",
+  "size": "instagram-sq",
+  "blocks": [
+    {
+      "id": "h",
+      "type": "headline",
+      "parts": [
+        { "text": "One JSON file.\n", "style": "normal" },
+        { "text": "Every size, every theme.", "style": "accent-italic" }
+      ]
+    },
+    {
+      "id": "body",
+      "type": "text",
+      "content": "Edit the source, rerun the CLI, ship the PNG."
+    },
+    { "id": "d", "type": "divider" },
+    {
+      "id": "foot",
+      "type": "text",
+      "content": "quoteforge — typographic cards without the drift."
+    }
+  ]
+}

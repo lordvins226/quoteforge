@@ -3,7 +3,10 @@ node_modules/
 outputs/*
 !outputs/.gitkeep
 dist/
+studio/dist/
+site/dist/
 .DS_Store
 *.log
 .env
 .env.local
+.claude/

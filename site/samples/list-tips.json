@@ -1,0 +1,26 @@
+{
+  "template": "list",
+  "theme": "paper-cream",
+  "size": "instagram-sq",
+  "blocks": [
+    {
+      "id": "h",
+      "type": "headline",
+      "parts": [
+        { "text": "Why ", "style": "normal" },
+        { "text": "QuoteForge", "style": "accent-italic" }
+      ]
+    },
+    {
+      "id": "list",
+      "type": "bullet-list",
+      "items": [
+        { "label": "01", "text": "CLI-first, terminal-native — runs on Bun" },
+        { "label": "02", "text": "Zod-validated schemas for cards and decks" },
+        { "label": "03", "text": "Puppeteer renderer with a browser pool" },
+        { "label": "04", "text": "Dimension-aware type scaling, no cropping" },
+        { "label": "05", "text": "WYSIWYG studio when you want one" }
+      ]
+    }
+  ]
+}

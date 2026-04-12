@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0B0F14;
+  --color-ink-2: #0F141B;
+  --color-ink-3: #151C25;
+  --color-line: #1F2A37;
+  --color-fog: #E5EAF0;
+  --color-fog-2: #9AA4B2;
+  --color-fog-3: #6B7280;
+  --color-mint: #22C55E;
+  --color-mint-2: #16A34A;
+  --color-amber: #F5B301;
+
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-card: 14px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: radial-gradient(1200px 600px at 50% -200px, rgba(34, 197, 94, 0.07), transparent 60%), #0B0F14;
+  min-height: 100vh;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-mint) 35%, transparent);
+  color: var(--color-fog);
+}
+
+[data-rehype-pretty-code-figure] pre {
+  @apply bg-ink-2 border border-line rounded-lg p-4 overflow-x-auto text-sm font-mono leading-relaxed;
+}
+
+[data-rehype-pretty-code-figure] code {
+  @apply font-mono;
+}
+
+[data-line] {
+  @apply px-4 -mx-4;
+}
+
+[data-line-numbers] > [data-line]::before {
+  content: counter(line);
+  counter-increment: line;
+  @apply inline-block w-6 mr-4 text-right text-fog-3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

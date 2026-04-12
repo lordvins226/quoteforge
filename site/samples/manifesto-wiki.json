@@ -1,0 +1,32 @@
+{
+  "template": "manifesto",
+  "theme": "terminal-green",
+  "size": "instagram-sq",
+  "blocks": [
+    {
+      "id": "h",
+      "type": "headline",
+      "parts": [
+        { "text": "Version your visuals.\n", "style": "normal" },
+        { "text": "Ship them like code.", "style": "accent-italic" }
+      ]
+    },
+    {
+      "id": "intro",
+      "type": "blockquote",
+      "parts": [
+        { "text": "JSON in, PNG out.", "style": "bold" },
+        { "text": " Deterministic, git-friendly, built for the terminal.", "style": "normal" }
+      ]
+    },
+    {
+      "id": "features",
+      "type": "bullet-list",
+      "items": [
+        { "label": "CLI →", "text": "render, slides, batch, preview, studio" },
+        { "label": "Sizes →", "text": "14 platform-ready presets baked in" },
+        { "label": "Themes →", "text": "BYO JSON, zero hardcoded colors" }
+      ]
+    }
+  ]
+}

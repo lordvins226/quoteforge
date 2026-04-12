@@ -1,0 +1,101 @@
+A theme is a JSON file in `themes/` that maps names to CSS custom properties. Templates reference these variables — **no template ever hardcodes a color**. Swap the JSON, swap the visual identity.
+
+## Theme shape
+
+```json
+{
+  "name": "obsidian",
+  "label": "Obsidian",
+  "colors": {
+    "background": "#0B0F14",
+    "surface": "#11161F",
+    "text": "#E5EAF0",
+    "muted": "#9AA4B2",
+    "accent": "#22C55E",
+    "border": "#1F2A37"
+  },
+  "fonts": {
+    "heading": "JetBrains Mono",
+    "body": "IBM Plex Sans",
+    "weights": { "heading": 600, "body": 400 }
+  },
+  "spacing": {
+    "padding": 72,
+    "blockGap": 24
+  },
+  "radius": 14
+}
+```
+
+## Available variables
+
+All 20+ CSS custom properties injected at `:root` of the rendered card:
+
+### Colors
+- `--color-bg` — page background
+- `--color-surface` — raised surfaces (callouts, quote borders)
+- `--color-text` — primary text
+- `--color-muted` — secondary text, attributions
+- `--color-accent` — CTA, callout highlights
+- `--color-border` — dividers, strokes
+
+### Fonts
+- `--font-heading` — heading family
+- `--font-body` — body family
+- `--font-weight-heading` — heading weight (100–900)
+- `--font-weight-body` — body weight
+
+### Spacing
+- `--padding` — card padding (px, scales with size)
+- `--block-gap` — gap between blocks (px)
+- `--radius` — corner radius for surfaces
+
+### Dimension-aware scales (computed, don't set these)
+- `--type-scale` — font-size multiplier based on card area
+- `--headline-scale` — headline multiplier
+- `--space-scale` — spacing multiplier
+
+## Built-in themes
+
+| Name | Vibe |
+|------|------|
+| `obsidian` | Dark slate, mint accent. The default. |
+| `dawn` | Warm paper, graphite text, rust accent. |
+| `slate` | Neutral cool gray, disciplined and editorial. |
+| `paper` | Off-white with fine rule borders. |
+
+Inspect any theme with `bun quoteforge themes show <name>`.
+
+## Creating a theme
+
+```bash
+bun quoteforge themes create my-brand
+```
+
+Creates `themes/my-brand.json` from the default skeleton. Edit the colors, save, and reference by name in your cards:
+
+```json
+{ "theme": "my-brand", "template": "quote", ... }
+```
+
+## Validate before shipping
+
+```bash
+bun quoteforge themes validate themes/my-brand.json
+```
+
+Catches malformed hex codes, missing required fields, and font-weight typos before they ship to rendering.
+
+## Brand kit pattern
+
+For multi-brand setups, prefix theme names:
+
+```
+themes/
+├── acme-light.json
+├── acme-dark.json
+├── beta-light.json
+└── beta-dark.json
+```
+
+Then in your content, reference by brand: `"theme": "acme-dark"`.

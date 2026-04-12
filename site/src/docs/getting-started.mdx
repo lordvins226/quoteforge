@@ -1,0 +1,51 @@
+QuoteForge turns JSON files into typeset social media cards. You version the source, script the output, and ship deterministic PNGs from CI or your desk.
+
+## Requirements
+
+- **Bun 1.2+** — QuoteForge runs on Bun, not Node. If you don't have Bun: `curl -fsSL https://bun.sh/install | bash`.
+
+That's it. No Node, no npm, no Docker required for local use.
+
+## Install
+
+```bash
+git clone https://github.com/lordvins226/quoteforge
+cd quoteforge
+bun install
+```
+
+## Your first card
+
+The repo ships with example content. Render one:
+
+```bash
+bun quoteforge generate content/examples/manifesto-wiki.json
+```
+
+You'll find the PNG in `outputs/`. Open it — that's the full pipeline: Zod validation → Nunjucks rendering → Puppeteer → PNG buffer → disk.
+
+## Your first deck
+
+A deck is a carousel of slides that share defaults:
+
+```bash
+bun quoteforge slides decks/examples/stoic-wisdom.json
+```
+
+Output: `outputs/stoic-wisdom/01.png` … `10.png` plus `outputs/stoic-wisdom.zip`.
+
+## The studio
+
+Prefer a WYSIWYG editor? Launch the studio:
+
+```bash
+bun quoteforge studio
+```
+
+Opens `http://localhost:4242` with live preview, drag-and-drop blocks, undo/redo, and theme builder. See [Studio](/docs/studio) for the full tour.
+
+## Next steps
+
+- [CLI Reference](/docs/cli) — every command and flag
+- [Content Schema](/docs/content-schema) — the JSON shape of cards and decks
+- [Themes](/docs/themes) — customize colors, fonts, and spacing

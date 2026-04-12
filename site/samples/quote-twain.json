@@ -1,0 +1,25 @@
+{
+  "template": "quote",
+  "theme": "noir-crimson",
+  "size": "instagram-sq",
+  "blocks": [
+    {
+      "id": "open",
+      "type": "text",
+      "content": "A manifesto"
+    },
+    {
+      "id": "q",
+      "type": "headline",
+      "parts": [
+        { "text": "Design systems belong in version control.\n", "style": "normal" },
+        { "text": "Your social cards should, too.", "style": "accent-italic" }
+      ]
+    },
+    {
+      "id": "attr",
+      "type": "text",
+      "content": "— the quoteforge manifesto"
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+A template defines the layout — the spatial grammar of a card. QuoteForge ships four templates, all built on a shared responsive base. Pick one per card via the `template` field.
+
+## Built-in templates
+
+### `manifesto`
+Left-aligned, authoritative top-down flow. Tightened headline letter-spacing. Best for bold declarations and thesis statements.
+
+### `quote`
+Centered blockquote emphasis. Large quotation mark motif. Best for single-quote cards.
+
+### `list`
+Numbered or bulleted rhythm. Even vertical distribution. Best for "5 lessons", "10 tips" decks.
+
+### `minimal`
+Generous whitespace. Understated typography. Best for contemplative content where restraint wins.
+
+## How templates work
+
+Each template lives under `templates/<name>/`:
+
+```
+templates/
+└── manifesto/
+    ├── template.njk    # Nunjucks layout
+    └── style.css       # Template-specific styles (uses theme vars)
+```
+
+All templates **inherit a shared base CSS** (`templates/_base.css`) that handles:
+
+- Flex-based top-to-bottom block distribution
+- Dimension-aware font scaling
+- Puppeteer-ready font loading gates
+- Callout, divider, spacer, and quote rendering
+
+Template CSS only adds personality on top — letter-spacing, border weights, radius tweaks.
+
+## Responsive scaling
+
+The renderer injects three computed variables at render time based on card dimensions:
+
+```ts
+areaScale = sqrt(w * h) / 1080
+aspectPenalty = max(0.6, aspectRatio^0.65)
+typeScale = min(areaScale * aspectPenalty * 1.5, 1.25)
+```
+
+So a 1080×1080 Instagram card and a 1080×1920 Story render with proportionally tuned type — the same JSON looks right at every size.
+
+## Adding a custom template
+
+Create a folder under `templates/` with a `template.njk` and `style.css`:
+
+```njk
+{# templates/editorial/template.njk #}
+<article class="card template-editorial">
+  {% for block in blocks %}
+    {% include "_blocks/" + block.type + ".njk" %}
+  {% endfor %}
+</article>
+```
+
+```css
+/* templates/editorial/style.css */
+.template-editorial .headline {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+```
+
+Reference by name in your card JSON:
+
+```json
+{ "template": "editorial", ... }
+```
+
+No registration step — the renderer auto-discovers template folders at startup.
+
+## Constraints
+
+- **Never hardcode colors** in template CSS. Use `var(--color-*)` exclusively.
+- **Never set fixed pixel font sizes** without `calc(var * --type-scale)` — cards render at multiple dimensions.
+- **Always flex-distribute blocks vertically** so content fills the card top-to-bottom instead of bunching mid-card.
+
+The shared `_base.css` already handles these correctly; only add overrides when truly needed.
