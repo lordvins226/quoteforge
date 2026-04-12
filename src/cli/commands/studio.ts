@@ -20,7 +20,7 @@ export const studioCommand = new Command("studio")
       "bun",
       ["vite", "--port", String(port), "--strictPort"],
       {
-        cwd: resolve("web"),
+        cwd: resolve("studio"),
         stdio: "pipe",
         env: {
           ...process.env,

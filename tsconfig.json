@@ -26,6 +26,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*.ts", "web/src/**/*.ts", "web/src/**/*.tsx"],
+  "include": ["src/**/*.ts", "studio/src/**/*.ts", "studio/src/**/*.tsx"],
   "exclude": ["node_modules", "outputs", "dist"]
 }
