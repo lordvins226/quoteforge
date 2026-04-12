@@ -1,0 +1,11 @@
+node_modules/
+outputs/*
+!outputs/.gitkeep
+dist/
+.DS_Store
+*.log
+.env
+.env.local
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/shelf/

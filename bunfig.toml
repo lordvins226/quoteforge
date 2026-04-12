@@ -1,0 +1,5 @@
+# QuoteForge — Bun runtime config
+# Reserved for later phases (preview server, studio proxy, test runner).
+
+[install]
+exact = false
