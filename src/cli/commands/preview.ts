@@ -54,9 +54,9 @@ function buildPreviewHTML(
 export const previewCommand = new Command("preview")
   .description("Live browser preview with hot-reload")
   .argument("<file>", "Path to card or deck JSON file")
-  .option("-p, --port <n>", "Port (default: 4242)", "4242")
+  .option("-p, --port <n>", "Port", "4242")
   .option("--no-open", "Don't auto-open browser")
-  .option("--slide <n>", "Start on slide N for deck files", "1")
+  .option("--slide <n>", "Start on slide N for deck files (default: 1)", "1")
   .action(async (file: string, opts: {
     port: string;
     open: boolean;

@@ -14,7 +14,7 @@ export const batchCommand = new Command("batch")
   .option("-t, --theme <name>", "Override theme for all files")
   .option("-s, --size <name>", "Override size for all files")
   .option("-o, --output <dir>", "Output directory")
-  .option("--concurrency <n>", "Parallel workers (default: 2)", "2")
+  .option("--concurrency <n>", "Parallel workers", "2")
   .option("--decks", "Also process deck files into individual ZIPs")
   .action(async (directory: string, opts: {
     theme?: string;

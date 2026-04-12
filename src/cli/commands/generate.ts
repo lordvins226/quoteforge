@@ -13,7 +13,7 @@ export const generateCommand = new Command("generate")
   .option("-t, --theme <name>", "Override theme")
   .option("-s, --size <name>", "Override size")
   .option("-o, --output <path>", "Output file path")
-  .option("--scale <n>", "Pixel ratio (default: 2)", "2")
+  .option("--scale <n>", "Pixel ratio", "2")
   .option("--open", "Open output file after generation")
   .option("--no-timestamp", "Omit timestamp from filename")
   .action(async (file: string, opts: {

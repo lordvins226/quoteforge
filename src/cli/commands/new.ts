@@ -19,7 +19,7 @@ export const newCommand = new Command("new")
   .option("--type <type>", "card or deck")
   .option("--template <name>", "Template name")
   .option("--theme <name>", "Theme name")
-  .option("--slides <n>", "Number of blank slides (deck only)", "5")
+  .option("--slides <n>", "Number of blank slides (deck only, default: 5)", "5")
   .option("--size <name>", "Size name")
   .option("--name <filename>", "Output filename (without .json)")
   .action(async (opts: {

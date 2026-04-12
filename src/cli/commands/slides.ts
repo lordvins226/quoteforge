@@ -15,8 +15,8 @@ export const slidesCommand = new Command("slides")
   .option("--slide <n>", "Render only slide N (1-indexed), no ZIP")
   .option("--no-zip", "Skip ZIP creation")
   .option("--no-counter", "Disable counter overlay for all slides")
-  .option("--concurrency <n>", "Parallel render workers (default: 4)", "4")
-  .option("--scale <n>", "Pixel ratio (default: 2)", "2")
+  .option("--concurrency <n>", "Parallel render workers", "4")
+  .option("--scale <n>", "Pixel ratio", "2")
   .option("--open", "Open output folder after generation")
   .action(async (file: string, opts: {
     theme?: string;
