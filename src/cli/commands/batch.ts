@@ -7,6 +7,7 @@ import type { SizeName } from "../utils/validator.js";
 import { renderCard } from "../../renderer/renderer.js";
 import { renderDeck } from "../../renderer/slide-renderer.js";
 import { buildZip } from "../utils/zip.js";
+import { resolveThemeRead } from "../../assetBundle.js";
 
 export const batchCommand = new Command("batch")
   .description("Generate PNGs from a directory of card/deck JSON files")
@@ -63,7 +64,8 @@ export const batchCommand = new Command("batch")
           const card = result.data;
           const themeName = opts.theme ?? card.theme;
           const sizeName = (opts.size ?? card.size) as SizeName;
-          const themePath = resolve("themes", `${themeName}.json`);
+          const themePath = resolveThemeRead(themeName);
+          if (!themePath) throw new Error(`Theme not found: ${themeName}`);
           const theme = ThemeSchema.parse(JSON.parse(readFileSync(themePath, "utf-8")));
 
           const buf = await renderCard(card, theme, sizeName);

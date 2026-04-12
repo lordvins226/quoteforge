@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
 import { ThemeSchema } from "../../cli/utils/validator.js";
 import { renderCard } from "../../renderer/renderer.js";
+import { resolveThemeRead } from "../../assetBundle.js";
 import type { CardContent, SizeName } from "../../cli/utils/validator.js";
 
 export async function exportRoute(req: Request): Promise<Response> {
@@ -12,7 +12,10 @@ export async function exportRoute(req: Request): Promise<Response> {
     scale?: number;
   };
 
-  const themePath = resolve("themes", `${body.theme}.json`);
+  const themePath = resolveThemeRead(body.theme);
+  if (!themePath) {
+    return Response.json({ error: `Theme not found: ${body.theme}` }, { status: 404 });
+  }
   const theme = ThemeSchema.parse(JSON.parse(readFileSync(themePath, "utf-8")));
 
   const buf = await renderCard(body.card, theme, body.size, body.scale ?? 2);

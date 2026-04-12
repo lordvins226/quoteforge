@@ -1,9 +1,15 @@
-import puppeteer from "puppeteer";
-import type { Browser } from "puppeteer";
+import puppeteer from "puppeteer-core";
+import type { Browser } from "puppeteer-core";
 import { renderTemplate } from "./template-engine.js";
 import type { RenderMeta } from "./template-engine.js";
 import type { CardContent, Theme, SizeName } from "../cli/utils/validator.js";
 import { SIZES } from "../cli/utils/validator.js";
+import { resolveChrome } from "./browser-resolver.js";
+
+async function launch(): Promise<Browser> {
+  const { executablePath } = await resolveChrome();
+  return puppeteer.launch({ headless: true, executablePath });
+}
 
 export async function renderCard(
   content: CardContent,
@@ -17,7 +23,7 @@ export async function renderCard(
   const html = renderTemplate(content, theme, dimensions, meta);
 
   const ownBrowser = !browser;
-  const b = browser ?? await puppeteer.launch({ headless: true });
+  const b = browser ?? await launch();
   try {
     const page = await b.newPage();
     await page.setViewport({
@@ -38,5 +44,5 @@ export async function renderCard(
 }
 
 export async function launchBrowser(): Promise<Browser> {
-  return puppeteer.launch({ headless: true });
+  return launch();
 }

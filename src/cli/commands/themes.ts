@@ -1,18 +1,14 @@
 import { Command } from "commander";
 import chalk from "chalk";
-import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { resolve, basename } from "node:path";
 import { ThemeSchema } from "../utils/validator.js";
-
-const THEMES_DIR = resolve("themes");
+import { listAllThemes, resolveThemeRead, resolveThemeWrite } from "../../assetBundle.js";
 
 function loadAllThemes() {
-  const files = readdirSync(THEMES_DIR).filter(
-    (f) => f.endsWith(".json") && !f.startsWith("_"),
-  );
-  return files.map((f) => {
-    const raw = readFileSync(resolve(THEMES_DIR, f), "utf-8");
-    return { file: f, theme: ThemeSchema.parse(JSON.parse(raw)) };
+  return listAllThemes().map(({ name, source, path }) => {
+    const raw = readFileSync(path, "utf-8");
+    return { file: `${name}.json`, source, theme: ThemeSchema.parse(JSON.parse(raw)) };
   });
 }
 
@@ -25,12 +21,13 @@ const listCmd = new Command("list")
       return;
     }
     console.log(chalk.bold("\nAvailable themes:\n"));
-    for (const { file, theme } of themes) {
+    for (const { file, source, theme } of themes) {
       const bg = chalk.hex(theme.colors.background)("██");
       const accent = chalk.hex(theme.colors.accent)("██");
       const headline = chalk.hex(theme.colors.headline)("██");
+      const tag = source === "user" ? chalk.cyan(" [user]") : source === "repo" ? chalk.dim(" [repo]") : "";
       console.log(
-        `  ${bg} ${accent} ${headline}  ${chalk.bold(theme.displayName)} ${chalk.dim(`(${basename(file, ".json")})`)}`,
+        `  ${bg} ${accent} ${headline}  ${chalk.bold(theme.displayName)} ${chalk.dim(`(${basename(file, ".json")})`)}${tag}`,
       );
       console.log(
         `            ${chalk.dim(`${theme.typography["font-headline"]} / ${theme.typography["font-body"]}`)}`,
@@ -43,8 +40,8 @@ const showCmd = new Command("show")
   .description("Show details of a specific theme")
   .argument("<name>", "Theme name")
   .action((name: string) => {
-    const themePath = resolve(THEMES_DIR, `${name}.json`);
-    if (!existsSync(themePath)) {
+    const themePath = resolveThemeRead(name);
+    if (!themePath) {
       console.error(chalk.red(`✗ Theme not found: ${name}`));
       process.exit(2);
     }
@@ -70,11 +67,11 @@ const createCmd = new Command("create")
   .description("Create a new theme from scratch")
   .argument("<name>", "Theme name (kebab-case)")
   .action((name: string) => {
-    const themePath = resolve(THEMES_DIR, `${name}.json`);
-    if (existsSync(themePath)) {
+    if (resolveThemeRead(name)) {
       console.error(chalk.red(`✗ Theme already exists: ${name}`));
       process.exit(1);
     }
+    const themePath = resolveThemeWrite(name);
     const template = {
       name,
       displayName: name.split("-").map((w) => w[0]?.toUpperCase() + w.slice(1)).join(" "),
@@ -116,16 +113,16 @@ const duplicateCmd = new Command("duplicate")
   .argument("<source>", "Source theme name")
   .argument("<new-name>", "New theme name")
   .action((source: string, newName: string) => {
-    const srcPath = resolve(THEMES_DIR, `${source}.json`);
-    const destPath = resolve(THEMES_DIR, `${newName}.json`);
-    if (!existsSync(srcPath)) {
+    const srcPath = resolveThemeRead(source);
+    if (!srcPath) {
       console.error(chalk.red(`✗ Source theme not found: ${source}`));
       process.exit(2);
     }
-    if (existsSync(destPath)) {
+    if (resolveThemeRead(newName)) {
       console.error(chalk.red(`✗ Theme already exists: ${newName}`));
       process.exit(1);
     }
+    const destPath = resolveThemeWrite(newName);
     const raw = readFileSync(srcPath, "utf-8");
     const theme = JSON.parse(raw);
     theme.name = newName;

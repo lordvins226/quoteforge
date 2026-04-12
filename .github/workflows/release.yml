@@ -1,0 +1,94 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to release (e.g. v0.1.0)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            bun-target: bun-darwin-arm64
+            triple: aarch64-apple-darwin
+          - os: macos-13
+            bun-target: bun-darwin-x64
+            triple: x86_64-apple-darwin
+          - os: ubuntu-latest
+            bun-target: bun-linux-x64
+            triple: x86_64-unknown-linux-gnu
+          - os: ubuntu-24.04-arm
+            bun-target: bun-linux-arm64
+            triple: aarch64-unknown-linux-gnu
+          - os: windows-latest
+            bun-target: bun-windows-x64
+            triple: x86_64-pc-windows-msvc
+            experimental: true
+
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental == true }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install deps
+        run: bun install --frozen-lockfile
+
+      - name: Build binary
+        shell: bash
+        env:
+          BUN_TARGET: ${{ matrix.bun-target }}
+        run: bun run scripts/build-binaries.ts "$BUN_TARGET"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: quoteforge-${{ matrix.triple }}
+          path: |
+            dist/quoteforge-${{ matrix.triple }}.tar.gz
+            dist/quoteforge-${{ matrix.triple }}.tar.gz.sha256
+            dist/quoteforge-${{ matrix.triple }}.zip
+            dist/quoteforge-${{ matrix.triple }}.zip.sha256
+          if-no-files-found: ignore
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: List artifacts
+        run: ls -la dist/
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.tag || github.ref_name }}
+          files: |
+            dist/quoteforge-*.tar.gz
+            dist/quoteforge-*.tar.gz.sha256
+            dist/quoteforge-*.zip
+            dist/quoteforge-*.zip.sha256
+          generate_release_notes: true
+          fail_on_unmatched_files: false

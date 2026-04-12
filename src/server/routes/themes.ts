@@ -1,28 +1,20 @@
-import { readFileSync, readdirSync, writeFileSync, existsSync } from "node:fs";
-import { resolve, basename } from "node:path";
+import { readFileSync, writeFileSync } from "node:fs";
 import { ThemeSchema } from "../../cli/utils/validator.js";
-
-const THEMES_DIR = resolve("themes");
+import { listAllThemes, resolveThemeWrite, resolveThemeRead } from "../../assetBundle.js";
 
 export async function themesRoute(req: Request, url: URL): Promise<Response> {
   if (req.method === "GET" && url.pathname === "/api/themes") {
-    const files = readdirSync(THEMES_DIR).filter(
-      (f) => f.endsWith(".json") && !f.startsWith("_"),
-    );
-    const themes = files.map((f) => {
-      const raw = readFileSync(resolve(THEMES_DIR, f), "utf-8");
-      return JSON.parse(raw);
-    });
+    const themes = listAllThemes().map(({ path }) => JSON.parse(readFileSync(path, "utf-8")));
     return Response.json(themes);
   }
 
   if (req.method === "POST" && url.pathname === "/api/themes") {
     const body = await req.json();
     const theme = ThemeSchema.parse(body);
-    const filePath = resolve(THEMES_DIR, `${theme.name}.json`);
-    if (existsSync(filePath)) {
+    if (resolveThemeRead(theme.name)) {
       return Response.json({ error: "Theme already exists" }, { status: 409 });
     }
+    const filePath = resolveThemeWrite(theme.name);
     writeFileSync(filePath, JSON.stringify(theme, null, 2) + "\n");
     return Response.json(theme, { status: 201 });
   }
@@ -32,7 +24,7 @@ export async function themesRoute(req: Request, url: URL): Promise<Response> {
     const name = nameMatch[1];
     const body = await req.json();
     const theme = ThemeSchema.parse(body);
-    const filePath = resolve(THEMES_DIR, `${name}.json`);
+    const filePath = resolveThemeWrite(name);
     writeFileSync(filePath, JSON.stringify(theme, null, 2) + "\n");
     return Response.json(theme);
   }

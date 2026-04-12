@@ -5,10 +5,13 @@ import { resolve, basename } from "node:path";
 import { execFile } from "node:child_process";
 import { detectAndValidate, ThemeSchema, SIZES } from "../utils/validator.js";
 import { renderTemplate } from "../../renderer/template-engine.js";
+import { themesDir, resolveThemeRead, userThemesDir } from "../../assetBundle.js";
 import type { CardContent, DeckContent, Theme, SizeName } from "../utils/validator.js";
 
 function loadTheme(name: string): Theme {
-  const raw = readFileSync(resolve("themes", `${name}.json`), "utf-8");
+  const path = resolveThemeRead(name);
+  if (!path) throw new Error(`Theme not found: ${name}`);
+  const raw = readFileSync(path, "utf-8");
   return ThemeSchema.parse(JSON.parse(raw));
 }
 
@@ -139,11 +142,16 @@ export const previewCommand = new Command("preview")
       notifyClients();
     });
 
-    const themesDir = resolve("themes");
-    watch(themesDir, () => {
+    const onThemeChange = () => {
       console.log(chalk.dim(`  ↻ Theme changed, reloading…`));
       notifyClients();
-    });
+    };
+    watch(themesDir(), onThemeChange);
+    try {
+      watch(userThemesDir(), onThemeChange);
+    } catch {
+      // user themes dir may not exist yet in some modes
+    }
 
     if (opts.open) {
       const startSlide = parseInt(opts.slide, 10);

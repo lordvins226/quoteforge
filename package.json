@@ -10,19 +10,21 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "quoteforge": "bun run src/cli/index.ts",
-    "qf": "bun run src/cli/index.ts"
+    "qf": "bun run src/cli/index.ts",
+    "build:binary": "bun run scripts/build-binaries.ts"
   },
   "dependencies": {
     "@clack/prompts": "^1.2.0",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
+    "@puppeteer/browsers": "^2.13.0",
     "archiver": "^7.0.1",
     "chalk": "^5.6.2",
     "commander": "^14.0.3",
     "lucide-react": "^1.8.0",
     "nunjucks": "^3.2.4",
-    "puppeteer": "^24.40.0",
+    "puppeteer-core": "^24.40.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "zod": "^4.3.6",

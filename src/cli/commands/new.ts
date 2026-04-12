@@ -1,15 +1,12 @@
 import { Command } from "commander";
 import chalk from "chalk";
 import * as clack from "@clack/prompts";
-import { writeFileSync, readdirSync, existsSync } from "node:fs";
+import { writeFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
-
-const THEMES_DIR = resolve("themes");
+import { listAllThemes } from "../../assetBundle.js";
 
 function getAvailableThemes(): string[] {
-  return readdirSync(THEMES_DIR)
-    .filter((f) => f.endsWith(".json") && !f.startsWith("_"))
-    .map((f) => f.replace(".json", ""));
+  return listAllThemes().map((t) => t.name);
 }
 
 const TEMPLATES = ["manifesto", "quote", "list", "minimal"];

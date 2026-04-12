@@ -4,6 +4,7 @@ import { renderCard, launchBrowser } from "./renderer.js";
 import type { RenderMeta } from "./template-engine.js";
 import type { DeckContent, Theme, SizeName, CardContent } from "../cli/utils/validator.js";
 import { ThemeSchema } from "../cli/utils/validator.js";
+import { resolveThemeRead } from "../assetBundle.js";
 
 export interface SlideRenderOptions {
   sizeOverride?: SizeName;
@@ -15,7 +16,8 @@ export interface SlideRenderOptions {
 }
 
 function loadTheme(name: string): Theme {
-  const themePath = resolve("themes", `${name}.json`);
+  const themePath = resolveThemeRead(name);
+  if (!themePath) throw new Error(`Theme not found: ${name}`);
   const raw = readFileSync(themePath, "utf-8");
   return ThemeSchema.parse(JSON.parse(raw));
 }

@@ -1,10 +1,11 @@
 import nunjucks from "nunjucks";
 import { readFileSync } from "node:fs";
-import { resolve, join } from "node:path";
+import { join } from "node:path";
 import { buildFontImports } from "./font-loader.js";
+import { templatesDir } from "../assetBundle.js";
 import type { CardContent, Theme, Part, PartStyle } from "../cli/utils/validator.js";
 
-const TEMPLATES_DIR = resolve(import.meta.dir, "../../templates");
+const TEMPLATES_DIR = templatesDir();
 
 const env = new nunjucks.Environment(
   new nunjucks.FileSystemLoader(TEMPLATES_DIR, { noCache: true }),

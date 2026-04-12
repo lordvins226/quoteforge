@@ -2,10 +2,13 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { ThemeSchema, SIZES } from "../../cli/utils/validator.js";
 import { renderTemplate } from "../../renderer/template-engine.js";
+import { resolveThemeRead } from "../../assetBundle.js";
 import type { CardContent, Theme, SizeName } from "../../cli/utils/validator.js";
 
 function loadTheme(name: string): Theme {
-  const raw = readFileSync(resolve("themes", `${name}.json`), "utf-8");
+  const path = resolveThemeRead(name);
+  if (!path) throw new Error(`Theme not found: ${name}`);
+  const raw = readFileSync(path, "utf-8");
   return ThemeSchema.parse(JSON.parse(raw));
 }
 

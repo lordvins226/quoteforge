@@ -6,6 +6,7 @@ import { execFile } from "node:child_process";
 import { detectAndValidate, ThemeSchema } from "../utils/validator.js";
 import type { SizeName } from "../utils/validator.js";
 import { renderCard } from "../../renderer/renderer.js";
+import { resolveThemeRead } from "../../assetBundle.js";
 
 export const generateCommand = new Command("generate")
   .description("Generate a PNG from a card content JSON file")
@@ -54,14 +55,12 @@ export const generateCommand = new Command("generate")
     const sizeName = (opts.size ?? card.size) as SizeName;
     const scale = parseInt(opts.scale, 10);
 
-    const themePath = resolve("themes", `${themeName}.json`);
-    let themeRaw: string;
-    try {
-      themeRaw = readFileSync(themePath, "utf-8");
-    } catch {
+    const themePath = resolveThemeRead(themeName);
+    if (!themePath) {
       console.error(chalk.red(`✗ Theme not found: ${themeName}`));
       process.exit(2);
     }
+    const themeRaw = readFileSync(themePath, "utf-8");
 
     const theme = ThemeSchema.parse(JSON.parse(themeRaw));
 
