@@ -34,6 +34,21 @@ async function sha256(file: string): Promise<string> {
   return hash.digest("hex");
 }
 
+async function adhocSignDarwin(binPath: string): Promise<void> {
+  if (process.platform === "darwin") {
+    await $`codesign --sign - --force ${binPath}`.quiet();
+    return;
+  }
+  try {
+    await $`rcodesign sign ${binPath}`.quiet();
+  } catch {
+    throw new Error(
+      "rcodesign is required to ad-hoc sign darwin binaries from non-macOS hosts. " +
+        "Install: https://github.com/indygreg/apple-platform-rs/releases (look for apple-codesign).",
+    );
+  }
+}
+
 async function tarGz(binPath: string, archivePath: string, binName: string): Promise<void> {
   const cwd = resolve(binPath, "..");
   await $`tar -czf ${archivePath} -C ${cwd} ${binName}`;
@@ -56,6 +71,10 @@ async function buildOne(target: Target): Promise<{ archive: string; sha256: stri
 
   console.log(`→ ${target.bunTarget}`);
   await $`bun build ${ENTRY} --compile --minify --target=${target.bunTarget} --outfile=${binPath}`.quiet();
+
+  if (target.bunTarget.startsWith("bun-darwin-")) {
+    await adhocSignDarwin(binPath);
+  }
 
   const archiveName = target.archive === "tar.gz"
     ? `quoteforge-${target.triple}.tar.gz`
