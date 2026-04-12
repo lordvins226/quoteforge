@@ -7,6 +7,7 @@ import { themesCommand } from "./commands/themes.js";
 import { newCommand } from "./commands/new.js";
 import { previewCommand } from "./commands/preview.js";
 import { batchCommand } from "./commands/batch.js";
+import { studioCommand } from "./commands/studio.js";
 
 const program = new Command();
 
@@ -22,5 +23,6 @@ program.addCommand(themesCommand);
 program.addCommand(newCommand);
 program.addCommand(previewCommand);
 program.addCommand(batchCommand);
+program.addCommand(studioCommand);
 
 program.parseAsync();
