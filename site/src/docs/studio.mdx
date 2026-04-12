@@ -3,16 +3,16 @@ The studio is a WYSIWYG editor that wraps the CLI renderer. Launch it, edit visu
 ## Launch
 
 ```bash
-bun quoteforge studio
+quoteforge studio
 # → http://localhost:4242
 ```
 
 Optional args:
 
 ```bash
-bun quoteforge studio content/my-card.json  # pre-load a file
-bun quoteforge studio --port 5000            # custom port
-bun quoteforge studio --no-open              # don't auto-open browser
+quoteforge studio content/my-card.json  # pre-load a file
+quoteforge studio --port 5000            # custom port
+quoteforge studio --no-open              # don't auto-open browser
 ```
 
 The command spawns two processes: the Vite dev server for the UI (your port) and the Bun API server for file I/O and preview rendering (your port + 1).
@@ -51,7 +51,7 @@ Open from the properties pane — a modal with color pickers, font selectors (Go
 ## Export
 
 - **Cards:** `Cmd+E` writes a single PNG to `outputs/`.
-- **Decks:** export produces numbered PNGs + a ZIP, same as `bun quoteforge slides`.
+- **Decks:** export produces numbered PNGs + a ZIP, same as `quoteforge slides`.
 
 ## Under the hood
 

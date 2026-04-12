@@ -1,11 +1,11 @@
-QuoteForge ships seven commands. They compose well: `validate` gates CI, `generate` produces one card, `slides` produces a deck, `batch` produces many, `studio` opens the editor, `preview` watches a file, and `themes` manages theme JSON.
+QuoteForge ships eight commands. They compose well: `validate` gates CI, `generate` produces one card, `slides` produces a deck, `batch` produces many, `studio` opens the editor, `preview` watches a file, `themes` manages theme JSON, and `doctor` checks the install.
 
 ## `generate`
 
 Render a single card JSON to PNG.
 
 ```bash
-bun quoteforge generate <file> [options]
+quoteforge generate <file> [options]
 ```
 
 Options:
@@ -24,7 +24,7 @@ Options:
 Render a deck JSON into numbered PNGs + a ZIP.
 
 ```bash
-bun quoteforge slides <file> [options]
+quoteforge slides <file> [options]
 ```
 
 Options:
@@ -46,7 +46,7 @@ Options:
 Render every JSON file in a directory.
 
 ```bash
-bun quoteforge batch <dir> [options]
+quoteforge batch <dir> [options]
 ```
 
 Options include `--theme`, `--size`, `--output`, `--concurrency`, and `--decks` (to also process deck files).
@@ -56,8 +56,8 @@ Options include `--theme`, `--size`, `--output`, `--concurrency`, and `--decks` 
 Zod-validate a card, deck, or theme file. Exits non-zero on failure — wire this into CI.
 
 ```bash
-bun quoteforge validate content/my-card.json
-bun quoteforge validate --theme themes/custom.json
+quoteforge validate content/my-card.json
+quoteforge validate --theme themes/custom.json
 ```
 
 ## `preview`
@@ -65,7 +65,7 @@ bun quoteforge validate --theme themes/custom.json
 Watch a file and re-render on change. Opens the PNG in your default viewer.
 
 ```bash
-bun quoteforge preview content/examples/quote-twain.json
+quoteforge preview content/examples/quote-twain.json
 ```
 
 ## `studio`
@@ -73,7 +73,7 @@ bun quoteforge preview content/examples/quote-twain.json
 Launch the WYSIWYG editor.
 
 ```bash
-bun quoteforge studio [file] [--port 4242] [--no-open]
+quoteforge studio [file] [--port 4242] [--no-open]
 ```
 
 ## `themes`
@@ -81,12 +81,30 @@ bun quoteforge studio [file] [--port 4242] [--no-open]
 Manage theme JSON files.
 
 ```bash
-bun quoteforge themes list
-bun quoteforge themes show obsidian
-bun quoteforge themes create my-theme
-bun quoteforge themes duplicate obsidian my-obsidian
-bun quoteforge themes validate themes/my-theme.json
+quoteforge themes list
+quoteforge themes show obsidian
+quoteforge themes create my-theme
+quoteforge themes duplicate obsidian my-obsidian
+quoteforge themes validate themes/my-theme.json
 ```
+
+## `doctor`
+
+Report install health — bundled assets, user theme directory, resolved Chrome, runtime versions. Exits **1** if Chrome can't be resolved.
+
+```bash
+quoteforge doctor
+```
+
+## Environment variables
+
+| Variable | Purpose |
+|----------|---------|
+| `QUOTEFORGE_CHROME` | Absolute path to a Chrome/Chromium/Edge executable. Skips auto-detect. |
+| `QUOTEFORGE_INSTALL_DIR` | Used by `install.sh` to pick the install target (default `~/.local/bin`). |
+| `QUOTEFORGE_VERSION` | Used by `install.sh` to pin a specific release tag. |
+| `XDG_CACHE_HOME` | Overrides `~/.cache` as the base for bundled-asset unpacking and the Chrome cache. |
+| `XDG_CONFIG_HOME` | Overrides `~/.config` as the base for user-authored themes. |
 
 ## Exit codes
 

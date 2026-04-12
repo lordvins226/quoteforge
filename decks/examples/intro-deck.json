@@ -115,9 +115,9 @@
           ]
         },
         { "type": "spacer", "size": "sm" },
-        { "type": "text", "content": "bun quoteforge generate your-card.json" },
+        { "type": "text", "content": "quoteforge generate your-card.json" },
         { "type": "spacer", "size": "md" },
-        { "type": "text", "content": "@kewitech" }
+        { "type": "text", "content": "@lordvins226" }
       ]
     }
   ]

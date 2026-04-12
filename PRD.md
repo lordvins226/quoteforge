@@ -1,6 +1,6 @@
 # QuoteForge — Full Project Document
 > Typographic social media card generator · CLI + Web UI · Slides/Carousel support
-> Author: Kevin Ilboudo / Kewi Tech · Version 1.1
+> Author: lordvins226 · Version 1.1
 
 ---
 
@@ -86,8 +86,8 @@ US-15  Show a slide counter overlay on each slide (e.g. "3 / 7") — toggleable
 ### 1.6 Success Metrics
 
 - Time from `bun install` to first generated PNG < 2 minutes
-- `bun quoteforge generate` completes in < 3 seconds per single card
-- `bun quoteforge slides` generates a 10-slide deck and ZIP in < 25 seconds
+- `quoteforge generate` completes in < 3 seconds per single card
+- `quoteforge slides` generates a 10-slide deck and ZIP in < 25 seconds
 - Theme swap produces visually correct output with zero manual changes
 - Web UI hot-reload latency < 200ms
 - Slide navigation in Web UI is instantaneous (client-side, no re-render needed)
@@ -484,7 +484,7 @@ The `slides` command outputs:
           "type": "headline",
           "parts": [{ "text": "Follow for more.", "style": "accent-italic" }]
         },
-        { "type": "text", "content": "@kewitech" }
+        { "type": "text", "content": "@lordvins226" }
       ]
     }
   ]
@@ -599,7 +599,7 @@ deck mode. The user can also toggle manually via a pill toggle in the toolbar.
 ### 6.1 Installation
 
 ```bash
-git clone https://github.com/kewitech/quoteforge
+git clone https://github.com/lordvins226/quoteforge
 cd quoteforge
 bun install
 bun link   # optional: enables `qf` global alias
@@ -610,7 +610,7 @@ bun link   # optional: enables `qf` global alias
 #### `generate` — Single card → PNG
 
 ```bash
-bun quoteforge generate <content-file> [options]
+quoteforge generate <content-file> [options]
 
   -t, --theme <name>       Override theme
   -s, --size  <name>       Override size (see full list in §4)
@@ -620,14 +620,14 @@ bun quoteforge generate <content-file> [options]
   --no-timestamp           Omit timestamp from filename
 
 Examples:
-  bun quoteforge generate content/wiki-post.json
-  bun quoteforge generate content/wiki-post.json --size facebook-post --theme dark-orange
+  quoteforge generate content/wiki-post.json
+  quoteforge generate content/wiki-post.json --size facebook-post --theme dark-orange
 ```
 
 #### `slides` — Slide deck → numbered PNGs + ZIP
 
 ```bash
-bun quoteforge slides <deck-file> [options]
+quoteforge slides <deck-file> [options]
 
   -t, --theme <name>       Override theme for all slides
   -s, --size  <name>       Override size for all slides
@@ -646,16 +646,16 @@ Outputs:
   outputs/deck-name.zip
 
 Examples:
-  bun quoteforge slides decks/intro-deck.json
-  bun quoteforge slides decks/intro-deck.json --size facebook-square
-  bun quoteforge slides decks/intro-deck.json --slide 3   # only slide 3
-  bun quoteforge slides decks/intro-deck.json --no-counter --size instagram-sq
+  quoteforge slides decks/intro-deck.json
+  quoteforge slides decks/intro-deck.json --size facebook-square
+  quoteforge slides decks/intro-deck.json --slide 3   # only slide 3
+  quoteforge slides decks/intro-deck.json --no-counter --size instagram-sq
 ```
 
 #### `preview` — Live browser preview
 
 ```bash
-bun quoteforge preview <content-or-deck-file> [options]
+quoteforge preview <content-or-deck-file> [options]
 
   -p, --port <n>           Port (default: 4242)
   --no-open                Don't auto-open browser
@@ -669,7 +669,7 @@ Behavior:
 #### `studio` — Full WYSIWYG Web UI
 
 ```bash
-bun quoteforge studio [content-or-deck-file] [options]
+quoteforge studio [content-or-deck-file] [options]
 
   -p, --port <n>           Port (default: 4242)
   --no-open
@@ -679,14 +679,14 @@ Behavior:
   - Ctrl+S saves, Export PNG/Export Deck ZIP in toolbar
 
 Examples:
-  bun quoteforge studio
-  bun quoteforge studio decks/intro-deck.json   # opens in deck mode
+  quoteforge studio
+  quoteforge studio decks/intro-deck.json   # opens in deck mode
 ```
 
 #### `new` — Interactive creator
 
 ```bash
-bun quoteforge new [options]
+quoteforge new [options]
 
   --type <card|deck>       (interactive prompt if omitted)
   --template <name>
@@ -699,17 +699,17 @@ bun quoteforge new [options]
 #### `themes` — Theme management
 
 ```bash
-bun quoteforge themes list
-bun quoteforge themes show <name>
-bun quoteforge themes create <name>
-bun quoteforge themes duplicate <name> <new-name>
-bun quoteforge themes validate <file>
+quoteforge themes list
+quoteforge themes show <name>
+quoteforge themes create <name>
+quoteforge themes duplicate <name> <new-name>
+quoteforge themes validate <file>
 ```
 
 #### `batch` — Folder → multiple PNGs
 
 ```bash
-bun quoteforge batch <directory> [options]
+quoteforge batch <directory> [options]
 
   -t, --theme <name>
   -s, --size  <name>
@@ -721,7 +721,7 @@ bun quoteforge batch <directory> [options]
 #### `validate` — Validate a card or deck file
 
 ```bash
-bun quoteforge validate <file>
+quoteforge validate <file>
 # Exits 0 if valid, 1 with full Zod error tree if invalid
 # Auto-detects card vs deck from "type" field
 ```
@@ -924,8 +924,8 @@ All colors come from the theme via CSS vars — never hardcoded:
 - [ ] `content/examples/manifesto-wiki.json` (reference card)
 - [ ] `decks/examples/intro-deck.json` (5-slide example)
 
-**Deliverable:** `bun quoteforge validate content/examples/manifesto-wiki.json` → exits 0
-**Deliverable:** `bun quoteforge validate decks/examples/intro-deck.json` → exits 0
+**Deliverable:** `quoteforge validate content/examples/manifesto-wiki.json` → exits 0
+**Deliverable:** `quoteforge validate decks/examples/intro-deck.json` → exits 0
 
 ---
 
@@ -937,7 +937,7 @@ All colors come from the theme via CSS vars — never hardcoded:
 - [ ] All 14 sizes including all 5 Facebook formats
 - [ ] `generate` command: `--theme`, `--size`, `--output`, `--scale`, `--open`
 
-**Deliverable:** `bun quoteforge generate content/examples/manifesto-wiki.json` produces
+**Deliverable:** `quoteforge generate content/examples/manifesto-wiki.json` produces
 a pixel-perfect replica of the reference image. `--size facebook-post` produces 1200×630.
 
 ---
@@ -952,7 +952,7 @@ a pixel-perfect replica of the reference image. `--size facebook-post` produces 
 - [ ] Facebook non-square size warning in `slides` command
 - [ ] `decks/examples/intro-deck.json` generates 5 PNGs + 1 ZIP
 
-**Deliverable:** `bun quoteforge slides decks/examples/intro-deck.json --size instagram-sq`
+**Deliverable:** `quoteforge slides decks/examples/intro-deck.json --size instagram-sq`
 → 5 PNGs + `intro-deck.zip` in `outputs/intro-deck/`
 
 ---
@@ -982,7 +982,7 @@ a pixel-perfect replica of the reference image. `--size facebook-post` produces 
 - [ ] Export PNG (single) + Export Deck ZIP
 - [ ] Ctrl+S save
 
-**Deliverable:** `bun quoteforge studio decks/examples/intro-deck.json` → working deck
+**Deliverable:** `quoteforge studio decks/examples/intro-deck.json` → working deck
 editor. Slides navigable, blocks editable, Export Deck ZIP downloads correctly.
 
 ---
@@ -1073,8 +1073,8 @@ Start every Claude Code session with:
 > Bootstrap the QuoteForge project: structure, schemas, example files, validate command
 >
 > GOAL: Both of these exit 0:
-> `bun quoteforge validate content/examples/manifesto-wiki.json`
-> `bun quoteforge validate decks/examples/intro-deck.json`
+> `quoteforge validate content/examples/manifesto-wiki.json`
+> `quoteforge validate decks/examples/intro-deck.json`
 > Both exit 1 with Zod error details when given a malformed file.
 >
 > CONSTRAINTS:
@@ -1110,7 +1110,7 @@ Start every Claude Code session with:
 
 > Implement single-card rendering: CardContent + Theme → PNG via Puppeteer
 >
-> GOAL: `bun quoteforge generate content/examples/manifesto-wiki.json` produces
+> GOAL: `quoteforge generate content/examples/manifesto-wiki.json` produces
 > a PNG matching the reference image (fonts, colors, all 4 blocks). < 5 seconds.
 > `--size facebook-post` produces 1200×630. `--size facebook-cover` produces 1640×624.
 >
@@ -1143,7 +1143,7 @@ Start every Claude Code session with:
 
 > Add full deck rendering: DeckContent → N PNGs + ZIP
 >
-> GOAL: `bun quoteforge slides decks/examples/intro-deck.json --size instagram-sq`
+> GOAL: `quoteforge slides decks/examples/intro-deck.json --size instagram-sq`
 > produces outputs/intro-deck/intro-deck-01.png through 05.png (zero-padded)
 > plus intro-deck.zip. Each slide shows counter "X / 5" pill bottom-right.
 > `--slide 3` produces only slide 3, no ZIP.
@@ -1213,10 +1213,10 @@ Start every Claude Code session with:
 
 > Build the Vite + React WYSIWYG studio: card mode + deck mode
 >
-> GOAL: `bun quoteforge studio decks/examples/intro-deck.json` → http://localhost:4242
+> GOAL: `quoteforge studio decks/examples/intro-deck.json` → http://localhost:4242
 > in deck mode. All 5 slides in SlideList and DeckStrip. Clicking a thumbnail activates
 > it. Editing a block updates preview < 200ms. Export Deck ZIP downloads a working ZIP.
-> `bun quoteforge studio content/examples/manifesto-wiki.json` → card mode.
+> `quoteforge studio content/examples/manifesto-wiki.json` → card mode.
 > SizePicker shows Facebook sizes grouped under "Facebook" heading.
 >
 > CONSTRAINTS:

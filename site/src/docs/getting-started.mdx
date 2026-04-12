@@ -1,35 +1,90 @@
 QuoteForge turns JSON files into typeset social media cards. You version the source, script the output, and ship deterministic PNGs from CI or your desk.
 
-## Requirements
-
-- **Bun 1.2+** — QuoteForge runs on Bun, not Node. If you don't have Bun: `curl -fsSL https://bun.sh/install | bash`.
-
-That's it. No Node, no npm, no Docker required for local use.
-
 ## Install
+
+Pick the flavor that fits your machine.
+
+### Homebrew (macOS / Linux)
+
+```bash
+brew install lordvins226/quoteforge/quoteforge
+```
+
+### curl installer (Linux / macOS)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/lordvins226/quoteforge/main/install.sh | sh
+```
+
+Installs to `~/.local/bin`. Add to your `PATH` if needed:
+
+```bash
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc  # or ~/.bashrc
+```
+
+Override the install target with `QUOTEFORGE_INSTALL_DIR=/usr/local/bin` or pin a version with `QUOTEFORGE_VERSION=v0.1.0`.
+
+### Pre-built binaries
+
+Download the right tarball for your platform from [the releases page](https://github.com/lordvins226/quoteforge/releases):
+
+- macOS: `quoteforge-aarch64-apple-darwin.tar.gz` / `quoteforge-x86_64-apple-darwin.tar.gz`
+- Linux: `quoteforge-x86_64-unknown-linux-gnu.tar.gz` / `quoteforge-aarch64-unknown-linux-gnu.tar.gz`
+- Windows: `quoteforge-x86_64-pc-windows-msvc.zip`
+
+Each asset has a sibling `.sha256` for verification.
+
+> **macOS Gatekeeper note:** unsigned binaries may get quarantined on first open. Clear with `xattr -d com.apple.quarantine ~/.local/bin/quoteforge`.
+
+### From source (Bun)
 
 ```bash
 git clone https://github.com/lordvins226/quoteforge
 cd quoteforge
 bun install
+bun quoteforge --version
 ```
+
+## Verify
+
+```bash
+quoteforge --version          # prints 0.1.0
+quoteforge doctor             # reports assets, Chrome, runtime
+```
+
+`doctor` is the fastest way to confirm a healthy install. It prints:
+
+- where bundled templates/themes live,
+- where user-authored themes are persisted (`~/.config/quoteforge/themes/`),
+- which Chrome is resolved and from where,
+- the runtime platform and versions.
+
+## Chrome / Chromium
+
+QuoteForge renders via headless Chrome. On first run it resolves a browser in this order:
+
+1. `$QUOTEFORGE_CHROME` — point at any Chrome/Chromium/Edge executable.
+2. **System install** — Chrome, Chromium, or Edge at the standard per-OS paths.
+3. **Pinned Chrome for Testing** — auto-downloaded (~170MB) to `~/.cache/quoteforge/chrome/` if neither of the above exists.
+
+CI tip: pre-bake `$QUOTEFORGE_CHROME` in your image or install Chromium with your package manager to skip the auto-download entirely.
 
 ## Your first card
 
 The repo ships with example content. Render one:
 
 ```bash
-bun quoteforge generate content/examples/manifesto-wiki.json
+quoteforge generate content/examples/manifesto-wiki.json
 ```
 
-You'll find the PNG in `outputs/`. Open it — that's the full pipeline: Zod validation → Nunjucks rendering → Puppeteer → PNG buffer → disk.
+You'll find the PNG in `outputs/`. Open it — that's the full pipeline: Zod validation → Nunjucks rendering → headless Chrome → PNG buffer → disk.
 
 ## Your first deck
 
 A deck is a carousel of slides that share defaults:
 
 ```bash
-bun quoteforge slides decks/examples/stoic-wisdom.json
+quoteforge slides decks/examples/stoic-wisdom.json
 ```
 
 Output: `outputs/stoic-wisdom/01.png` … `10.png` plus `outputs/stoic-wisdom.zip`.
@@ -39,7 +94,7 @@ Output: `outputs/stoic-wisdom/01.png` … `10.png` plus `outputs/stoic-wisdom.zi
 Prefer a WYSIWYG editor? Launch the studio:
 
 ```bash
-bun quoteforge studio
+quoteforge studio
 ```
 
 Opens `http://localhost:4242` with live preview, drag-and-drop blocks, undo/redo, and theme builder. See [Studio](/docs/studio) for the full tour.

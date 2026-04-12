@@ -6,26 +6,70 @@ No cloud. No subscriptions. No drag-and-drop. Just code.
 
 ## Install
 
+### Quick Install (Linux/macOS)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/lordvins226/quoteforge/main/install.sh | sh
+```
+
+Installs to `~/.local/bin`. Add to `PATH` if needed:
+
+```bash
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc  # or ~/.bashrc
+```
+
+Override with `QUOTEFORGE_INSTALL_DIR=/usr/local/bin` or `QUOTEFORGE_VERSION=v0.1.0`.
+
+### Homebrew (coming soon)
+
+```bash
+brew install lordvins226/quoteforge/quoteforge
+```
+
+### Pre-built Binaries
+
+Download from [releases](https://github.com/lordvins226/quoteforge/releases):
+
+- macOS: `quoteforge-aarch64-apple-darwin.tar.gz` / `quoteforge-x86_64-apple-darwin.tar.gz`
+- Linux: `quoteforge-x86_64-unknown-linux-gnu.tar.gz` / `quoteforge-aarch64-unknown-linux-gnu.tar.gz`
+- Windows: `quoteforge-x86_64-pc-windows-msvc.zip`
+
+Each asset has a sibling `.sha256` for verification.
+
+> macOS users: on first launch Gatekeeper may block the unsigned binary. Clear with:
+> `xattr -d com.apple.quarantine ~/.local/bin/quoteforge`
+
+### From Source (Bun)
+
 ```bash
 git clone https://github.com/lordvins226/quoteforge
 cd quoteforge
 bun install
 ```
 
+### Verify
+
+```bash
+quoteforge --version          # 0.1.0
+quoteforge doctor             # reports assets, Chrome, runtime
+```
+
+QuoteForge needs Chrome or Chromium for rendering. On first run it will use your system install if one exists (Chrome, Chromium, Edge), or download a pinned Chrome for Testing (~170MB) to `~/.cache/quoteforge/chrome/`. Override with `QUOTEFORGE_CHROME=/path/to/chrome`.
+
 ## Quick Start
 
 ```bash
 # Generate a card
-bun quoteforge generate content/examples/manifesto-wiki.json
+quoteforge generate content/examples/manifesto-wiki.json
 
 # Generate a slide deck + ZIP
-bun quoteforge slides decks/examples/intro-deck.json
+quoteforge slides decks/examples/intro-deck.json
 
 # Create a new card interactively
-bun quoteforge new
+quoteforge new
 
 # Preview in browser with hot-reload
-bun quoteforge preview content/examples/manifesto-wiki.json
+quoteforge preview content/examples/manifesto-wiki.json
 ```
 
 ## Commands
@@ -33,7 +77,7 @@ bun quoteforge preview content/examples/manifesto-wiki.json
 ### `generate` — Single card → PNG
 
 ```
-bun quoteforge generate <file> [options]
+quoteforge generate <file> [options]
 
   -t, --theme <name>   Override theme
   -s, --size <name>    Override size (see Size Reference below)
@@ -46,15 +90,15 @@ bun quoteforge generate <file> [options]
 **Examples:**
 
 ```bash
-bun quoteforge generate content/my-card.json
-bun quoteforge generate content/my-card.json --size facebook-post --theme dark-orange
-bun quoteforge generate content/my-card.json --no-timestamp --open
+quoteforge generate content/my-card.json
+quoteforge generate content/my-card.json --size facebook-post --theme dark-orange
+quoteforge generate content/my-card.json --no-timestamp --open
 ```
 
 ### `slides` — Deck → numbered PNGs + ZIP
 
 ```
-bun quoteforge slides <file> [options]
+quoteforge slides <file> [options]
 
   -t, --theme <name>   Override theme for all slides
   -s, --size <name>    Override size for all slides
@@ -70,16 +114,16 @@ bun quoteforge slides <file> [options]
 **Examples:**
 
 ```bash
-bun quoteforge slides decks/intro-deck.json
-bun quoteforge slides decks/intro-deck.json --size facebook-square
-bun quoteforge slides decks/intro-deck.json --slide 3
-bun quoteforge slides decks/intro-deck.json --no-counter --theme light-minimal
+quoteforge slides decks/intro-deck.json
+quoteforge slides decks/intro-deck.json --size facebook-square
+quoteforge slides decks/intro-deck.json --slide 3
+quoteforge slides decks/intro-deck.json --no-counter --theme light-minimal
 ```
 
 ### `preview` — Live browser preview
 
 ```
-bun quoteforge preview <file> [options]
+quoteforge preview <file> [options]
 
   -p, --port <n>       Port (default: 4242)
   --no-open            Don't auto-open browser
@@ -92,7 +136,7 @@ bun quoteforge preview <file> [options]
 ### `new` — Interactive content creator
 
 ```
-bun quoteforge new [options]
+quoteforge new [options]
 
   --type <type>        card or deck
   --template <name>    Template name (manifesto, quote, list, minimal)
@@ -107,7 +151,7 @@ All options are interactive when omitted.
 ### `studio` — WYSIWYG editor
 
 ```
-bun quoteforge studio [file] [options]
+quoteforge studio [file] [options]
 
   -p, --port <n>       Port (default: 4242)
   --no-open            Don't auto-open browser
@@ -119,17 +163,17 @@ bun quoteforge studio [file] [options]
 ### `themes` — Theme management
 
 ```
-bun quoteforge themes list                           # List all themes with color swatches
-bun quoteforge themes show <name>                    # Show theme details
-bun quoteforge themes create <name>                  # Create a new theme from template
-bun quoteforge themes duplicate <source> <new-name>  # Duplicate an existing theme
-bun quoteforge themes validate <file>                # Validate a theme file
+quoteforge themes list                           # List all themes with color swatches
+quoteforge themes show <name>                    # Show theme details
+quoteforge themes create <name>                  # Create a new theme from template
+quoteforge themes duplicate <source> <new-name>  # Duplicate an existing theme
+quoteforge themes validate <file>                # Validate a theme file
 ```
 
 ### `batch` — Folder → multiple PNGs
 
 ```
-bun quoteforge batch <directory> [options]
+quoteforge batch <directory> [options]
 
   -t, --theme <name>   Override theme for all files
   -s, --size <name>    Override size for all files
@@ -141,7 +185,7 @@ bun quoteforge batch <directory> [options]
 ### `validate` — Validate content files
 
 ```
-bun quoteforge validate <file>
+quoteforge validate <file>
 
 # Auto-detects card vs deck from the "type" field
 # Exits 0 if valid, 1 with Zod error details if invalid
@@ -192,7 +236,7 @@ All formats with exact pixel dimensions:
 | `kyoto` | `#FAF8F3` | `#D4411E` | Shippori Mincho / Inter |
 | `mono-slate` | `#F5F5F4` | `#0C0A09` | Syne / JetBrains Mono |
 
-Create your own: `bun quoteforge themes create my-brand`
+Create your own: `quoteforge themes create my-brand`
 
 ## Templates
 
@@ -251,7 +295,7 @@ Create your own: `bun quoteforge themes create my-brand`
 ## Layout
 
 - `src/` — CLI + renderer (Bun + Nunjucks + Puppeteer)
-- `studio/` — bundled WYSIWYG editor (Vite + React + Zustand, launched by `bun quoteforge studio`)
+- `studio/` — bundled WYSIWYG editor (Vite + React + Zustand, launched by `quoteforge studio`)
 - `site/` — standalone landing + MDX docs SPA (separate nginx Dockerfile for deployment)
 - `templates/` — four built-in card layouts sharing a responsive base CSS
 - `themes/` — 12 JSON theme files conforming to `_schema.json`

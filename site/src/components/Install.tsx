@@ -12,26 +12,41 @@ export function Install() {
           first card.
         </h2>
         <p className="text-fog-2 mb-10 max-w-[52ch] mx-auto">
-          Requires Bun 1.2+. No Node, no npm scripts, no framework lock-in.
+          Single binary. No Node, no Bun, no framework. Needs Chrome or Chromium
+          for rendering — auto-downloaded on first run if you don't have it.
         </p>
 
         <div className="grid md:grid-cols-2 gap-4 text-left">
-          <CodeBlock title="clone + install">
-            <span className="text-fog-3">$ </span>git clone lordvins226/quoteforge
-            {"\n"}
-            <span className="text-fog-3">$ </span>cd quoteforge
-            {"\n"}
+          <CodeBlock title="Homebrew">
             <span className="text-fog-3">$ </span>
-            <span className="text-mint">bun</span> install
+            <span className="text-mint">brew</span> install lordvins226/quoteforge/quoteforge
+          </CodeBlock>
+          <CodeBlock title="curl installer (Linux/macOS)">
+            <span className="text-fog-3">$ </span>
+            <span className="text-mint">curl</span> -fsSL \
+            {"\n    "}https://raw.githubusercontent.com/lordvins226/quoteforge/main/install.sh \
+            {"\n  "}| sh
+          </CodeBlock>
+          <CodeBlock title="verify">
+            <span className="text-fog-3">$ </span>quoteforge --version
+            {"\n"}0.1.0
+            {"\n"}
+            <span className="text-fog-3">$ </span>quoteforge doctor
+            {"\n"}
+            <span className="text-mint">✓</span> Ready.
           </CodeBlock>
           <CodeBlock title="generate a card">
             <span className="text-fog-3">$ </span>
-            <span className="text-mint">bun</span> quoteforge generate \
+            <span className="text-mint">quoteforge</span> generate \
             {"\n    "}content/examples/manifesto-wiki.json
             {"\n"}
             <span className="text-mint">✓</span> outputs/manifesto-wiki.png
           </CodeBlock>
         </div>
+
+        <p className="mt-6 text-xs text-fog-3 font-mono">
+          Also available: pre-built binaries (5 platforms), <code>cargo</code>-style install from source with Bun, Windows <code>.zip</code>.
+        </p>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
           <Link

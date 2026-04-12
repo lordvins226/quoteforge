@@ -104,13 +104,13 @@ Twelve themes ship in the repo:
 Inspect any theme from the CLI:
 
 ```bash
-bun quoteforge themes show terminal-green
+quoteforge themes show terminal-green
 ```
 
 ## Creating a theme
 
 ```bash
-bun quoteforge themes create my-brand
+quoteforge themes create my-brand
 ```
 
 Creates `themes/my-brand.json` from a default skeleton that validates against the schema above. Edit the tokens, save, and reference by name in your content:
@@ -122,7 +122,7 @@ Creates `themes/my-brand.json` from a default skeleton that validates against th
 ## Validate before shipping
 
 ```bash
-bun quoteforge themes validate themes/my-brand.json
+quoteforge themes validate themes/my-brand.json
 ```
 
 Catches malformed hex codes, missing required tokens, and typos in font-URL query strings before they reach Puppeteer.

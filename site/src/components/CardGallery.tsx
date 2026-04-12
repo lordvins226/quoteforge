@@ -45,7 +45,7 @@ export function CardGallery() {
           </h2>
           <p className="mt-4 text-fog-2 max-w-[54ch]">
             These PNGs aren't mockups. Every time this site is built, the Docker image runs
-            <code className="mx-1 px-1.5 py-0.5 bg-ink-3 border border-line rounded font-mono text-xs">bun quoteforge generate</code>
+            <code className="mx-1 px-1.5 py-0.5 bg-ink-3 border border-line rounded font-mono text-xs">quoteforge generate</code>
             against the same JSON source files you'd write.
           </p>
         </div>
