@@ -29,7 +29,7 @@ export const batchCommand = new Command("batch")
 
     if (files.length === 0) {
       console.error(chalk.red(`✗ No JSON files found in: ${dir}`));
-      console.error(chalk.dim("  Check the path or try: bun quoteforge batch content/examples/"));
+      console.error(chalk.dim("  Check the path or try: quoteforge batch content/examples/"));
       process.exit(1);
     }
 

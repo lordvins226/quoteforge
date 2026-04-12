@@ -50,7 +50,7 @@ export const slidesCommand = new Command("slides")
     const result = detectAndValidate(json);
     if (result.kind !== "deck") {
       console.error(chalk.red("✗ This file is a single card, not a deck."));
-      console.error(chalk.dim(`  Try: bun quoteforge generate ${file}`));
+      console.error(chalk.dim(`  Try: quoteforge generate ${file}`));
       process.exit(1);
     }
 
