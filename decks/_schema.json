@@ -1,0 +1,7 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "QuoteForge Deck Content",
+  "description": "Slide deck (carousel) content definition for QuoteForge. See PRD §5.2 for details.",
+  "type": "object",
+  "required": ["type", "defaults", "slides"]
+}

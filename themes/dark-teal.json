@@ -1,0 +1,31 @@
+{
+  "name": "dark-teal",
+  "displayName": "Dark Teal",
+  "colors": {
+    "background":         "#1a1a1a",
+    "headline":           "#f0ebe0",
+    "accent":             "#4ecdc4",
+    "body":               "#c8c8c8",
+    "label":              "#4ecdc4",
+    "blockquote-border":  "#4ecdc4",
+    "blockquote-text":    "#e0dbd0",
+    "callout-bg":         "#252525",
+    "callout-border":     "#333333",
+    "bullet-dot":         "#4ecdc4",
+    "slide-counter-bg":   "#00000066",
+    "slide-counter-text": "#ffffff"
+  },
+  "typography": {
+    "font-headline":      "Playfair Display",
+    "font-headline-url":  "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700",
+    "font-body":          "JetBrains Mono",
+    "font-body-url":      "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700",
+    "headline-size":      "clamp(3.5rem, 8vw, 6rem)",
+    "body-size":          "1rem",
+    "line-height":        "1.5"
+  },
+  "spacing": {
+    "padding":   "64px",
+    "block-gap": "2rem"
+  }
+}

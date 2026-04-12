@@ -1,0 +1,48 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "manifesto",
+  "theme": "dark-teal",
+  "size": "twitter",
+  "meta": {
+    "title": "QuoteForge manifesto",
+    "created": "2024-01-15",
+    "tags": ["quoteforge", "developer-tools", "content-creation"]
+  },
+  "blocks": [
+    {
+      "id": "headline",
+      "type": "headline",
+      "parts": [
+        { "text": "Your content cards deserve better than ", "style": "normal" },
+        { "text": "Canva.", "style": "accent-italic" }
+      ]
+    },
+    {
+      "id": "intro",
+      "type": "blockquote",
+      "parts": [
+        { "text": "Define once in JSON. Render everywhere.", "style": "bold" },
+        { "text": " No cloud, no subscriptions, no drag-and-drop — just code.", "style": "normal" }
+      ]
+    },
+    {
+      "id": "features",
+      "type": "bullet-list",
+      "items": [
+        { "label": "JSON →",    "text": "pixel-perfect PNGs in one command" },
+        { "label": "Themes →",  "text": "swap colors without touching content" },
+        { "label": "Decks →",   "text": "carousel slides + ZIP, ready to post" }
+      ]
+    },
+    {
+      "id": "callout",
+      "type": "callout",
+      "items": [
+        {
+          "label": "QuoteForge is developer-native.",
+          "text": "Version-controlled, scriptable, built for people who think in code."
+        }
+      ]
+    }
+  ]
+}

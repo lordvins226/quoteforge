@@ -1,0 +1,7 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "QuoteForge Card Content",
+  "description": "Single card content definition for QuoteForge. See PRD §3.1 for details.",
+  "type": "object",
+  "required": ["template", "theme", "size", "blocks"]
+}

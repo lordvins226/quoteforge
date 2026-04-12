@@ -1,0 +1,124 @@
+{
+  "$schema": "../../decks/_schema.json",
+  "type": "deck",
+  "meta": {
+    "title": "Introducing QuoteForge",
+    "created": "2024-01-15",
+    "tags": ["quoteforge", "launch", "developer-tools"]
+  },
+  "defaults": {
+    "template": "manifesto",
+    "theme": "dark-teal",
+    "size": "instagram-sq",
+    "showCounter": true,
+    "counter": {
+      "format": "{current} / {total}",
+      "position": "bottom-right",
+      "style": "pill"
+    }
+  },
+  "slides": [
+    {
+      "id": "slide-01",
+      "label": "Cover",
+      "blocks": [
+        {
+          "type": "headline",
+          "parts": [
+            { "text": "Meet ", "style": "normal" },
+            { "text": "QuoteForge.", "style": "accent-italic" }
+          ]
+        },
+        { "type": "spacer", "size": "md" },
+        { "type": "text", "content": "Developer-native content cards and carousel slides." }
+      ]
+    },
+    {
+      "id": "slide-02",
+      "label": "The Problem",
+      "blocks": [
+        {
+          "type": "headline",
+          "parts": [
+            { "text": "Canva is slow. Figma is manual.", "style": "normal" }
+          ]
+        },
+        {
+          "type": "blockquote",
+          "parts": [
+            { "text": "There is no developer-native tool", "style": "bold" },
+            { "text": " that produces pixel-perfect cards from structured content.", "style": "normal" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "slide-03",
+      "label": "How It Works",
+      "blocks": [
+        {
+          "type": "headline",
+          "parts": [
+            { "text": "JSON in, ", "style": "normal" },
+            { "text": "PNG out.", "style": "accent" }
+          ]
+        },
+        {
+          "type": "bullet-list",
+          "items": [
+            { "label": "Define",    "text": "content blocks in a JSON file" },
+            { "label": "Pick",      "text": "a theme and a social media format" },
+            { "label": "Run",       "text": "one command — done" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "slide-04",
+      "label": "Features",
+      "blocks": [
+        {
+          "type": "headline",
+          "parts": [
+            { "text": "Everything you need.", "style": "normal" }
+          ]
+        },
+        {
+          "type": "callout",
+          "items": [
+            {
+              "label": "14 social media formats.",
+              "text": "Twitter, LinkedIn, Instagram, Facebook, Stories — all built in."
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "items": [
+            {
+              "label": "Theme system.",
+              "text": "Swap brand colors in one flag. No content changes needed."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "slide-05",
+      "label": "CTA",
+      "showCounter": false,
+      "blocks": [
+        {
+          "type": "headline",
+          "parts": [
+            { "text": "Try it.", "style": "accent-italic" }
+          ]
+        },
+        { "type": "spacer", "size": "sm" },
+        { "type": "text", "content": "bun quoteforge generate your-card.json" },
+        { "type": "spacer", "size": "md" },
+        { "type": "text", "content": "@kewitech" }
+      ]
+    }
+  ]
+}
