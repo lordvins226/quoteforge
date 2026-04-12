@@ -40,6 +40,10 @@ async function tarGz(binPath: string, archivePath: string, binName: string): Pro
 }
 
 async function zip(binPath: string, archivePath: string, binName: string): Promise<void> {
+  if (process.platform === "win32") {
+    await $`powershell -NoProfile -Command Compress-Archive -Path ${binPath} -DestinationPath ${archivePath} -Force`;
+    return;
+  }
   const cwd = resolve(binPath, "..");
   await $`cd ${cwd} && zip -q ${archivePath} ${binName}`;
 }
