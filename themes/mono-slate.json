@@ -1,0 +1,31 @@
+{
+  "name": "mono-slate",
+  "displayName": "Mono Slate",
+  "colors": {
+    "background":         "#F5F5F4",
+    "headline":           "#0C0A09",
+    "accent":             "#0C0A09",
+    "body":               "#1C1917",
+    "label":              "#78716C",
+    "blockquote-border":  "#0C0A09",
+    "blockquote-text":    "#0C0A09",
+    "callout-bg":         "#E7E5E4",
+    "callout-border":     "#A8A29E",
+    "bullet-dot":         "#0C0A09",
+    "slide-counter-bg":   "#0C0A0911",
+    "slide-counter-text": "#0C0A09"
+  },
+  "typography": {
+    "font-headline":      "Syne",
+    "font-headline-url":  "https://fonts.googleapis.com/css2?family=Syne:wght@600;800",
+    "font-body":          "JetBrains Mono",
+    "font-body-url":      "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500",
+    "headline-size":      "clamp(3rem, 7.5vw, 5.25rem)",
+    "body-size":          "0.95rem",
+    "line-height":        "1.6"
+  },
+  "spacing": {
+    "padding":   "72px",
+    "block-gap": "2rem"
+  }
+}

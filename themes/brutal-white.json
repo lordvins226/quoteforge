@@ -1,0 +1,31 @@
+{
+  "name": "brutal-white",
+  "displayName": "Brutal White",
+  "colors": {
+    "background":         "#FFFFFF",
+    "headline":           "#000000",
+    "accent":             "#FDE047",
+    "body":               "#1A1A1A",
+    "label":              "#000000",
+    "blockquote-border":  "#000000",
+    "blockquote-text":    "#000000",
+    "callout-bg":         "#FDE047",
+    "callout-border":     "#000000",
+    "bullet-dot":         "#000000",
+    "slide-counter-bg":   "#000000",
+    "slide-counter-text": "#FFFFFF"
+  },
+  "typography": {
+    "font-headline":      "Archivo Black",
+    "font-headline-url":  "https://fonts.googleapis.com/css2?family=Archivo+Black",
+    "font-body":          "Space Mono",
+    "font-body-url":      "https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700",
+    "headline-size":      "clamp(3.5rem, 8.5vw, 6.25rem)",
+    "body-size":          "1rem",
+    "line-height":        "1.5"
+  },
+  "spacing": {
+    "padding":   "56px",
+    "block-gap": "1.5rem"
+  }
+}

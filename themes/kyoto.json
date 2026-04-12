@@ -1,0 +1,31 @@
+{
+  "name": "kyoto",
+  "displayName": "Kyoto",
+  "colors": {
+    "background":         "#FAF8F3",
+    "headline":           "#1A1A1A",
+    "accent":             "#D4411E",
+    "body":               "#3F3A33",
+    "label":              "#D4411E",
+    "blockquote-border":  "#D4411E",
+    "blockquote-text":    "#1A1A1A",
+    "callout-bg":         "#F1EBDB",
+    "callout-border":     "#DCD4BF",
+    "bullet-dot":         "#D4411E",
+    "slide-counter-bg":   "#1A1A1A22",
+    "slide-counter-text": "#1A1A1A"
+  },
+  "typography": {
+    "font-headline":      "Shippori Mincho",
+    "font-headline-url":  "https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700",
+    "font-body":          "Inter",
+    "font-body-url":      "https://fonts.googleapis.com/css2?family=Inter:wght@400;500",
+    "headline-size":      "clamp(3rem, 7vw, 5rem)",
+    "body-size":          "1rem",
+    "line-height":        "1.7"
+  },
+  "spacing": {
+    "padding":   "80px",
+    "block-gap": "2.25rem"
+  }
+}

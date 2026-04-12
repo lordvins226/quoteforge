@@ -1,0 +1,31 @@
+{
+  "name": "terminal-green",
+  "displayName": "Terminal Green",
+  "colors": {
+    "background":         "#0B0F14",
+    "headline":           "#E5EAF0",
+    "accent":             "#22C55E",
+    "body":               "#9AA4B2",
+    "label":              "#22C55E",
+    "blockquote-border":  "#22C55E",
+    "blockquote-text":    "#E5EAF0",
+    "callout-bg":         "#0F141B",
+    "callout-border":     "#1F2A37",
+    "bullet-dot":         "#22C55E",
+    "slide-counter-bg":   "#00000066",
+    "slide-counter-text": "#E5EAF0"
+  },
+  "typography": {
+    "font-headline":      "JetBrains Mono",
+    "font-headline-url":  "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700",
+    "font-body":          "IBM Plex Sans",
+    "font-body-url":      "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600",
+    "headline-size":      "clamp(3rem, 7vw, 5rem)",
+    "body-size":          "1rem",
+    "line-height":        "1.55"
+  },
+  "spacing": {
+    "padding":   "64px",
+    "block-gap": "1.75rem"
+  }
+}

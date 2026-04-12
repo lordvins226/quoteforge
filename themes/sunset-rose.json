@@ -1,0 +1,31 @@
+{
+  "name": "sunset-rose",
+  "displayName": "Sunset Rose",
+  "colors": {
+    "background":         "#FFF3EC",
+    "headline":           "#2D1B2E",
+    "accent":             "#EC4899",
+    "body":               "#4B3A4C",
+    "label":              "#EC4899",
+    "blockquote-border":  "#EC4899",
+    "blockquote-text":    "#2D1B2E",
+    "callout-bg":         "#FFE6D9",
+    "callout-border":     "#F6CBB8",
+    "bullet-dot":         "#EC4899",
+    "slide-counter-bg":   "#2D1B2E22",
+    "slide-counter-text": "#2D1B2E"
+  },
+  "typography": {
+    "font-headline":      "Bricolage Grotesque",
+    "font-headline-url":  "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800",
+    "font-body":          "Inter",
+    "font-body-url":      "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600",
+    "headline-size":      "clamp(3rem, 7.5vw, 5.25rem)",
+    "body-size":          "1rem",
+    "line-height":        "1.55"
+  },
+  "spacing": {
+    "padding":   "64px",
+    "block-gap": "1.75rem"
+  }
+}

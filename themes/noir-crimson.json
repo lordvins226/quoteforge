@@ -1,0 +1,31 @@
+{
+  "name": "noir-crimson",
+  "displayName": "Noir Crimson",
+  "colors": {
+    "background":         "#0A0A0A",
+    "headline":           "#F5F2EC",
+    "accent":             "#DC2626",
+    "body":               "#B8B2A8",
+    "label":              "#DC2626",
+    "blockquote-border":  "#DC2626",
+    "blockquote-text":    "#F5F2EC",
+    "callout-bg":         "#151312",
+    "callout-border":     "#2A2826",
+    "bullet-dot":         "#DC2626",
+    "slide-counter-bg":   "#00000099",
+    "slide-counter-text": "#F5F2EC"
+  },
+  "typography": {
+    "font-headline":      "Fraunces",
+    "font-headline-url":  "https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;1,600",
+    "font-body":          "Inter",
+    "font-body-url":      "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600",
+    "headline-size":      "clamp(3.5rem, 8vw, 6rem)",
+    "body-size":          "1rem",
+    "line-height":        "1.55"
+  },
+  "spacing": {
+    "padding":   "72px",
+    "block-gap": "2rem"
+  }
+}

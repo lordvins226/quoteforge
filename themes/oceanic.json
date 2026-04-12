@@ -1,0 +1,31 @@
+{
+  "name": "oceanic",
+  "displayName": "Oceanic",
+  "colors": {
+    "background":         "#0F1E2E",
+    "headline":           "#F3EFE6",
+    "accent":             "#FF8A65",
+    "body":               "#A9B8C7",
+    "label":              "#FF8A65",
+    "blockquote-border":  "#FF8A65",
+    "blockquote-text":    "#F3EFE6",
+    "callout-bg":         "#15283D",
+    "callout-border":     "#243E58",
+    "bullet-dot":         "#FF8A65",
+    "slide-counter-bg":   "#00000066",
+    "slide-counter-text": "#F3EFE6"
+  },
+  "typography": {
+    "font-headline":      "Instrument Serif",
+    "font-headline-url":  "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1",
+    "font-body":          "Inter",
+    "font-body-url":      "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600",
+    "headline-size":      "clamp(3.5rem, 9vw, 6.5rem)",
+    "body-size":          "1rem",
+    "line-height":        "1.6"
+  },
+  "spacing": {
+    "padding":   "72px",
+    "block-gap": "2rem"
+  }
+}

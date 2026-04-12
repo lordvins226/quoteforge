@@ -1,0 +1,31 @@
+{
+  "name": "paper-cream",
+  "displayName": "Paper Cream",
+  "colors": {
+    "background":         "#F6F1E7",
+    "headline":           "#1A1714",
+    "accent":             "#7E2A1C",
+    "body":               "#403A32",
+    "label":              "#7E2A1C",
+    "blockquote-border":  "#7E2A1C",
+    "blockquote-text":    "#1A1714",
+    "callout-bg":         "#EFE8D9",
+    "callout-border":     "#D9CFB8",
+    "bullet-dot":         "#7E2A1C",
+    "slide-counter-bg":   "#1A171422",
+    "slide-counter-text": "#1A1714"
+  },
+  "typography": {
+    "font-headline":      "EB Garamond",
+    "font-headline-url":  "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,700;1,500",
+    "font-body":          "Inter",
+    "font-body-url":      "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600",
+    "headline-size":      "clamp(3rem, 7.5vw, 5.25rem)",
+    "body-size":          "1rem",
+    "line-height":        "1.6"
+  },
+  "spacing": {
+    "padding":   "72px",
+    "block-gap": "2rem"
+  }
+}
