@@ -9,6 +9,7 @@ import { SlideNav } from "./components/Editor/SlideNav";
 import { PreviewPane } from "./components/Preview/PreviewPane";
 import { DeckStrip } from "./components/Preview/DeckStrip";
 import { ToastProvider, useToast } from "./components/ui/Toast";
+import { ErrorBoundary } from "./components/ui/ErrorBoundary";
 
 function StudioApp() {
   const [mode, setMode] = useState<ContentMode>("card");
@@ -37,20 +38,24 @@ function StudioApp() {
       .catch(() => toast("Failed to load file", "error"));
   }, []);
 
-  useEffect(() => {
-    function handleKeyboard(e: KeyboardEvent) {
-      if ((e.metaKey || e.ctrlKey) && e.key === "z" && !e.shiftKey) {
-        e.preventDefault();
-        mode === "card" ? cardStore.undo() : deckStore.undo();
-      }
-      if ((e.metaKey || e.ctrlKey) && (e.key === "y" || (e.key === "z" && e.shiftKey))) {
-        e.preventDefault();
-        mode === "card" ? cardStore.redo() : deckStore.redo();
-      }
+  const handleSave = useCallback(async () => {
+    const filePath = mode === "card" ? cardStore.filePath : deckStore.filePath;
+    if (!filePath) {
+      toast("No file loaded — use Open to load a file first", "error");
+      return;
     }
-    window.addEventListener("keydown", handleKeyboard);
-    return () => window.removeEventListener("keydown", handleKeyboard);
-  }, [mode]);
+    const content = mode === "card" ? cardStore.card : deckStore.deck;
+    try {
+      await fetch("/api/content/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: filePath, content }),
+      });
+      toast("Saved", "success");
+    } catch {
+      toast("Save failed", "error");
+    }
+  }, [mode, cardStore.card, cardStore.filePath, deckStore.deck, deckStore.filePath]);
 
   const handleExportPng = useCallback(async () => {
     const body = mode === "card"
@@ -108,6 +113,29 @@ function StudioApp() {
     }
   }, [deckStore.deck]);
 
+  useEffect(() => {
+    function handleKeyboard(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key === "z" && !e.shiftKey) {
+        e.preventDefault();
+        mode === "card" ? cardStore.undo() : deckStore.undo();
+      }
+      if ((e.metaKey || e.ctrlKey) && (e.key === "y" || (e.key === "z" && e.shiftKey))) {
+        e.preventDefault();
+        mode === "card" ? cardStore.redo() : deckStore.redo();
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key === "s") {
+        e.preventDefault();
+        handleSave();
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key === "e") {
+        e.preventDefault();
+        handleExportPng();
+      }
+    }
+    window.addEventListener("keydown", handleKeyboard);
+    return () => window.removeEventListener("keydown", handleKeyboard);
+  }, [mode, handleSave, handleExportPng]);
+
   const activeSlide = mode === "deck" ? deckStore.deck.slides[deckStore.activeSlideIndex] : null;
   const previewCard: CardContent = mode === "card"
     ? cardStore.card
@@ -145,6 +173,7 @@ function StudioApp() {
           </div>
         )}
 
+        <ErrorBoundary fallback="Editor panel crashed">
         <div className="w-80 border-r border-neutral-800 p-3 overflow-y-auto">
           <BlockList
             blocks={mode === "card" ? cardStore.card.blocks : (activeSlide?.blocks ?? [])}
@@ -164,7 +193,9 @@ function StudioApp() {
             }}
           />
         </div>
+        </ErrorBoundary>
 
+        <ErrorBoundary fallback="Preview panel crashed">
         <div className="flex-1 flex flex-col">
           <PreviewPane
             card={previewCard}
@@ -184,6 +215,7 @@ function StudioApp() {
             </>
           )}
         </div>
+        </ErrorBoundary>
       </div>
     </div>
   );

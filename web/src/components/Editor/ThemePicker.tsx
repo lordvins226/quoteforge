@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { Plus } from "lucide-react";
 import type { Theme } from "../../types";
+import { ThemeEditorModal } from "./ThemeEditorModal";
 
 interface ThemePickerProps {
   current: string;
@@ -9,13 +11,16 @@ interface ThemePickerProps {
 export function ThemePicker({ current, onChange }: ThemePickerProps) {
   const [themes, setThemes] = useState<Theme[]>([]);
   const [open, setOpen] = useState(false);
+  const [editorOpen, setEditorOpen] = useState(false);
 
-  useEffect(() => {
+  const loadThemes = useCallback(() => {
     fetch("/api/themes")
       .then((r) => r.json())
       .then((data) => setThemes(data as Theme[]))
       .catch(() => {});
   }, []);
+
+  useEffect(() => { loadThemes(); }, [loadThemes]);
 
   return (
     <div className="relative">
@@ -47,8 +52,26 @@ export function ThemePicker({ current, onChange }: ThemePickerProps) {
               <span className="flex-1">{theme.displayName}</span>
             </button>
           ))}
+          <div className="border-t border-neutral-700 mt-1 pt-1">
+            <button
+              className="w-full flex items-center gap-2 px-3 py-2 text-left text-sm text-neutral-400 hover:bg-neutral-700 hover:text-neutral-200"
+              onClick={() => { setOpen(false); setEditorOpen(true); }}
+            >
+              <Plus size={14} />
+              <span>New Theme</span>
+            </button>
+          </div>
         </div>
       )}
+
+      <ThemeEditorModal
+        open={editorOpen}
+        onClose={() => setEditorOpen(false)}
+        onCreated={(name) => {
+          loadThemes();
+          onChange(name);
+        }}
+      />
     </div>
   );
 }
