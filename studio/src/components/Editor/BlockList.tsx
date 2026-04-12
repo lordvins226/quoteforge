@@ -35,11 +35,12 @@ export function BlockList({ blocks, selectedBlockId, onSelect, onUpdate, onAdd, 
             <Plus size={14} />
           </Button>
           {addMenuOpen && (
-            <div className="absolute right-0 top-full mt-1 bg-neutral-800 border border-neutral-700 rounded-lg shadow-lg py-1 z-20 w-36">
+            <div role="menu" aria-label="Add block" className="absolute right-0 top-full mt-1 bg-neutral-800 border border-neutral-700 rounded-lg shadow-lg py-1 z-30 w-36">
               {BLOCK_TYPES.map((bt) => (
                 <button
                   key={bt.value}
-                  className="w-full text-left px-3 py-1.5 text-xs text-neutral-200 hover:bg-neutral-700"
+                  role="menuitem"
+                  className="w-full text-left px-3 py-1.5 text-xs text-neutral-200 hover:bg-neutral-700 transition-colors"
                   onClick={() => { onAdd(bt.value); setAddMenuOpen(false); }}
                 >
                   {bt.label}

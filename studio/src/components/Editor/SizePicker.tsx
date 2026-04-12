@@ -18,7 +18,9 @@ export function SizePicker({ current, onChange, mode }: SizePickerProps) {
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 px-2 py-1 text-sm text-neutral-300 hover:bg-neutral-800 rounded"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        className="flex items-center gap-2 px-2 py-1 text-sm text-neutral-300 hover:bg-neutral-800 rounded transition-colors"
       >
         <span>{currentInfo?.label ?? current}</span>
         <span className="text-xs text-neutral-500">{currentInfo?.w}×{currentInfo?.h}</span>
@@ -31,7 +33,7 @@ export function SizePicker({ current, onChange, mode }: SizePickerProps) {
       )}
 
       {open && (
-        <div className="absolute top-full left-0 mt-1 bg-neutral-800 border border-neutral-700 rounded-lg shadow-xl py-1 z-30 w-64 max-h-80 overflow-y-auto">
+        <div role="listbox" aria-label="Select size" className="absolute top-full left-0 mt-1 bg-neutral-800 border border-neutral-700 rounded-lg shadow-xl py-1 z-30 w-64 max-h-80 overflow-y-auto">
           {SIZE_GROUPS.map((group) => (
             <div key={group.label}>
               <div className="px-3 py-1.5 text-xs text-neutral-500 font-semibold uppercase tracking-wider">

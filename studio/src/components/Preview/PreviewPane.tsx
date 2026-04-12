@@ -15,6 +15,8 @@ export function PreviewPane({ card, theme, size, slideIndex = 0, slideTotal = 1,
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [html, setHtml] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [scale, setScale] = useState(0.5);
 
   const sizeInfo = SIZES[size];
@@ -39,18 +41,27 @@ export function PreviewPane({ card, theme, size, slideIndex = 0, slideTotal = 1,
 
   useEffect(() => {
     const controller = new AbortController();
+    setLoading(true);
+    setError(null);
     fetch("/api/preview", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ card, theme, slideIndex, slideTotal, showCounter }),
+      body: JSON.stringify({ card, theme, size, slideIndex, slideTotal, showCounter }),
       signal: controller.signal,
     })
-      .then((r) => r.text())
-      .then(setHtml)
-      .catch(() => {});
+      .then((r) => {
+        if (!r.ok) throw new Error(`Preview failed (${r.status})`);
+        return r.text();
+      })
+      .then((h) => { setHtml(h); setError(null); })
+      .catch((e) => {
+        if (e instanceof DOMException && e.name === "AbortError") return;
+        setError("Preview unavailable");
+      })
+      .finally(() => setLoading(false));
 
     return () => controller.abort();
-  }, [card, theme, slideIndex, slideTotal, showCounter]);
+  }, [card, theme, size, slideIndex, slideTotal, showCounter]);
 
   useEffect(() => {
     const iframe = iframeRef.current;
@@ -68,24 +79,30 @@ export function PreviewPane({ card, theme, size, slideIndex = 0, slideTotal = 1,
 
   return (
     <div ref={containerRef} className="flex-1 flex items-center justify-center bg-neutral-950 p-6 overflow-hidden">
-      <div style={{ width: scaledW, height: scaledH, position: "relative" }}>
-        <iframe
-          ref={iframeRef}
-          className="shadow-2xl rounded"
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: cardW,
-            height: cardH,
-            border: "none",
-            transform: `scale(${scale})`,
-            transformOrigin: "top left",
-            pointerEvents: "none",
-          }}
-          title="Preview"
-        />
-      </div>
+      {error ? (
+        <div className="text-neutral-500 text-sm">{error}</div>
+      ) : loading && !html ? (
+        <div className="text-neutral-600 text-xs animate-pulse">Loading preview…</div>
+      ) : (
+        <div style={{ width: scaledW, height: scaledH, position: "relative" }}>
+          <iframe
+            ref={iframeRef}
+            className="shadow-2xl rounded"
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: cardW,
+              height: cardH,
+              border: "none",
+              transform: `scale(${scale})`,
+              transformOrigin: "top left",
+              pointerEvents: "none",
+            }}
+            title="Preview"
+          />
+        </div>
+      )}
     </div>
   );
 }

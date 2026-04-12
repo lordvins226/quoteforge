@@ -19,7 +19,9 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error(`[ErrorBoundary] ${this.props.fallback}:`, error, info);
+    if (import.meta.env.DEV) {
+      console.error(`[ErrorBoundary] ${this.props.fallback}:`, error, info);
+    }
   }
 
   render() {

@@ -59,7 +59,7 @@ export const slidesCommand = new Command("slides")
       const idx = parseInt(opts.slide, 10);
       if (isNaN(idx) || idx < 1 || idx > deck.slides.length) {
         console.error(chalk.red(`✗ Slide index out of range: ${opts.slide} (deck has ${deck.slides.length} slides)`));
-        process.exit(6);
+        process.exit(1);
       }
     }
 

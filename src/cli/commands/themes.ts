@@ -145,7 +145,7 @@ const validateCmd = new Command("validate")
       console.log(chalk.green("✓ Valid theme:"), chalk.dim(filePath));
     } catch (err: unknown) {
       console.error(chalk.red("✗ Invalid theme:"), chalk.dim(filePath));
-      if (err instanceof Error) console.error(chalk.yellow(err.message));
+      if (err instanceof Error) console.error(chalk.red(err.message));
       process.exit(1);
     }
   });
