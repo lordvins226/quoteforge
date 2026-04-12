@@ -104,6 +104,18 @@ bun quoteforge new [options]
 
 All options are interactive when omitted.
 
+### `studio` — WYSIWYG editor
+
+```
+bun quoteforge studio [file] [options]
+
+  -p, --port <n>       Port (default: 4242)
+  --no-open            Don't auto-open browser
+```
+
+- Launches the bundled Vite + React studio at `http://localhost:<port>` with the Bun API server on `<port>+1`.
+- Live SSE preview, drag-and-drop blocks, undo/redo, 12-theme picker, theme builder, PNG/ZIP export.
+
 ### `themes` — Theme management
 
 ```
@@ -153,6 +165,9 @@ All formats with exact pixel dimensions:
 | `facebook-cover` | 1640 × 624 | 2.63:1 | Facebook page cover |
 | `facebook-event` | 1920 × 1080 | 16:9 | Facebook event cover |
 | `facebook-group-cover` | 1640 × 856 | 1.91:1 | Facebook group cover |
+| `threads-sq` | 1080 × 1080 | 1:1 | Threads square |
+| `threads-port` | 1080 × 1350 | 4:5 | Threads portrait *(recommended)* |
+| `threads-land` | 1080 × 566 | 1.91:1 | Threads landscape |
 | `story` | 1080 × 1920 | 9:16 | Stories (IG / FB / TW) |
 | `custom` | variable | free | Custom dimensions |
 
@@ -160,14 +175,22 @@ All formats with exact pixel dimensions:
 
 ## Themes
 
-4 built-in themes:
+12 built-in themes, covering terminal, editorial, brutalist, and zen aesthetics:
 
 | Theme | Background | Accent | Fonts |
 |-------|-----------|--------|-------|
+| `terminal-green` | `#0B0F14` | `#22C55E` | JetBrains Mono / IBM Plex Sans |
+| `brand-midnight` | `#0f172a` | `#a78bfa` | Space Grotesk / IBM Plex Mono |
 | `dark-teal` | `#1a1a1a` | `#4ecdc4` | Playfair Display / JetBrains Mono |
 | `dark-orange` | `#1c1917` | `#f97316` | Playfair Display / JetBrains Mono |
+| `noir-crimson` | `#0A0A0A` | `#DC2626` | Fraunces / Inter |
+| `oceanic` | `#0F1E2E` | `#FF8A65` | Instrument Serif / Inter |
 | `light-minimal` | `#fafaf9` | `#0ea5e9` | Inter / Inter |
-| `brand-midnight` | `#0f172a` | `#a78bfa` | Space Grotesk / IBM Plex Mono |
+| `paper-cream` | `#F6F1E7` | `#7E2A1C` | EB Garamond / Inter |
+| `sunset-rose` | `#FFF3EC` | `#EC4899` | Bricolage Grotesque / Inter |
+| `brutal-white` | `#FFFFFF` | `#FDE047` | Archivo Black / Space Mono |
+| `kyoto` | `#FAF8F3` | `#D4411E` | Shippori Mincho / Inter |
+| `mono-slate` | `#F5F5F4` | `#0C0A09` | Syne / JetBrains Mono |
 
 Create your own: `bun quoteforge themes create my-brand`
 
@@ -225,9 +248,17 @@ Create your own: `bun quoteforge themes create my-brand`
 
 `normal` · `bold` · `italic` · `accent` · `accent-italic` · `mono` · `muted`
 
+## Layout
+
+- `src/` — CLI + renderer (Bun + Nunjucks + Puppeteer)
+- `studio/` — bundled WYSIWYG editor (Vite + React + Zustand, launched by `bun quoteforge studio`)
+- `site/` — standalone landing + MDX docs SPA (separate nginx Dockerfile for deployment)
+- `templates/` — four built-in card layouts sharing a responsive base CSS
+- `themes/` — 12 JSON theme files conforming to `_schema.json`
+
 ## Stack
 
-Bun · TypeScript · Commander.js · Nunjucks · Puppeteer · Zod · archiver
+Bun · TypeScript · Commander.js · Nunjucks · Puppeteer · Zod · archiver · Vite · React · Zustand · Tailwind · MDX
 
 ## License
 

@@ -51,3 +51,26 @@
 - Card content:  kebab-case.json (in content/)
 - Deck content:  kebab-case.json (in decks/)
 - Block partials: <block-type>.njk (in templates/_blocks/)
+
+## Source of Truth
+
+- Schema authority: `src/cli/utils/validator.ts` — SIZES, Block/Card/Deck/Theme Zod schemas.
+  Read it before writing any docs, sample JSON, or type definition.
+- SIZES is duplicated in `studio/src/types/index.ts` (browser) and counted in `src/__tests__/validator.test.ts` — update all 3 when adding a size.
+- Block schemas are NOT uniform: `headline`/`blockquote` use `parts: Part[]`; `text` uses `content: string`; `bullet-list`/`callout` use `items: LabeledItem[]`.
+
+## Repo Layout
+
+- `src/` — CLI + renderer (Bun + Nunjucks + Puppeteer)
+- `studio/` — bundled WYSIWYG editor (was `web/`; PRD.md comments may still say web/)
+- `site/` — separate landing + MDX docs SPA (React Router v7, deployed via its own nginx Dockerfile)
+- `templates/_base.css` — shared responsive base, injected into every template render
+- `themes/_schema.json` — reference; actual validator is Zod in src/
+
+## Gotchas
+
+- `bun quoteforge generate <file> --output <path>` expects a FILE path (not directory); errors with `EISDIR` otherwise.
+- `lucide-react@1.8.0` is current latest but dropped brand icons (Github, etc.) — use inline Simple Icons SVGs for brand marks.
+- Puppeteer + Google Fonts `opsz` axis syntax (e.g. `9..144`) is unreliable; prefer plain `wght@400;700` URLs in theme JSON.
+- Block-level `blockquote` is capped at 28px in `_base.css`; use a `headline` block for hero-size quote cards.
+- In React, do not call `lazy(loader)` inside `useMemo` — it caches stale trees across param changes. Keep `lazy()` at module level.
