@@ -1,0 +1,31 @@
+{
+  "name": "light-minimal",
+  "displayName": "Light Minimal",
+  "colors": {
+    "background":         "#fafaf9",
+    "headline":           "#1c1917",
+    "accent":             "#0ea5e9",
+    "body":               "#44403c",
+    "label":              "#0ea5e9",
+    "blockquote-border":  "#0ea5e9",
+    "blockquote-text":    "#292524",
+    "callout-bg":         "#f5f5f4",
+    "callout-border":     "#e7e5e4",
+    "bullet-dot":         "#0ea5e9",
+    "slide-counter-bg":   "#00000022",
+    "slide-counter-text": "#1c1917"
+  },
+  "typography": {
+    "font-headline":      "Inter",
+    "font-headline-url":  "https://fonts.googleapis.com/css2?family=Inter:wght@700",
+    "font-body":          "Inter",
+    "font-body-url":      "https://fonts.googleapis.com/css2?family=Inter:wght@400;700",
+    "headline-size":      "clamp(2.5rem, 6vw, 4.5rem)",
+    "body-size":          "1rem",
+    "line-height":        "1.6"
+  },
+  "spacing": {
+    "padding":   "64px",
+    "block-gap": "1.75rem"
+  }
+}

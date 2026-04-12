@@ -1,0 +1,31 @@
+{
+  "name": "brand-midnight",
+  "displayName": "Brand Midnight",
+  "colors": {
+    "background":         "#0f172a",
+    "headline":           "#f8fafc",
+    "accent":             "#a78bfa",
+    "body":               "#cbd5e1",
+    "label":              "#a78bfa",
+    "blockquote-border":  "#a78bfa",
+    "blockquote-text":    "#e2e8f0",
+    "callout-bg":         "#1e293b",
+    "callout-border":     "#334155",
+    "bullet-dot":         "#a78bfa",
+    "slide-counter-bg":   "#00000066",
+    "slide-counter-text": "#ffffff"
+  },
+  "typography": {
+    "font-headline":      "Space Grotesk",
+    "font-headline-url":  "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700",
+    "font-body":          "IBM Plex Mono",
+    "font-body-url":      "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700",
+    "headline-size":      "clamp(3rem, 7vw, 5rem)",
+    "body-size":          "0.95rem",
+    "line-height":        "1.55"
+  },
+  "spacing": {
+    "padding":   "56px",
+    "block-gap": "1.75rem"
+  }
+}

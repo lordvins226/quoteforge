@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {{ fontImports | safe }}
+  <style>
+    :root {
+      {{ cssVars | safe }}
+    }
+
+    {{ styleCSS | safe }}
+  </style>
+</head>
+<body>
+  <div class="card">
+    {% for block in card.blocks %}
+      {% if block.type == "headline" %}
+        {% include "_blocks/headline.njk" %}
+      {% elif block.type == "blockquote" %}
+        {% include "_blocks/blockquote.njk" %}
+      {% elif block.type == "text" %}
+        {% include "_blocks/text.njk" %}
+      {% elif block.type == "bullet-list" %}
+        {% include "_blocks/bullet-list.njk" %}
+      {% elif block.type == "callout" %}
+        {% include "_blocks/callout.njk" %}
+      {% elif block.type == "divider" %}
+        {% include "_blocks/divider.njk" %}
+      {% elif block.type == "spacer" %}
+        {% include "_blocks/spacer.njk" %}
+      {% endif %}
+    {% endfor %}
+
+    {% include "_blocks/slide-counter.njk" %}
+  </div>
+</body>
+</html>
