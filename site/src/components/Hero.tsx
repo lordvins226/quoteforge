@@ -54,7 +54,7 @@ export function Hero() {
         <div className="relative">
           <CodeBlock title="~/quoteforge">
             <span className="text-fog-3">$ </span>
-            <span className="text-mint">bun</span> quoteforge generate quote.json
+            <span className="text-mint">quoteforge</span> generate quote.json
             {"\n"}
             <span className="text-fog-3">  ↳ validating</span> <span className="text-mint">✓</span>
             {"\n"}
@@ -65,7 +65,7 @@ export function Hero() {
             <span className="text-mint">✓</span> outputs/quote.png <span className="text-fog-3">(148KB · 420ms)</span>
             {"\n\n"}
             <span className="text-fog-3">$ </span>
-            <span className="text-mint">bun</span> quoteforge slides deck.json
+            <span className="text-mint">quoteforge</span> slides deck.json
             {"\n"}
             <span className="text-fog-3">  ↳ 8 slides</span> <span className="text-amber">●●●●●●●●</span>
             {"\n"}
