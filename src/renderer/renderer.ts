@@ -27,7 +27,7 @@ export async function renderCardOnPage(
     height: dimensions.h,
     deviceScaleFactor: scale,
   });
-  await page.setContent(html, { waitUntil: "networkidle2", timeout: 30_000 });
+  await page.setContent(html, { waitUntil: "load", timeout: 30_000 });
   await page.waitForFunction(() => document.fonts.ready.then(() => true), { timeout: 15_000 });
   const screenshot = await page.screenshot({ type: "png" });
   return Buffer.from(screenshot);
