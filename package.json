@@ -14,9 +14,9 @@
     "build:binary": "bun run scripts/build-binaries.ts",
     "preversion": "bun run typecheck && bun test",
     "postversion": "git push --follow-tags origin HEAD",
-    "release:patch": "bun pm version patch",
-    "release:minor": "bun pm version minor",
-    "release:major": "bun pm version major"
+    "release:patch": "npm version patch -m \"chore(quoteforge[release]): bump version to %s\"",
+    "release:minor": "npm version minor -m \"chore(quoteforge[release]): bump version to %s\"",
+    "release:major": "npm version major -m \"chore(quoteforge[release]): bump version to %s\""
   },
   "dependencies": {
     "@clack/prompts": "^1.2.0",
