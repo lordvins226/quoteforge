@@ -49,24 +49,6 @@ jobs:
       - name: Install deps
         run: bun install --frozen-lockfile
 
-      - name: Install rcodesign (darwin signing)
-        if: startsWith(matrix.bun-target, 'bun-darwin-')
-        shell: bash
-        env:
-          RCODESIGN_VERSION: "0.29.0"
-        run: |
-          set -e
-          case "$(uname -sm)" in
-            "Darwin arm64") asset="aarch64-apple-darwin" ;;
-            "Darwin x86_64") asset="x86_64-apple-darwin" ;;
-            "Linux x86_64") asset="x86_64-unknown-linux-musl" ;;
-            *) echo "unsupported host for rcodesign"; exit 1 ;;
-          esac
-          url="https://github.com/indygreg/apple-platform-rs/releases/download/apple-codesign/${RCODESIGN_VERSION}/apple-codesign-${RCODESIGN_VERSION}-${asset}.tar.gz"
-          curl -fsSL "$url" | tar -xz
-          sudo mv "apple-codesign-${RCODESIGN_VERSION}-${asset}/rcodesign" /usr/local/bin/rcodesign
-          rcodesign --version
-
       - name: Build binary
         shell: bash
         env:
