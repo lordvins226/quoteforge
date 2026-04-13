@@ -29,7 +29,7 @@ export function Install() {
           </CodeBlock>
           <CodeBlock title="verify">
             <span className="text-fog-3">$ </span>quoteforge --version
-            {"\n"}0.1.0
+            {"\n"}0.2.0
             {"\n"}
             <span className="text-fog-3">$ </span>quoteforge doctor
             {"\n"}

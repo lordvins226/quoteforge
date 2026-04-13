@@ -6,6 +6,12 @@ No cloud. No subscriptions. No drag-and-drop. Just code.
 
 ## Install
 
+### Homebrew (macOS / Linux)
+
+```bash
+brew install lordvins226/quoteforge/quoteforge
+```
+
 ### Quick Install (Linux/macOS)
 
 ```bash
@@ -18,13 +24,7 @@ Installs to `~/.local/bin`. Add to `PATH` if needed:
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc  # or ~/.bashrc
 ```
 
-Override with `QUOTEFORGE_INSTALL_DIR=/usr/local/bin` or `QUOTEFORGE_VERSION=v0.1.0`.
-
-### Homebrew (coming soon)
-
-```bash
-brew install lordvins226/quoteforge/quoteforge
-```
+Override with `QUOTEFORGE_INSTALL_DIR=/usr/local/bin` or `QUOTEFORGE_VERSION=v0.2.0`.
 
 ### Pre-built Binaries
 
@@ -50,7 +50,7 @@ bun install
 ### Verify
 
 ```bash
-quoteforge --version          # 0.1.0
+quoteforge --version          # 0.2.0
 quoteforge doctor             # reports assets, Chrome, runtime
 ```
 
@@ -107,6 +107,7 @@ quoteforge slides <file> [options]
   --no-zip             Skip ZIP creation
   --no-counter         Disable counter overlay for all slides
   --concurrency <n>    Parallel render workers (default: 4)
+  --zip-level <n>      ZIP compression level 0-9 (default: 6)
   --scale <n>          Pixel ratio (default: 2)
   --open               Open output folder after generation
 ```
