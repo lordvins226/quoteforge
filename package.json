@@ -1,6 +1,6 @@
 {
   "name": "quoteforge",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Developer-native typographic social media card + carousel generator",
   "type": "module",
   "bin": {
