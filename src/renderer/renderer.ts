@@ -1,5 +1,5 @@
 import puppeteer from "puppeteer-core";
-import type { Browser } from "puppeteer-core";
+import type { Browser, Page } from "puppeteer-core";
 import { renderTemplate } from "./template-engine.js";
 import type { RenderMeta } from "./template-engine.js";
 import type { CardContent, Theme, SizeName } from "../cli/utils/validator.js";
@@ -11,6 +11,28 @@ async function launch(): Promise<Browser> {
   return puppeteer.launch({ headless: true, executablePath });
 }
 
+export async function renderCardOnPage(
+  page: Page,
+  content: CardContent,
+  theme: Theme,
+  size: SizeName,
+  scale = 2,
+  meta?: Partial<RenderMeta>,
+): Promise<Buffer> {
+  const dimensions = SIZES[size];
+  const html = renderTemplate(content, theme, dimensions, meta);
+
+  await page.setViewport({
+    width: dimensions.w,
+    height: dimensions.h,
+    deviceScaleFactor: scale,
+  });
+  await page.setContent(html, { waitUntil: "networkidle2", timeout: 30_000 });
+  await page.waitForFunction(() => document.fonts.ready.then(() => true), { timeout: 15_000 });
+  const screenshot = await page.screenshot({ type: "png" });
+  return Buffer.from(screenshot);
+}
+
 export async function renderCard(
   content: CardContent,
   theme: Theme,
@@ -19,23 +41,15 @@ export async function renderCard(
   meta?: Partial<RenderMeta>,
   browser?: Browser,
 ): Promise<Buffer> {
-  const dimensions = SIZES[size];
-  const html = renderTemplate(content, theme, dimensions, meta);
-
   const ownBrowser = !browser;
   const b = browser ?? await launch();
   try {
     const page = await b.newPage();
-    await page.setViewport({
-      width: dimensions.w,
-      height: dimensions.h,
-      deviceScaleFactor: scale,
-    });
-    await page.setContent(html, { waitUntil: "networkidle2", timeout: 30_000 });
-    await page.waitForFunction(() => document.fonts.ready.then(() => true), { timeout: 15_000 });
-    const screenshot = await page.screenshot({ type: "png" });
-    await page.close();
-    return Buffer.from(screenshot);
+    try {
+      return await renderCardOnPage(page, content, theme, size, scale, meta);
+    } finally {
+      await page.close();
+    }
   } finally {
     if (ownBrowser) {
       await b.close();

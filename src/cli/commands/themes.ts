@@ -20,18 +20,43 @@ const listCmd = new Command("list")
       console.log(chalk.dim("No themes found."));
       return;
     }
-    console.log(chalk.bold("\nAvailable themes:\n"));
-    for (const { file, source, theme } of themes) {
-      const bg = chalk.hex(theme.colors.background)("██");
-      const accent = chalk.hex(theme.colors.accent)("██");
-      const headline = chalk.hex(theme.colors.headline)("██");
-      const tag = source === "user" ? chalk.cyan(" [user]") : source === "repo" ? chalk.dim(" [repo]") : "";
-      console.log(
-        `  ${bg} ${accent} ${headline}  ${chalk.bold(theme.displayName)} ${chalk.dim(`(${basename(file, ".json")})`)}${tag}`,
-      );
-      console.log(
-        `            ${chalk.dim(`${theme.typography["font-headline"]} / ${theme.typography["font-body"]}`)}`,
-      );
+
+    const rows = themes.map(({ file, source, theme }) => ({
+      slug: basename(file, ".json"),
+      name: theme.displayName,
+      source,
+      colors: [
+        theme.colors.background,
+        theme.colors.headline,
+        theme.colors.accent,
+        theme.colors.body,
+        theme.colors.label,
+      ],
+      fonts: `${theme.typography["font-headline"]} · ${theme.typography["font-body"]}`,
+    }));
+
+    const nameWidth = Math.max(...rows.map((r) => r.name.length));
+    const slugWidth = Math.max(...rows.map((r) => r.slug.length));
+    const userCount = rows.filter((r) => r.source === "user").length;
+
+    console.log();
+    console.log(
+      chalk.bold(`  Themes`) +
+        chalk.dim(`  ${rows.length} total${userCount ? ` · ${userCount} user` : ""}`),
+    );
+    console.log(chalk.dim("  ────────────────────────────────────────────────────────────"));
+
+    for (const row of rows) {
+      const swatch = row.colors.map((c) => chalk.hex(c)("██")).join(" ");
+      const name = chalk.bold(row.name.padEnd(nameWidth));
+      const slug = chalk.dim(row.slug.padEnd(slugWidth));
+      const fonts = chalk.dim(row.fonts);
+      const tag = row.source === "user" ? chalk.cyan(" ●") : "";
+      console.log(`  ${swatch}  ${name}  ${slug}  ${fonts}${tag}`);
+    }
+
+    if (userCount > 0) {
+      console.log(chalk.dim(`\n  ${chalk.cyan("●")} user theme`));
     }
     console.log();
   });

@@ -6,11 +6,22 @@ import { templatesDir } from "../assetBundle.js";
 import type { CardContent, Theme, Part, PartStyle } from "../cli/utils/validator.js";
 
 const TEMPLATES_DIR = templatesDir();
+const IS_DEV = process.env.NODE_ENV === "development";
 
 const env = new nunjucks.Environment(
-  new nunjucks.FileSystemLoader(TEMPLATES_DIR, { noCache: true }),
+  new nunjucks.FileSystemLoader(TEMPLATES_DIR, { noCache: IS_DEV }),
   { autoescape: true },
 );
+
+const cssCache = new Map<string, string>();
+function readCssCached(path: string): string {
+  if (IS_DEV) return readFileSync(path, "utf-8");
+  const hit = cssCache.get(path);
+  if (hit !== undefined) return hit;
+  const value = readFileSync(path, "utf-8");
+  cssCache.set(path, value);
+  return value;
+}
 
 export interface RenderMeta {
   slideIndex: number;
@@ -100,8 +111,8 @@ export function renderTemplate(
   const templatePath = `${content.template}/template.njk`;
   const basePath = join(TEMPLATES_DIR, "_base.css");
   const stylePath = join(TEMPLATES_DIR, content.template, "style.css");
-  const baseCSS = readFileSync(basePath, "utf-8");
-  const styleCSS = readFileSync(stylePath, "utf-8");
+  const baseCSS = readCssCached(basePath);
+  const styleCSS = readCssCached(stylePath);
 
   return env.render(templatePath, {
     card: content,

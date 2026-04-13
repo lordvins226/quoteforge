@@ -16,6 +16,7 @@ export const slidesCommand = new Command("slides")
   .option("--no-zip", "Skip ZIP creation")
   .option("--no-counter", "Disable counter overlay for all slides")
   .option("--concurrency <n>", "Parallel render workers", "4")
+  .option("--zip-level <n>", "ZIP compression level 0-9 (0=store, 6=default, 9=max)", "6")
   .option("--scale <n>", "Pixel ratio", "2")
   .option("--open", "Open output folder after generation")
   .action(async (file: string, opts: {
@@ -26,6 +27,7 @@ export const slidesCommand = new Command("slides")
     zip: boolean;
     counter: boolean;
     concurrency: string;
+    zipLevel: string;
     scale: string;
     open?: boolean;
   }) => {
@@ -106,7 +108,8 @@ export const slidesCommand = new Command("slides")
     }
 
     if (opts.zip && slideIndex === undefined && buffers.length > 1) {
-      const zipBuf = await buildZip(buffers, names);
+      const zipLevel = parseInt(opts.zipLevel, 10);
+      const zipBuf = await buildZip(buffers, names, zipLevel);
       const zipPath = resolve("outputs", `${deckName}.zip`);
       writeFileSync(zipPath, zipBuf);
       console.log(chalk.green(`  ✓ ZIP:`), chalk.dim(zipPath));

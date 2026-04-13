@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { renderCard, launchBrowser } from "./renderer.js";
+import type { Browser, Page } from "puppeteer-core";
+import { renderCardOnPage, launchBrowser } from "./renderer.js";
 import type { RenderMeta } from "./template-engine.js";
 import type { DeckContent, Theme, SizeName, CardContent } from "../cli/utils/validator.js";
 import { ThemeSchema } from "../cli/utils/validator.js";
@@ -20,6 +21,46 @@ function loadTheme(name: string): Theme {
   if (!themePath) throw new Error(`Theme not found: ${name}`);
   const raw = readFileSync(themePath, "utf-8");
   return ThemeSchema.parse(JSON.parse(raw));
+}
+
+interface PagePool {
+  acquire(): Promise<Page>;
+  release(page: Page): void;
+  drain(): Promise<void>;
+}
+
+function createPagePool(browser: Browser, size: number): PagePool {
+  const idle: Page[] = [];
+  const allPages: Page[] = [];
+  const waiters: ((page: Page) => void)[] = [];
+  let created = 0;
+
+  async function acquire(): Promise<Page> {
+    const reused = idle.pop();
+    if (reused) return reused;
+    if (created < size) {
+      created++;
+      const page = await browser.newPage();
+      allPages.push(page);
+      return page;
+    }
+    return new Promise<Page>((resolve) => waiters.push(resolve));
+  }
+
+  function release(page: Page): void {
+    const waiter = waiters.shift();
+    if (waiter) {
+      waiter(page);
+      return;
+    }
+    idle.push(page);
+  }
+
+  async function drain(): Promise<void> {
+    await Promise.all(allPages.map((p) => p.close().catch(() => {})));
+  }
+
+  return { acquire, release, drain };
 }
 
 async function semaphore<T>(
@@ -66,6 +107,8 @@ export async function renderDeck(
     : deck.slides.map((slide, i) => ({ slide, originalIndex: i }));
 
   const browser = await launchBrowser();
+  const poolSize = Math.min(concurrency, slidesToRender.length);
+  const pool = createPagePool(browser, poolSize);
   try {
     const tasks = slidesToRender.map(({ slide, originalIndex }) => async () => {
       if (!slide) throw new Error(`Slide index ${originalIndex} out of range`);
@@ -98,7 +141,13 @@ export async function renderDeck(
         counter,
       };
 
-      const buffer = await renderCard(cardContent, theme, sizeName, scale, meta, browser);
+      const page = await pool.acquire();
+      let buffer: Buffer;
+      try {
+        buffer = await renderCardOnPage(page, cardContent, theme, sizeName, scale, meta);
+      } finally {
+        pool.release(page);
+      }
       const paddedIndex = String(originalIndex + 1).padStart(padWidth, "0");
       const name = `${deckName}-${paddedIndex}.png`;
 
@@ -112,6 +161,7 @@ export async function renderDeck(
       names: results.map((r) => r.name),
     };
   } finally {
+    await pool.drain();
     await browser.close();
   }
 }

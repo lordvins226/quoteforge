@@ -4,6 +4,7 @@ import { Writable } from "node:stream";
 export async function buildZip(
   buffers: Buffer[],
   names: string[],
+  level = 6,
 ): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
@@ -15,7 +16,8 @@ export async function buildZip(
       },
     });
 
-    const archive = archiver("zip", { zlib: { level: 9 } });
+    const clampedLevel = Math.max(0, Math.min(9, level));
+    const archive = archiver("zip", { zlib: { level: clampedLevel } });
 
     archive.on("error", reject);
     writable.on("finish", () => resolve(Buffer.concat(chunks)));
