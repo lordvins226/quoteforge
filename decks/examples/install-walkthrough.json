@@ -1,0 +1,150 @@
+{
+  "$schema": "../../decks/_schema.json",
+  "type": "deck",
+  "meta": {
+    "title": "Install QuoteForge",
+    "created": "2026-04-13",
+    "tags": ["quoteforge", "install", "homebrew"]
+  },
+  "defaults": {
+    "template": "manifesto",
+    "theme": "noir-crimson",
+    "size": "facebook-square",
+    "showCounter": true,
+    "counter": {
+      "format": "{current} / {total}",
+      "position": "bottom-right",
+      "style": "pill"
+    }
+  },
+  "slides": [
+    {
+      "id": "slide-01",
+      "label": "Cover",
+      "theme": "noir-crimson",
+      "blocks": [
+        {
+          "type": "headline",
+          "parts": [
+            { "text": "Install in ", "style": "normal" },
+            { "text": "30 seconds.", "style": "accent-italic" }
+          ]
+        },
+        { "type": "spacer", "size": "md" },
+        { "type": "text", "content": "QuoteForge — typographic cards from JSON. One binary, no Node, no framework." }
+      ]
+    },
+    {
+      "id": "slide-02",
+      "label": "Homebrew",
+      "theme": "terminal-green",
+      "blocks": [
+        {
+          "type": "headline",
+          "parts": [
+            { "text": "macOS or Linux? ", "style": "normal" },
+            { "text": "brew it.", "style": "accent" }
+          ]
+        },
+        {
+          "type": "callout",
+          "items": [
+            {
+              "label": "$ brew install",
+              "text": "lordvins226/quoteforge/quoteforge"
+            }
+          ]
+        },
+        { "type": "text", "content": "Auto-updates with brew upgrade. Signed binaries, every release." }
+      ]
+    },
+    {
+      "id": "slide-03",
+      "label": "Curl",
+      "theme": "mono-slate",
+      "blocks": [
+        {
+          "type": "headline",
+          "parts": [
+            { "text": "No Homebrew? ", "style": "normal" },
+            { "text": "One curl.", "style": "accent-italic" }
+          ]
+        },
+        {
+          "type": "callout",
+          "items": [
+            {
+              "label": "$ curl -fsSL",
+              "text": "raw.githubusercontent.com/lordvins226/quoteforge/main/install.sh | sh"
+            }
+          ]
+        },
+        { "type": "text", "content": "Installs to ~/.local/bin. Override with QUOTEFORGE_INSTALL_DIR." }
+      ]
+    },
+    {
+      "id": "slide-04",
+      "label": "Verify",
+      "theme": "oceanic",
+      "blocks": [
+        {
+          "type": "headline",
+          "parts": [
+            { "text": "Verify the ", "style": "normal" },
+            { "text": "install.", "style": "accent" }
+          ]
+        },
+        {
+          "type": "bullet-list",
+          "items": [
+            { "label": "version", "text": "quoteforge --version  →  0.2.0" },
+            { "label": "doctor",  "text": "quoteforge doctor  →  assets, Chrome, runtime" },
+            { "label": "themes",  "text": "quoteforge themes list  →  12 built-in palettes" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "slide-05",
+      "label": "First card",
+      "theme": "sunset-rose",
+      "blocks": [
+        {
+          "type": "headline",
+          "parts": [
+            { "text": "Render your ", "style": "normal" },
+            { "text": "first card.", "style": "accent-italic" }
+          ]
+        },
+        {
+          "type": "callout",
+          "items": [
+            {
+              "label": "$ quoteforge generate",
+              "text": "content/examples/manifesto-wiki.json"
+            }
+          ]
+        },
+        { "type": "text", "content": "PNG lands in outputs/. Same pipeline runs locally and in CI." }
+      ]
+    },
+    {
+      "id": "slide-06",
+      "label": "CTA",
+      "theme": "brand-midnight",
+      "showCounter": false,
+      "blocks": [
+        {
+          "type": "headline",
+          "parts": [
+            { "text": "Ship it.", "style": "accent-italic" }
+          ]
+        },
+        { "type": "spacer", "size": "sm" },
+        { "type": "text", "content": "github.com/lordvins226/quoteforge" },
+        { "type": "spacer", "size": "md" },
+        { "type": "text", "content": "@lordvins226" }
+      ]
+    }
+  ]
+}
