@@ -11,7 +11,12 @@
     "typecheck": "tsc --noEmit",
     "quoteforge": "bun run src/cli/index.ts",
     "qf": "bun run src/cli/index.ts",
-    "build:binary": "bun run scripts/build-binaries.ts"
+    "build:binary": "bun run scripts/build-binaries.ts",
+    "preversion": "bun run typecheck && bun test",
+    "postversion": "git push --follow-tags origin HEAD",
+    "release:patch": "bun pm version patch",
+    "release:minor": "bun pm version minor",
+    "release:major": "bun pm version major"
   },
   "dependencies": {
     "@clack/prompts": "^1.2.0",

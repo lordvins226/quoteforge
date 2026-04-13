@@ -67,6 +67,15 @@
 - `templates/_base.css` — shared responsive base, injected into every template render
 - `themes/_schema.json` — reference; actual validator is Zod in src/
 
+## Releases
+
+- `bun run release:patch | release:minor | release:major` — runs typecheck + tests
+  (preversion hook), bumps `package.json`, commits `vX.Y.Z`, creates an annotated
+  tag, then pushes commit + tag via `--follow-tags` (postversion hook).
+- The tag push triggers `.github/workflows/release.yml`, which builds binaries,
+  publishes the GitHub Release, and bumps the Homebrew formula. Do NOT
+  hand-craft tags or push bumps without these scripts unless the workflow is broken.
+
 ## Gotchas
 
 - `bun quoteforge generate <file> --output <path>` expects a FILE path (not directory); errors with `EISDIR` otherwise.
