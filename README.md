@@ -24,7 +24,7 @@ Installs to `~/.local/bin`. Add to `PATH` if needed:
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc  # or ~/.bashrc
 ```
 
-Override with `QUOTEFORGE_INSTALL_DIR=/usr/local/bin` or `QUOTEFORGE_VERSION=v0.2.0`.
+Override with `QUOTEFORGE_INSTALL_DIR=/usr/local/bin` or `QUOTEFORGE_VERSION=v0.2.1`.
 
 ### Pre-built Binaries
 
@@ -50,7 +50,7 @@ bun install
 ### Verify
 
 ```bash
-quoteforge --version          # 0.2.0
+quoteforge --version          # 0.2.1
 quoteforge doctor             # reports assets, Chrome, runtime
 ```
 

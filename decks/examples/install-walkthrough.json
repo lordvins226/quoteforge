@@ -97,7 +97,7 @@
         {
           "type": "bullet-list",
           "items": [
-            { "label": "version", "text": "quoteforge --version  →  0.2.0" },
+            { "label": "version", "text": "quoteforge --version  →  0.2.1" },
             { "label": "doctor",  "text": "quoteforge doctor  →  assets, Chrome, runtime" },
             { "label": "themes",  "text": "quoteforge themes list  →  12 built-in palettes" }
           ]
