@@ -88,6 +88,15 @@ const SpacerBlockSchema = z.object({
   size: z.enum(["sm", "md", "lg"]),
 });
 
+const ImageBlockSchema = z.object({
+  type: z.literal("image"),
+  id: z.string().optional(),
+  src: z.string().min(1),
+  alt: z.string().optional(),
+  width: z.enum(["sm", "md", "lg", "full"]).default("full"),
+  align: z.enum(["left", "center", "right"]).default("center"),
+});
+
 export const BlockSchema = z.discriminatedUnion("type", [
   HeadlineBlockSchema,
   BlockquoteBlockSchema,
@@ -96,6 +105,7 @@ export const BlockSchema = z.discriminatedUnion("type", [
   CalloutBlockSchema,
   DividerBlockSchema,
   SpacerBlockSchema,
+  ImageBlockSchema,
 ]);
 export type Block = z.infer<typeof BlockSchema>;
 
