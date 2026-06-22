@@ -1,9 +1,10 @@
 import { Command } from "commander";
 import chalk from "chalk";
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
-import { resolve, basename, join } from "node:path";
+import { resolve, basename, join, dirname } from "node:path";
 import { detectAndValidate } from "../utils/validator.js";
 import { renderDeck } from "../../renderer/slide-renderer.js";
+import { resolveImageBlocks } from "../../renderer/image-resolver.js";
 import { buildZip } from "../utils/zip.js";
 
 export const slidesCommand = new Command("slides")
@@ -56,7 +57,7 @@ export const slidesCommand = new Command("slides")
       process.exit(1);
     }
 
-    const deck = result.data;
+    const deck = resolveImageBlocks(result.data, dirname(filePath));
 
     if (opts.slide) {
       const idx = parseInt(opts.slide, 10);

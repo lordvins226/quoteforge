@@ -1,0 +1,10 @@
+{
+  "template": "quote",
+  "theme": "dark-teal",
+  "size": "twitter",
+  "blocks": [
+    { "type": "headline", "parts": [{ "text": "Image block demo", "style": "bold" }] },
+    { "type": "image", "src": "./logo.svg", "width": "md", "align": "center", "alt": "Logo" },
+    { "type": "text", "content": "Local SVG resolved to a data-URI at render time." }
+  ]
+}

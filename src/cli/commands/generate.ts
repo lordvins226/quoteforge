@@ -1,12 +1,13 @@
 import { Command } from "commander";
 import chalk from "chalk";
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
-import { resolve, basename, join } from "node:path";
+import { resolve, basename, join, dirname } from "node:path";
 import { execFile } from "node:child_process";
 import { detectAndValidate, ThemeSchema } from "../utils/validator.js";
 import type { SizeName } from "../utils/validator.js";
 import { renderCard } from "../../renderer/renderer.js";
 import { resolveThemeRead } from "../../assetBundle.js";
+import { resolveImageBlocks } from "../../renderer/image-resolver.js";
 
 export const generateCommand = new Command("generate")
   .description("Generate a PNG from a card content JSON file")
@@ -50,7 +51,7 @@ export const generateCommand = new Command("generate")
       process.exit(1);
     }
 
-    const card = result.data;
+    const card = resolveImageBlocks(result.data, dirname(filePath));
     const themeName = opts.theme ?? card.theme;
     const sizeName = (opts.size ?? card.size) as SizeName;
     const scale = parseInt(opts.scale, 10);
