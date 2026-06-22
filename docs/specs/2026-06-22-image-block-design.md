@@ -23,7 +23,8 @@ text. No background images, no absolute positioning, no caption (deferred).
 ## Out of scope (deferred)
 
 Rounded corners / border, caption text, background images, absolute (x/y)
-positioning, drag-to-place.
+positioning, drag-to-place. Rationale recorded in
+[ADR 0001](../adr/0001-inline-image-block-scope.md).
 
 ## Architecture
 
