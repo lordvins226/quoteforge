@@ -12,6 +12,7 @@ const BLOCK_TYPES: { value: BlockType; label: string }[] = [
   { value: "callout", label: "Callout" },
   { value: "divider", label: "Divider" },
   { value: "spacer", label: "Spacer" },
+  { value: "image", label: "Image" },
 ];
 
 interface BlockListProps {

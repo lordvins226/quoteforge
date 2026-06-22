@@ -136,5 +136,66 @@ export function BlockEditor({ block, onChange }: BlockEditorProps) {
 
     case "divider":
       return <p className="text-xs text-neutral-500 italic">No options for divider.</p>;
+
+    case "image":
+      return (
+        <div className="flex flex-col gap-2">
+          <div>
+            <label className="text-xs text-neutral-400">Image URL or data-URI</label>
+            <input
+              type="text"
+              value={block.src}
+              onChange={(e) => onChange({ ...block, src: e.target.value })}
+              placeholder="https://… or upload below"
+              className="w-full mt-1 bg-neutral-900 border border-neutral-700 rounded px-2 py-1.5 text-sm text-neutral-100 focus:outline-none focus:border-teal-500"
+            />
+          </div>
+          <div>
+            <label className="text-xs text-neutral-400">Upload</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = () => onChange({ ...block, src: String(reader.result) });
+                reader.readAsDataURL(file);
+              }}
+              className="w-full mt-1 text-sm text-neutral-300 file:mr-2 file:rounded file:border-0 file:bg-neutral-700 file:px-2 file:py-1 file:text-neutral-100"
+            />
+          </div>
+          <Select
+            label="Width"
+            value={block.width}
+            onChange={(e) => onChange({ ...block, width: e.target.value as "sm" | "md" | "lg" | "full" })}
+            options={[
+              { value: "sm", label: "Small" },
+              { value: "md", label: "Medium" },
+              { value: "lg", label: "Large" },
+              { value: "full", label: "Full" },
+            ]}
+          />
+          <Select
+            label="Align"
+            value={block.align}
+            onChange={(e) => onChange({ ...block, align: e.target.value as "left" | "center" | "right" })}
+            options={[
+              { value: "left", label: "Left" },
+              { value: "center", label: "Center" },
+              { value: "right", label: "Right" },
+            ]}
+          />
+          <div>
+            <label className="text-xs text-neutral-400">Alt text</label>
+            <input
+              type="text"
+              value={block.alt ?? ""}
+              onChange={(e) => onChange({ ...block, alt: e.target.value })}
+              className="w-full mt-1 bg-neutral-900 border border-neutral-700 rounded px-2 py-1.5 text-sm text-neutral-100 focus:outline-none focus:border-teal-500"
+            />
+          </div>
+        </div>
+      );
   }
 }

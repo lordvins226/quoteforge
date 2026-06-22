@@ -57,6 +57,8 @@ function defaultBlock(type: BlockType): Block {
       return { type, id: makeId() };
     case "spacer":
       return { type, id: makeId(), size: "md" };
+    case "image":
+      return { type, id: makeId(), src: "", width: "full", align: "center" };
   }
 }
 
