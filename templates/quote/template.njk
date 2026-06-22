@@ -30,6 +30,8 @@
         {% include "_blocks/divider.njk" %}
       {% elif block.type == "spacer" %}
         {% include "_blocks/spacer.njk" %}
+      {% elif block.type == "image" %}
+        {% include "_blocks/image.njk" %}
       {% endif %}
     {% endfor %}
 

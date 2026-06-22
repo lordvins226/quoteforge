@@ -57,6 +57,22 @@ describe("template-engine: renderTemplate", () => {
     expect(html).toContain("#4ecdc4");
   });
 
+  test("renders an image block with width and align classes and the src", () => {
+    const card = CardContentSchema.parse({
+      template: "quote",
+      theme: "dark-teal",
+      size: "twitter",
+      blocks: [{ type: "image", src: "data:image/png;base64,AAAA", alt: "Logo", width: "sm", align: "left" }],
+    });
+    const theme = ThemeSchema.parse(loadJSON("themes/dark-teal.json"));
+    const html = renderTemplate(card, theme, { w: 1200, h: 675 });
+    expect(html).toContain("block-image");
+    expect(html).toContain("is-sm");
+    expect(html).toContain("align-left");
+    expect(html).toContain('src="data:image/png;base64,AAAA"');
+    expect(html).toContain('alt="Logo"');
+  });
+
   test("rendered HTML contains no hardcoded colors in style blocks (only in :root vars)", () => {
     const card = CardContentSchema.parse(loadJSON("content/examples/manifesto-wiki.json"));
     const theme = ThemeSchema.parse(loadJSON("themes/dark-teal.json"));

@@ -20,6 +20,7 @@ import block_bullet_list from "../templates/_blocks/bullet-list.njk" with { type
 import block_callout from "../templates/_blocks/callout.njk" with { type: "text" };
 import block_text from "../templates/_blocks/text.njk" with { type: "text" };
 import block_headline from "../templates/_blocks/headline.njk" with { type: "text" };
+import block_image from "../templates/_blocks/image.njk" with { type: "text" };
 import block_slide_counter from "../templates/_blocks/slide-counter.njk" with { type: "text" };
 
 import theme_paper_cream from "../themes/paper-cream.json";
@@ -57,6 +58,7 @@ const TEMPLATE_ASSETS: AssetMap = {
   "_blocks/callout.njk": block_callout,
   "_blocks/text.njk": block_text,
   "_blocks/headline.njk": block_headline,
+  "_blocks/image.njk": block_image,
   "_blocks/slide-counter.njk": block_slide_counter,
 };
 

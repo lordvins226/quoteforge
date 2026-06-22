@@ -175,3 +175,15 @@ body {
   color: var(--counter-text);
   letter-spacing: 0.3em;
 }
+
+/* ─── Image block ─── */
+
+.block-image { display: flex; }
+.block-image img { display: block; max-width: 100%; height: auto; }
+.block-image.is-sm img { width: 33%; }
+.block-image.is-md img { width: 50%; }
+.block-image.is-lg img { width: 75%; }
+.block-image.is-full img { width: 100%; }
+.block-image.align-left { justify-content: flex-start; }
+.block-image.align-center { justify-content: center; }
+.block-image.align-right { justify-content: flex-end; }
