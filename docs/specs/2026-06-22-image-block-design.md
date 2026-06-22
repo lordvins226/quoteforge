@@ -69,9 +69,12 @@ Mirror the type in `studio/src/types/index.ts` (the browser copy of `Block` and
 `slides.ts` — resolve **before** calling `renderCard`/slide render.
 
 **Studio:** `/api/preview` and `/export` receive card JSON whose image `src` is
-already a URL or data-URI (the studio converts uploads in-browser). The resolver is
-still applied as a pass-through; a bare relative path arriving from the studio
-resolves against the server CWD as a best-effort fallback.
+already a URL or data-URI (the studio converts uploads in-browser). These routes
+serve HTTP-supplied content, so they MUST NOT resolve local file paths (path
+traversal / arbitrary file read). They call `assertHttpOrDataImageSrc(card)` and
+reject any image block whose `src` is not `http(s):`/`data:` with a 400 — they never
+touch the filesystem for an image. Local-path → data-URI resolution happens only in
+the CLI commands, where the content file is local and trusted.
 
 ### 3. Template partial
 

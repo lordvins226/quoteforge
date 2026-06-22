@@ -2,7 +2,7 @@ import { describe, test, expect } from "bun:test";
 import { writeFileSync, mkdtempSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import { resolveImageSrc, resolveImageBlocks } from "../renderer/image-resolver.js";
+import { resolveImageSrc, resolveImageBlocks, assertHttpOrDataImageSrc, LocalImageSrcError } from "../renderer/image-resolver.js";
 import type { CardContent, DeckContent } from "../cli/utils/validator.js";
 
 describe("resolveImageSrc", () => {
@@ -73,5 +73,43 @@ describe("resolveImageBlocks", () => {
     const out = resolveImageBlocks(deck, dir);
     expect(out.slides[0].blocks[0]).toEqual({ type: "text", content: "unchanged" });
     expect((out.slides[0].blocks[1] as { src: string }).src.startsWith("data:image/png;base64,")).toBe(true);
+  });
+});
+
+describe("assertHttpOrDataImageSrc", () => {
+  test("accepts a card whose image srcs are http(s) or data URIs", () => {
+    const card: CardContent = {
+      template: "quote",
+      theme: "dark-teal",
+      size: "twitter",
+      blocks: [
+        { type: "image", src: "https://example.com/a.png", width: "full", align: "center" },
+        { type: "image", src: "data:image/png;base64,AAAA", width: "full", align: "center" },
+      ],
+    };
+    expect(() => assertHttpOrDataImageSrc(card)).not.toThrow();
+  });
+
+  test("rejects a card with a local (traversal) image src", () => {
+    const card: CardContent = {
+      template: "quote",
+      theme: "dark-teal",
+      size: "twitter",
+      blocks: [{ type: "image", src: "../../../etc/secret.svg", width: "full", align: "center" }],
+    };
+    expect(() => assertHttpOrDataImageSrc(card)).toThrow(LocalImageSrcError);
+    expect(() => assertHttpOrDataImageSrc(card)).toThrow(/secret\.svg/);
+  });
+
+  test("rejects a deck slide with a local image src", () => {
+    const deck: DeckContent = {
+      type: "deck",
+      defaults: { template: "quote", theme: "dark-teal", size: "twitter" },
+      slides: [
+        { id: "s1", blocks: [{ type: "text", content: "ok" }] },
+        { id: "s2", blocks: [{ type: "image", src: "/etc/passwd.png", width: "full", align: "center" }] },
+      ],
+    };
+    expect(() => assertHttpOrDataImageSrc(deck)).toThrow(LocalImageSrcError);
   });
 });

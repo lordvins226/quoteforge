@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import { ThemeSchema, SIZES } from "../../cli/utils/validator.js";
 import { renderTemplate } from "../../renderer/template-engine.js";
 import { resolveThemeRead } from "../../assetBundle.js";
-import { resolveImageBlocks } from "../../renderer/image-resolver.js";
+import { assertHttpOrDataImageSrc, LocalImageSrcError } from "../../renderer/image-resolver.js";
 import type { CardContent, Theme, SizeName } from "../../cli/utils/validator.js";
 
 function loadTheme(name: string): Theme {
@@ -27,8 +27,16 @@ export async function previewRoute(req: Request, url: URL): Promise<Response> {
   const sizeName = (body.size ?? body.card.size ?? "twitter") as SizeName;
   const dimensions = SIZES[sizeName] ?? { w: 1200, h: 675 };
 
-  const card = resolveImageBlocks(body.card, process.cwd());
-  const html = renderTemplate(card, theme, dimensions, {
+  try {
+    assertHttpOrDataImageSrc(body.card);
+  } catch (err) {
+    if (err instanceof LocalImageSrcError) {
+      return Response.json({ error: err.message }, { status: 400 });
+    }
+    throw err;
+  }
+
+  const html = renderTemplate(body.card, theme, dimensions, {
     slideIndex: body.slideIndex ?? 0,
     slideTotal: body.slideTotal ?? 1,
     showCounter: body.showCounter ?? false,

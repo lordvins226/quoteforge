@@ -11,8 +11,26 @@ const MIME_BY_EXT: Record<string, string> = {
   ".svg": "image/svg+xml",
 };
 
+const REMOTE_OR_DATA_SRC = /^(https?:|data:)/i;
+
+export class LocalImageSrcError extends Error {}
+
+export function assertHttpOrDataImageSrc(content: CardContent | DeckContent): void {
+  const blocks: Block[] = "slides" in content
+    ? content.slides.flatMap((slide) => slide.blocks)
+    : content.blocks;
+
+  for (const block of blocks) {
+    if (block.type === "image" && !REMOTE_OR_DATA_SRC.test(block.src)) {
+      throw new LocalImageSrcError(
+        `Local image references are not allowed over HTTP: ${block.src}`,
+      );
+    }
+  }
+}
+
 export function resolveImageSrc(src: string, baseDir: string): string {
-  if (/^(https?:|data:)/i.test(src)) return src;
+  if (REMOTE_OR_DATA_SRC.test(src)) return src;
 
   const path = isAbsolute(src) ? src : join(baseDir, src);
   const mime = MIME_BY_EXT[extname(path).toLowerCase()];
