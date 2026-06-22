@@ -3,7 +3,7 @@ import { writeFileSync, mkdtempSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { resolveImageSrc, resolveImageBlocks } from "../renderer/image-resolver.js";
-import type { CardContent } from "../cli/utils/validator.js";
+import type { CardContent, DeckContent } from "../cli/utils/validator.js";
 
 describe("resolveImageSrc", () => {
   test("passes through http(s) URLs unchanged", () => {
@@ -52,5 +52,26 @@ describe("resolveImageBlocks", () => {
     const out = resolveImageBlocks(card, dir);
     expect(out.blocks[0]).toEqual({ type: "text", content: "hi" });
     expect((out.blocks[1] as { src: string }).src.startsWith("data:image/png;base64,")).toBe(true);
+  });
+
+  test("resolves image blocks in a deck and leaves non-image blocks untouched", () => {
+    const dir = mkdtempSync(join(tmpdir(), "qf-img-"));
+    writeFileSync(join(dir, "p.png"), Buffer.from([2, 3, 4]));
+    const deck: DeckContent = {
+      type: "deck",
+      defaults: { template: "quote", theme: "dark-teal", size: "twitter" },
+      slides: [
+        {
+          id: "s1",
+          blocks: [
+            { type: "text", content: "unchanged" },
+            { type: "image", src: "./p.png", width: "full", align: "center" },
+          ],
+        },
+      ],
+    };
+    const out = resolveImageBlocks(deck, dir);
+    expect(out.slides[0].blocks[0]).toEqual({ type: "text", content: "unchanged" });
+    expect((out.slides[0].blocks[1] as { src: string }).src.startsWith("data:image/png;base64,")).toBe(true);
   });
 });
