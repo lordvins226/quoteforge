@@ -1,7 +1,7 @@
 {
   "name": "quoteforge",
   "version": "0.3.0",
-  "description": "Developer-native typographic social media card + carousel generator",
+  "description": "Developer-native typographic card, carousel, and banner generator",
   "type": "module",
   "bin": {
     "quoteforge": "./src/cli/index.ts",

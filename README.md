@@ -1,6 +1,6 @@
 # QuoteForge
 
-Developer-native typographic social media card and carousel generator. Define content in JSON, pick a theme, run one command — get production-ready PNGs.
+Developer-native typographic card, carousel, and banner generator. Define content in JSON, pick a theme, run one command — get production-ready PNGs. Great for social posts and carousels, but equally slides, blog/Open Graph headers, article covers, and announcement graphics.
 
 No cloud. No subscriptions. No drag-and-drop. Just code.
 
