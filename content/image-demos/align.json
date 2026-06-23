@@ -1,0 +1,11 @@
+{
+  "template": "quote",
+  "theme": "dark-teal",
+  "size": "twitter-square",
+  "blocks": [
+    { "type": "headline", "parts": [{ "text": "Alignment", "style": "bold" }] },
+    { "type": "image", "src": "./photo.svg", "width": "sm", "align": "left", "alt": "left" },
+    { "type": "image", "src": "./photo.svg", "width": "sm", "align": "center", "alt": "center" },
+    { "type": "image", "src": "./photo.svg", "width": "sm", "align": "right", "alt": "right" }
+  ]
+}

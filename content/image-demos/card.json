@@ -1,0 +1,14 @@
+{
+  "template": "quote",
+  "theme": "dark-teal",
+  "size": "instagram-port",
+  "blocks": [
+    { "type": "image", "src": "./photo.svg", "width": "full", "align": "center", "alt": "Sunset over the hills" },
+    { "type": "headline", "parts": [
+      { "text": "Ship ", "style": "normal" },
+      { "text": "small", "style": "accent" },
+      { "text": ", ship often.", "style": "normal" }
+    ] },
+    { "type": "text", "content": "An image block sits inline with the rest of the card flow." }
+  ]
+}
