@@ -23,7 +23,7 @@ export function Hero() {
             Open source · MIT
           </div>
           <h1 className="font-mono text-4xl md:text-6xl font-semibold tracking-tight text-fog leading-[1.05]">
-            Social cards for<br />
+            Typographic cards for<br />
             people who live in<br />
             the <span className="text-mint">terminal</span>.
           </h1>

@@ -7,7 +7,7 @@ export function Docs() {
   return (
     <DocsLayout title="Documentation">
       <p className="text-fog-2 leading-7 mb-10 max-w-[60ch]">
-        Everything you need to turn JSON into beautifully typeset social cards — from your first
+        Everything you need to turn JSON into beautifully typeset cards, carousels, and covers — from your first
         generate command to building custom themes and templates.
       </p>
 
