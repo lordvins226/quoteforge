@@ -178,7 +178,7 @@ body {
 
 /* ─── Image block ─── */
 
-.block-image { display: flex; }
+.block-image { display: flex; flex-direction: row; }
 .block-image img { display: block; max-width: 100%; height: auto; }
 .block-image.is-sm img { width: 33%; }
 .block-image.is-md img { width: 50%; }
