@@ -5,6 +5,8 @@ outputs/*
 dist/
 studio/dist/
 site/dist/
+/validator
+/quoteforge
 .DS_Store
 *.log
 .env
