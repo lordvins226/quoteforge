@@ -53,7 +53,7 @@ Each slide inherits from `defaults`; any field on the slide overrides it. Slides
 
 ## Block types
 
-Seven block types live in `BlockSchema`:
+Eight block types live in `BlockSchema`:
 
 ### `headline` — display text
 ```json
@@ -117,6 +117,30 @@ Seven block types live in `BlockSchema`:
 ```
 
 `size` is `"sm" | "md" | "lg"`.
+
+### `image` — inline image
+```json
+{
+  "id": "img",
+  "type": "image",
+  "src": "./logo.svg",
+  "alt": "Company logo",
+  "width": "md",
+  "align": "center"
+}
+```
+
+- `src` — a remote URL (`https://…`), a local file path, or a `data:` URI. Local
+  paths are resolved relative to the content file's directory and inlined at render
+  time (`png`/`jpg`/`jpeg`/`webp`/`gif`/`svg`). For security, the Studio server only
+  accepts `http(s):`/`data:` sources — local file paths work via the CLI only.
+- `alt` — optional alternative text.
+- `width` — `"sm" | "md" | "lg" | "full"` (33% / 50% / 75% / 100% of the content
+  column). Defaults to `"full"`.
+- `align` — `"left" | "center" | "right"`. Defaults to `"center"`.
+
+In the Studio, add an Image block and either paste a URL or upload a file (the upload
+is embedded as a `data:` URI, so the card stays self-contained).
 
 ## Part styles
 

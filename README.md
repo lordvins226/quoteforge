@@ -288,6 +288,7 @@ Create your own: `quoteforge themes create my-brand`
 | `callout` | Rounded box highlight | `items[]{label, text}` |
 | `divider` | Full-width horizontal rule | — |
 | `spacer` | Vertical whitespace | `size: sm\|md\|lg` |
+| `image` | Inline image (URL, local path, or data-URI) | `src`, `alt?`, `width: sm\|md\|lg\|full`, `align: left\|center\|right` |
 
 ### Inline Part Styles
 
