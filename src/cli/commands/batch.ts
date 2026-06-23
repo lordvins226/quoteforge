@@ -6,6 +6,7 @@ import { detectAndValidate, ThemeSchema } from "../utils/validator.js";
 import type { SizeName } from "../utils/validator.js";
 import { renderCard } from "../../renderer/renderer.js";
 import { renderDeck } from "../../renderer/slide-renderer.js";
+import { resolveImageBlocks } from "../../renderer/image-resolver.js";
 import { buildZip } from "../utils/zip.js";
 import { resolveThemeRead } from "../../assetBundle.js";
 
@@ -61,7 +62,7 @@ export const batchCommand = new Command("batch")
         const result = detectAndValidate(json);
 
         if (result.kind === "card") {
-          const card = result.data;
+          const card = resolveImageBlocks(result.data, dir);
           const themeName = opts.theme ?? card.theme;
           const sizeName = (opts.size ?? card.size) as SizeName;
           const themePath = resolveThemeRead(themeName);
@@ -80,7 +81,7 @@ export const batchCommand = new Command("batch")
             continue;
           }
 
-          const deck = result.data;
+          const deck = resolveImageBlocks(result.data, dir);
           const deckName = basename(file, ".json");
           const deckDir = join(outputDir, deckName);
           if (!existsSync(deckDir)) {

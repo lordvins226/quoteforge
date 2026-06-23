@@ -127,6 +127,31 @@ describe("Block schema — all 7 types", () => {
   });
 });
 
+describe("Image block schema", () => {
+  test("accepts a minimal image block and applies defaults", () => {
+    const parsed = BlockSchema.parse({ type: "image", src: "https://example.com/a.png" });
+    expect(parsed).toMatchObject({ type: "image", src: "https://example.com/a.png", width: "full", align: "center" });
+  });
+
+  test("accepts explicit width, align, alt", () => {
+    expect(() =>
+      BlockSchema.parse({ type: "image", src: "./a.jpg", alt: "A", width: "sm", align: "left" }),
+    ).not.toThrow();
+  });
+
+  test("rejects an image block with no src", () => {
+    expect(() => BlockSchema.parse({ type: "image", width: "full", align: "center" })).toThrow();
+  });
+
+  test("rejects empty src", () => {
+    expect(() => BlockSchema.parse({ type: "image", src: "" })).toThrow();
+  });
+
+  test("rejects unknown width", () => {
+    expect(() => BlockSchema.parse({ type: "image", src: "x", width: "huge" })).toThrow();
+  });
+});
+
 describe("SizeName enum — all 17 sizes", () => {
   const allSizes = [
     "twitter", "twitter-square",

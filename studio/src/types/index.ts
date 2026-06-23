@@ -10,7 +10,7 @@ export interface LabeledItem {
   text: string;
 }
 
-export type BlockType = "headline" | "blockquote" | "text" | "bullet-list" | "callout" | "divider" | "spacer";
+export type BlockType = "headline" | "blockquote" | "text" | "bullet-list" | "callout" | "divider" | "spacer" | "image";
 
 export type Block =
   | { type: "headline"; id?: string; parts: Part[] }
@@ -19,7 +19,8 @@ export type Block =
   | { type: "bullet-list"; id?: string; items: LabeledItem[] }
   | { type: "callout"; id?: string; items: LabeledItem[] }
   | { type: "divider"; id?: string }
-  | { type: "spacer"; id?: string; size: "sm" | "md" | "lg" };
+  | { type: "spacer"; id?: string; size: "sm" | "md" | "lg" }
+  | { type: "image"; id?: string; src: string; alt?: string; width: "sm" | "md" | "lg" | "full"; align: "left" | "center" | "right" };
 
 export type SizeName =
   | "twitter" | "twitter-square"

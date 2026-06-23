@@ -1,0 +1,12 @@
+{
+  "template": "quote",
+  "theme": "dark-teal",
+  "size": "twitter-square",
+  "blocks": [
+    { "type": "headline", "parts": [{ "text": "Widths", "style": "bold" }] },
+    { "type": "image", "src": "./photo.svg", "width": "sm", "align": "center", "alt": "small" },
+    { "type": "image", "src": "./photo.svg", "width": "md", "align": "center", "alt": "medium" },
+    { "type": "image", "src": "./photo.svg", "width": "lg", "align": "center", "alt": "large" },
+    { "type": "image", "src": "./photo.svg", "width": "full", "align": "center", "alt": "full" }
+  ]
+}
