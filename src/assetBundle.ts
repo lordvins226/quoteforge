@@ -36,7 +36,7 @@ import theme_dark_teal from "../themes/dark-teal.json";
 import theme_kyoto from "../themes/kyoto.json";
 import theme_mono_slate from "../themes/mono-slate.json";
 
-import pkg from "../package.json";
+import { VERSION } from "./version.js";
 
 type AssetMap = Record<string, string>;
 type JsonMap = Record<string, unknown>;
@@ -76,8 +76,6 @@ const THEME_ASSETS: JsonMap = {
   "kyoto.json": theme_kyoto,
   "mono-slate.json": theme_mono_slate,
 };
-
-const VERSION = (pkg as { version: string }).version;
 
 let cached: { templatesDir: string; themesDir: string; mode: "repo" | "cache" } | null = null;
 
