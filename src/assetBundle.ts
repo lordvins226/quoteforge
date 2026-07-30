@@ -52,6 +52,8 @@ import memo_template from "../templates/memo/template.njk" with { type: "text" }
 import memo_style from "../templates/memo/style.css" with { type: "text" };
 import prompt_template from "../templates/prompt/template.njk" with { type: "text" };
 import prompt_style from "../templates/prompt/style.css" with { type: "text" };
+import versus_template from "../templates/versus/template.njk" with { type: "text" };
+import versus_style from "../templates/versus/style.css" with { type: "text" };
 
 import block_divider from "../templates/_blocks/divider.njk" with { type: "text" };
 import block_blockquote from "../templates/_blocks/blockquote.njk" with { type: "text" };
@@ -131,6 +133,8 @@ const TEMPLATE_ASSETS: AssetMap = {
   "memo/style.css": memo_style,
   "prompt/template.njk": prompt_template,
   "prompt/style.css": prompt_style,
+  "versus/template.njk": versus_template,
+  "versus/style.css": versus_style,
   "_blocks/divider.njk": block_divider,
   "_blocks/blockquote.njk": block_blockquote,
   "_blocks/spacer.njk": block_spacer,

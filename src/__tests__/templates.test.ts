@@ -736,3 +736,37 @@ describe("prompt template", () => {
     assertNoHardcodedHex("prompt");
   });
 });
+
+describe("versus template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/oceanic.json"));
+
+  test("renders both sides with label as the caption", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/versus-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1200, h: 675 });
+
+    const body = bodyOnly(html);
+    expect(body.match(/vs-side/g)?.length).toBe(2);
+    expect(html).toContain('<span class="vs-label">Before</span>');
+    expect(html).toContain('<span class="vs-label">After</span>');
+    expect(body).not.toContain("vs-solo");
+  });
+
+  test("degrades to a single centered side (vs-solo) with fewer than 2 items", () => {
+    const card = CardContentSchema.parse({
+      template: "versus",
+      theme: "oceanic",
+      size: "twitter",
+      blocks: [
+        { type: "callout", items: [{ label: "Only", text: "one side" }] },
+      ],
+    });
+    const body = bodyOnly(renderTemplate(card, theme, { w: 1200, h: 675 }));
+
+    expect(body).toContain("vs-solo");
+    expect(body).not.toContain('class="vs-rule"');
+  });
+
+  test("style.css has no literal hex color outside theme-injected :root vars", () => {
+    assertNoHardcodedHex("versus");
+  });
+});

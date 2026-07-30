@@ -1,0 +1,73 @@
+/* Versus — symmetric comparison. `label` means the side's caption
+   ("Before"/"After"); `text` is the value shown large. Exactly 2 items
+   are expected: the first `bullet-list`/`callout` block found supplies
+   both sides from its first two items. Extra items are ignored. Fewer
+   than 2 items drops the `1fr 1px 1fr` grid for a single centered
+   column (`.vs-solo`) so a lone item never leaves a dangling rule. */
+
+.card.versus {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.vs {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  align-items: stretch;
+  min-height: 0;
+}
+
+.vs.vs-solo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vs-side {
+  padding: clamp(12px, calc(1rem * var(--space-scale)), 26px) clamp(16px, calc(1.3rem * var(--space-scale)), 34px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(8px, calc(0.7rem * var(--space-scale)), 18px);
+  min-width: 0;
+}
+
+.vs-side.right {
+  text-align: right;
+}
+
+.vs-label {
+  font-size: clamp(11px, calc(0.8rem * var(--type-scale)), 18px);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.vs-value {
+  font-family: var(--font-headline);
+  font-size: clamp(30px, calc(2.4rem * var(--headline-scale)), 76px);
+  line-height: 1.1;
+  color: var(--headline);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.vs-rule {
+  background: var(--callout-border);
+  position: relative;
+}
+
+.vs-rule::after {
+  content: "vs";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(10px, calc(0.75rem * var(--type-scale)), 18px);
+  color: var(--accent);
+  background: var(--bg);
+  padding: clamp(6px, calc(0.5rem * var(--space-scale)), 12px) clamp(4px, calc(0.35rem * var(--space-scale)), 8px);
+  letter-spacing: 0.08em;
+}
