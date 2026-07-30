@@ -30,6 +30,8 @@ import window_template from "../templates/window/template.njk" with { type: "tex
 import window_style from "../templates/window/style.css" with { type: "text" };
 import profile_template from "../templates/profile/template.njk" with { type: "text" };
 import profile_style from "../templates/profile/style.css" with { type: "text" };
+import ledger_template from "../templates/ledger/template.njk" with { type: "text" };
+import ledger_style from "../templates/ledger/style.css" with { type: "text" };
 
 import block_divider from "../templates/_blocks/divider.njk" with { type: "text" };
 import block_blockquote from "../templates/_blocks/blockquote.njk" with { type: "text" };
@@ -87,6 +89,8 @@ const TEMPLATE_ASSETS: AssetMap = {
   "window/style.css": window_style,
   "profile/template.njk": profile_template,
   "profile/style.css": profile_style,
+  "ledger/template.njk": ledger_template,
+  "ledger/style.css": ledger_style,
   "_blocks/divider.njk": block_divider,
   "_blocks/blockquote.njk": block_blockquote,
   "_blocks/spacer.njk": block_spacer,

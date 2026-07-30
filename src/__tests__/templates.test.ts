@@ -455,3 +455,43 @@ describe("profile template", () => {
     assertNoHardcodedHex("profile");
   });
 });
+
+describe("ledger template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/paper-cream.json"));
+
+  test("renders the header rule, keyed rows, and footer", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/ledger-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1080, h: 1350 });
+
+    expect(html).toContain("ledger-head");
+    expect(html).toContain("ledger-row");
+    expect(html).toContain('<span class="ledger-key">01</span>');
+    expect(html).toContain("ledger-foot");
+    expect(html).toContain("quoteforge validate card.json");
+  });
+
+  test("rows stay aligned regardless of item count (3 vs 6)", () => {
+    const build = (count: number) =>
+      CardContentSchema.parse({
+        template: "ledger",
+        theme: "paper-cream",
+        size: "instagram-port",
+        blocks: [
+          {
+            type: "bullet-list",
+            items: Array.from({ length: count }, (_, i) => ({ label: String(i + 1), text: `Row ${i + 1}` })),
+          },
+        ],
+      });
+
+    const body3 = bodyOnly(renderTemplate(build(3), theme, { w: 1080, h: 1350 }));
+    const body6 = bodyOnly(renderTemplate(build(6), theme, { w: 1080, h: 1350 }));
+
+    expect(body3.match(/class="ledger-row"/g)?.length).toBe(3);
+    expect(body6.match(/class="ledger-row"/g)?.length).toBe(6);
+  });
+
+  test("style.css has no literal hex color outside theme-injected :root vars", () => {
+    assertNoHardcodedHex("ledger");
+  });
+});
