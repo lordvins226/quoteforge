@@ -538,9 +538,181 @@ git commit -m "docs(quoteforge[renderer]): document alignment, non-social preset
 
 ---
 
+### Task 5: Studio (web UI) integration
+
+**Files:**
+- Modify: `studio/src/types/index.ts` (`SIZE_GROUPS`)
+- Modify: `studio/src/store/cardStore.ts` (`setAlign`), `studio/src/store/deckStore.ts` (`setDeckAlign`)
+- Create: `studio/src/components/Editor/AlignPicker.tsx`
+- Modify: `studio/src/components/Editor/Toolbar.tsx` (align picker + fit-content toggle)
+- Modify: `studio/src/App.tsx` (wire align setters, fit-content state, export body)
+- Modify: `src/server/routes/export.ts`, `src/server/routes/exportDeck.ts` (read `fitContent`)
+
+**Interfaces:**
+- Consumes: `align` field and the presets (Tasks 1-2), the `renderCard(..., fitContent)` and `renderDeck({ ..., fitContent })` seams (Task 3).
+- Produces: studio users can pick the new presets, set `align`, and export with fit-content.
+
+Context: the studio types were synced in Tasks 1-2, but the UI was not wired. `align` already
+flows to the render automatically because the export/preview routes pass the whole card object
+to `renderCard`/`renderTemplate` — so align needs only store state + a UI control, no route
+change. Presets need adding to `SIZE_GROUPS` (the picker iterates groups, not raw `SIZES`).
+fit-content is an export-time option and needs both a UI toggle and route changes.
+
+- [ ] **Step 1: Add the presets to the size picker**
+
+In `studio/src/types/index.ts`, add a group to `SIZE_GROUPS` before the `Custom` group:
+
+```ts
+  { label: "Web / Docs", sizes: ["og", "readme-hero", "slide-16x9", "4x3", "3x2"] },
+```
+
+Launch nothing yet; the picker (`SizePicker.tsx`) iterates `SIZE_GROUPS`, so the five presets
+now appear under "Web / Docs".
+
+- [ ] **Step 2: Add align setters to the stores**
+
+In `studio/src/store/cardStore.ts`, add `setAlign: (align: Align) => void;` to the `CardStore`
+interface (import `Align` — a union type; add `type Align = "top" | "center" | "bottom" | "spread"`
+locally in the store or export it from `../types` if a shared alias is cleaner) and implement it
+mirroring `setSize`:
+
+```ts
+  setAlign: (align) =>
+    set((s) => ({
+      card: { ...s.card, align },
+      isDirty: true,
+      past: [...s.past.slice(-49), s.card],
+      future: [],
+    })),
+```
+
+In `studio/src/store/deckStore.ts`, add `setDeckAlign` mirroring `setDeckSize`, writing to
+`deck.defaults.align`:
+
+```ts
+  setDeckAlign: (align) =>
+    set((s) => ({
+      deck: { ...s.deck, defaults: { ...s.deck.defaults, align } },
+      isDirty: true,
+    })),
+```
+
+Add the matching signatures to each store's interface.
+
+- [ ] **Step 3: Create the AlignPicker component**
+
+Create `studio/src/components/Editor/AlignPicker.tsx` — a small segmented control matching the
+studio's Tailwind idiom (built from scratch, no component library, per project rules):
+
+```tsx
+import type { SizeName } from "../../types";
+
+type Align = "top" | "center" | "bottom" | "spread";
+const OPTIONS: { value: Align; label: string }[] = [
+  { value: "top", label: "Top" },
+  { value: "center", label: "Center" },
+  { value: "bottom", label: "Bottom" },
+  { value: "spread", label: "Spread" },
+];
+
+interface AlignPickerProps {
+  current: Align | undefined;
+  onChange: (align: Align) => void;
+}
+
+export function AlignPicker({ current, onChange }: AlignPickerProps) {
+  const active = current ?? "center";
+  return (
+    <div className="flex items-center gap-0.5 bg-neutral-800 rounded p-0.5" role="group" aria-label="Vertical alignment">
+      {OPTIONS.map((opt) => (
+        <button
+          key={opt.value}
+          onClick={() => onChange(opt.value)}
+          aria-pressed={active === opt.value}
+          className={`px-2 py-1 text-xs rounded transition-colors ${
+            active === opt.value ? "bg-neutral-700 text-teal-400" : "text-neutral-400 hover:text-neutral-200"
+          }`}
+        >
+          {opt.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+```
+
+The `SizeName` import is unused; remove it — this note exists to catch a copy-paste artifact, not
+to keep it.
+
+- [ ] **Step 4: Wire the align picker and fit-content toggle into the Toolbar**
+
+In `studio/src/components/Editor/Toolbar.tsx`, add props `align`, `onAlignChange`, `fitContent`,
+and `onFitContentChange`, render the `AlignPicker` next to the `SizePicker`, and add a
+fit-content checkbox/toggle near the export button:
+
+```tsx
+<AlignPicker current={align} onChange={onAlignChange} />
+```
+
+For fit-content, a labeled checkbox styled with Tailwind:
+
+```tsx
+<label className="flex items-center gap-1.5 text-xs text-neutral-300 cursor-pointer select-none">
+  <input type="checkbox" checked={fitContent} onChange={(e) => onFitContentChange(e.target.checked)} />
+  Fit content
+</label>
+```
+
+Add the corresponding entries to the Toolbar's props interface.
+
+- [ ] **Step 5: Wire state and export in App.tsx**
+
+In `studio/src/App.tsx`:
+- Pass `align` and the align setter to the Toolbar, mode-aware like theme/size:
+  `align={mode === "card" ? cardStore.card.align : deckStore.deck.defaults.align}` and
+  `onAlignChange={mode === "card" ? cardStore.setAlign : deckStore.setDeckAlign}`.
+- Add `const [fitContent, setFitContent] = useState(false);` and pass `fitContent` /
+  `onFitContentChange={setFitContent}` to the Toolbar.
+- Include `fitContent` in the `/api/export` request body object (alongside `card`, `theme`,
+  `size`) and in the `/api/export-deck` body. Add `fitContent` to the `handleExportPng` /
+  `handleExportDeck` `useCallback` dependency arrays.
+
+- [ ] **Step 6: Read fitContent in the server routes**
+
+In `src/server/routes/export.ts`, extend the body type with `fitContent?: boolean;` and pass it
+to `renderCard` (7th argument, after `scale`, `meta`, `browser` — pass `undefined` for meta and
+browser):
+
+```ts
+const buf = await renderCard(body.card, theme, body.size, body.scale ?? 2, undefined, undefined, body.fitContent ?? false);
+```
+
+In `src/server/routes/exportDeck.ts`, extend the body type with `fitContent?: boolean;` and add
+`fitContent: body.fitContent ?? false` to the `renderDeck(body.deck, { ... })` options object.
+
+- [ ] **Step 7: Verify the studio builds and the wiring is sound**
+
+The studio has no unit-test suite; verify by build and by exercising the flow. Run the studio's
+build (`cd studio && bunx vite build`, or the build script the repo uses) and confirm it
+completes without errors in the files this task touched. Then launch `bun quoteforge studio`,
+confirm: the five new presets appear under "Web / Docs" in the size dropdown; the align control
+changes the live preview; the "Fit content" toggle produces a cropped PNG on export. If the
+environment cannot launch a browser/studio, say so and rely on the build plus a careful re-read
+of the data flow, and report that explicitly rather than claiming a visual check that did not
+happen.
+
+- [ ] **Step 8: Commit**
+
+```bash
+git add studio/src/types/index.ts studio/src/store/cardStore.ts studio/src/store/deckStore.ts studio/src/components/Editor/AlignPicker.tsx studio/src/components/Editor/Toolbar.tsx studio/src/App.tsx src/server/routes/export.ts src/server/routes/exportDeck.ts
+git commit -m "feat(quoteforge[studio]): expose alignment, presets, and fit-content in the editor"
+```
+
+---
+
 ## Verification
 
-After all four tasks:
+After all five tasks:
 
 - [ ] `bun test` — whole suite passes.
 - [ ] The reproduction short-content card renders with content centered, no mid-canvas void.
