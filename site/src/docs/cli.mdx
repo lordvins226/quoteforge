@@ -8,6 +8,12 @@ Render a single card JSON to PNG.
 quoteforge generate <file> [options]
 ```
 
+### `--fit-content`
+
+The `--fit-content` flag (alias `--trim`) crops the output to the content bounding box plus the theme's padding. Output dimensions become content-dependent instead of fixed to the size preset. This is useful for single cards where you want minimal void space.
+
+When used with `slides`, the flag may produce slides with different heights (if content height varies per slide). This is intentional but worth noting in deck workflows.
+
 Options:
 
 | Flag | Default | Description |
@@ -16,6 +22,7 @@ Options:
 | `-s, --size <name>` | (from file) | Override size (e.g. `instagram-sq`) |
 | `-o, --output <path>` | `outputs/` | Output directory |
 | `--scale <n>` | `2` | Pixel ratio (1 or 2) |
+| `--fit-content` | — | Crop output to content bounding box + theme padding |
 | `--no-timestamp` | — | Don't append ISO timestamp to filename |
 | `--open` | — | Open the PNG after generation |
 
@@ -37,6 +44,7 @@ Options:
 | `--slide <n>` | — | Render only slide N (1-indexed), no ZIP |
 | `--no-zip` | — | Skip ZIP creation |
 | `--no-counter` | — | Disable counter overlay |
+| `--fit-content` | — | Crop each slide to content bounding box + theme padding |
 | `--concurrency <n>` | `4` | Parallel render workers |
 | `--scale <n>` | `2` | Pixel ratio |
 | `--open` | — | Open output folder |
@@ -49,7 +57,7 @@ Render every JSON file in a directory.
 quoteforge batch <dir> [options]
 ```
 
-Options include `--theme`, `--size`, `--output`, `--concurrency`, and `--decks` (to also process deck files).
+Options include `--theme`, `--size`, `--output`, `--fit-content`, `--concurrency`, and `--decks` (to also process deck files).
 
 ## `validate`
 

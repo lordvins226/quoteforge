@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.5.0
+
+### Added
+- Five non-social size presets: `og` (1200×630), `readme-hero` (1280×640),
+  `slide-16x9` (1920×1080), `4x3` (1600×1200), `3x2` (1500×1000).
+- `align` (`top` | `center` | `bottom` | `spread`) on cards, deck defaults, and slides,
+  controlling vertical placement of content.
+- `--fit-content` (alias `--trim`) on `generate`/`slides`/`batch`, cropping the output to the
+  content bounding box plus theme padding.
+
+### Changed
+- **Rendering change:** content is now vertically centered by default instead of distributed
+  over the full canvas height. Existing cards re-render with content grouped. Add
+  `"align": "spread"` to approximate the previous look.
+
 ## 0.4.0
 
 ### Fixed

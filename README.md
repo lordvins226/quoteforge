@@ -83,6 +83,7 @@ quoteforge generate <file> [options]
   -s, --size <name>    Override size (see Size Reference below)
   -o, --output <path>  Output file path
   --scale <n>          Pixel ratio (default: 2)
+  --fit-content        Crop to content bounding box + theme padding
   --open               Open output file after generation
   --no-timestamp       Omit timestamp from filename
 ```
@@ -106,6 +107,7 @@ quoteforge slides <file> [options]
   --slide <n>          Render only slide N (1-indexed), no ZIP
   --no-zip             Skip ZIP creation
   --no-counter         Disable counter overlay for all slides
+  --fit-content        Crop each slide to content bounding box + theme padding
   --concurrency <n>    Parallel render workers (default: 4)
   --zip-level <n>      ZIP compression level 0-9 (default: 6)
   --scale <n>          Pixel ratio (default: 2)
@@ -179,6 +181,7 @@ quoteforge batch <directory> [options]
   -t, --theme <name>   Override theme for all files
   -s, --size <name>    Override size for all files
   -o, --output <dir>   Output directory
+  --fit-content        Crop each output to content bounding box + theme padding
   --concurrency <n>    Parallel workers (default: 2)
   --decks              Also process deck files into individual ZIPs
 ```
@@ -214,9 +217,18 @@ All formats with exact pixel dimensions:
 | `threads-port` | 1080 × 1350 | 4:5 | Threads portrait *(recommended)* |
 | `threads-land` | 1080 × 566 | 1.91:1 | Threads landscape |
 | `story` | 1080 × 1920 | 9:16 | Stories (IG / FB / TW) |
+| `og` | 1200 × 630 | 1.91:1 | Open Graph / default social preview |
+| `readme-hero` | 1280 × 640 | 2:1 | Blog/README header |
+| `slide-16x9` | 1920 × 1080 | 16:9 | Slides (presentation) |
+| `4x3` | 1600 × 1200 | 4:3 | Slides / covers |
+| `3x2` | 1500 × 1000 | 3:2 | Article headers |
 | `custom` | variable | free | Custom dimensions |
 
 > Facebook carousels render best with `facebook-square` (1080×1080).
+
+### Vertical alignment
+
+By default, card content is vertically centered on the canvas. Add `"align": "spread"` to your card root to distribute blocks edge-to-edge (the pre-0.5.0 behavior). Other values are `"top"` and `"bottom"`. In decks, set alignment in `defaults` or override per-slide.
 
 ## Themes
 
