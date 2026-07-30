@@ -834,3 +834,34 @@ describe("code template", () => {
     assertNoHardcodedHex("code");
   });
 });
+
+describe("chart template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/oceanic.json"));
+
+  test("renders bar rows with widths derived from value and a muted variant", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/chart-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1080, h: 1350 });
+
+    expect(html).toContain("chart-row");
+    expect(html).toContain("chart-fill");
+    expect(html).toContain('style="width: 61%"');
+    expect(html).toContain("Chrome launch");
+    expect(html).toContain("is-muted");
+  });
+
+  test("defaults the unit to a percent sign when unit is absent", () => {
+    const card = CardContentSchema.parse({
+      template: "chart",
+      theme: "oceanic",
+      size: "instagram-sq",
+      blocks: [{ type: "chart", rows: [{ label: "A", value: 50 }] }],
+    });
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    expect(html).toContain("50%");
+  });
+
+  test("style.css has no literal hex color outside theme-injected :root vars", () => {
+    assertNoHardcodedHex("chart");
+  });
+});

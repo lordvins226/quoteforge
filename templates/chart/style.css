@@ -1,0 +1,28 @@
+/* Chart — horizontal bars. Title from an optional headline block, rows from
+   the chart block's data, footer from a trailing text block. */
+
+.card.chart-tpl {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, calc(1.6rem * var(--space-scale)), 40px);
+}
+
+.chart-tpl .headline {
+  font-family: var(--font-body);
+  font-size: clamp(13px, calc(0.95rem * var(--type-scale)), 24px);
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.chart-tpl .block-text {
+  margin-top: auto;
+}
+
+.chart-tpl .block-text p {
+  font-family: var(--font-body);
+  font-size: clamp(11px, calc(0.75rem * var(--type-scale)), 18px);
+  color: var(--body);
+  opacity: 0.75;
+}

@@ -58,6 +58,8 @@ import stat_template from "../templates/stat/template.njk" with { type: "text" }
 import stat_style from "../templates/stat/style.css" with { type: "text" };
 import code_template from "../templates/code/template.njk" with { type: "text" };
 import code_style from "../templates/code/style.css" with { type: "text" };
+import chart_template from "../templates/chart/template.njk" with { type: "text" };
+import chart_style from "../templates/chart/style.css" with { type: "text" };
 
 import block_divider from "../templates/_blocks/divider.njk" with { type: "text" };
 import block_blockquote from "../templates/_blocks/blockquote.njk" with { type: "text" };
@@ -146,6 +148,8 @@ const TEMPLATE_ASSETS: AssetMap = {
   "stat/style.css": stat_style,
   "code/template.njk": code_template,
   "code/style.css": code_style,
+  "chart/template.njk": chart_template,
+  "chart/style.css": chart_style,
   "_blocks/divider.njk": block_divider,
   "_blocks/blockquote.njk": block_blockquote,
   "_blocks/spacer.njk": block_spacer,
