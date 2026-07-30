@@ -1,0 +1,20 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "frame",
+  "theme": "kyoto",
+  "size": "instagram-sq",
+  "blocks": [
+    {
+      "id": "quote",
+      "type": "blockquote",
+      "parts": [
+        { "text": "The best interface is the one you don't have to think about.", "style": "normal" }
+      ]
+    },
+    {
+      "id": "attribution",
+      "type": "text",
+      "content": "Kyoto · 1080²"
+    }
+  ]
+}

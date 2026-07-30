@@ -220,3 +220,22 @@ describe("spotlight template", () => {
   });
 });
 
+describe("frame template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/kyoto.json"));
+
+  test("renders the four corner marks and the bordered plate", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/frame-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    expect(html).toContain('frame-mark tl');
+    expect(html).toContain('frame-mark tr');
+    expect(html).toContain('frame-mark bl');
+    expect(html).toContain('frame-mark br');
+    expect(html).toContain("frame-inner");
+  });
+
+  test("style.css has no literal hex color outside theme-injected :root vars", () => {
+    assertNoHardcodedHex("frame");
+  });
+});
+

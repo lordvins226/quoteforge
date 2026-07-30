@@ -18,6 +18,8 @@ import terminal_template from "../templates/terminal/template.njk" with { type: 
 import terminal_style from "../templates/terminal/style.css" with { type: "text" };
 import spotlight_template from "../templates/spotlight/template.njk" with { type: "text" };
 import spotlight_style from "../templates/spotlight/style.css" with { type: "text" };
+import frame_template from "../templates/frame/template.njk" with { type: "text" };
+import frame_style from "../templates/frame/style.css" with { type: "text" };
 
 import block_divider from "../templates/_blocks/divider.njk" with { type: "text" };
 import block_blockquote from "../templates/_blocks/blockquote.njk" with { type: "text" };
@@ -63,6 +65,8 @@ const TEMPLATE_ASSETS: AssetMap = {
   "terminal/style.css": terminal_style,
   "spotlight/template.njk": spotlight_template,
   "spotlight/style.css": spotlight_style,
+  "frame/template.njk": frame_template,
+  "frame/style.css": frame_style,
   "_blocks/divider.njk": block_divider,
   "_blocks/blockquote.njk": block_blockquote,
   "_blocks/spacer.njk": block_spacer,
