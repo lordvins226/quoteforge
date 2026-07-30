@@ -12,6 +12,8 @@ import list_template from "../templates/list/template.njk" with { type: "text" }
 import list_style from "../templates/list/style.css" with { type: "text" };
 import manifesto_template from "../templates/manifesto/template.njk" with { type: "text" };
 import manifesto_style from "../templates/manifesto/style.css" with { type: "text" };
+import split_template from "../templates/split/template.njk" with { type: "text" };
+import split_style from "../templates/split/style.css" with { type: "text" };
 
 import block_divider from "../templates/_blocks/divider.njk" with { type: "text" };
 import block_blockquote from "../templates/_blocks/blockquote.njk" with { type: "text" };
@@ -51,6 +53,8 @@ const TEMPLATE_ASSETS: AssetMap = {
   "list/style.css": list_style,
   "manifesto/template.njk": manifesto_template,
   "manifesto/style.css": manifesto_style,
+  "split/template.njk": split_template,
+  "split/style.css": split_style,
   "_blocks/divider.njk": block_divider,
   "_blocks/blockquote.njk": block_blockquote,
   "_blocks/spacer.njk": block_spacer,

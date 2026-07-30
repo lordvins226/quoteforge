@@ -1,0 +1,31 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "split",
+  "theme": "dark-teal",
+  "size": "og",
+  "meta": {
+    "title": "Changelog"
+  },
+  "blocks": [
+    {
+      "id": "version",
+      "type": "headline",
+      "parts": [
+        { "text": "0.6", "style": "normal" },
+        { "text": ".0", "style": "muted" }
+      ]
+    },
+    {
+      "id": "headline",
+      "type": "headline",
+      "parts": [
+        { "text": "Safe-aspect, alignment, and five new presets", "style": "normal" }
+      ]
+    },
+    {
+      "id": "sub",
+      "type": "text",
+      "content": "Content now survives a center-crop. Vertical placement is yours to set."
+    }
+  ]
+}
