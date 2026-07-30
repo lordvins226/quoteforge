@@ -385,3 +385,35 @@ describe("polaroid template", () => {
     expect(styleCSS).toContain("rgba(0, 0, 0,");
   });
 });
+
+describe("window template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/kyoto.json"));
+
+  test("renders the three dots, the eyebrow as the URL pill, and the CTA button", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/window-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1200, h: 675 });
+
+    expect(html).toContain("window-dot");
+    expect(html).toContain(`<span class="window-url">${card.eyebrow as string}</span>`);
+    expect(html).toContain("Install in 30s");
+    expect(html).toContain("block-callout");
+  });
+
+  test("renders an empty URL pill when eyebrow is absent", () => {
+    const card = CardContentSchema.parse({
+      template: "window",
+      theme: "kyoto",
+      size: "twitter",
+      blocks: [
+        { type: "headline", parts: [{ text: "No chrome label here", style: "normal" }] },
+      ],
+    });
+    const html = renderTemplate(card, theme, { w: 1200, h: 675 });
+
+    expect(html).toContain('<span class="window-url"></span>');
+  });
+
+  test("style.css has no literal hex color outside theme-injected :root vars", () => {
+    assertNoHardcodedHex("window");
+  });
+});

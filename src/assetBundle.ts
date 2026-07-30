@@ -26,6 +26,8 @@ import sticky_template from "../templates/sticky/template.njk" with { type: "tex
 import sticky_style from "../templates/sticky/style.css" with { type: "text" };
 import polaroid_template from "../templates/polaroid/template.njk" with { type: "text" };
 import polaroid_style from "../templates/polaroid/style.css" with { type: "text" };
+import window_template from "../templates/window/template.njk" with { type: "text" };
+import window_style from "../templates/window/style.css" with { type: "text" };
 
 import block_divider from "../templates/_blocks/divider.njk" with { type: "text" };
 import block_blockquote from "../templates/_blocks/blockquote.njk" with { type: "text" };
@@ -79,6 +81,8 @@ const TEMPLATE_ASSETS: AssetMap = {
   "sticky/style.css": sticky_style,
   "polaroid/template.njk": polaroid_template,
   "polaroid/style.css": polaroid_style,
+  "window/template.njk": window_template,
+  "window/style.css": window_style,
   "_blocks/divider.njk": block_divider,
   "_blocks/blockquote.njk": block_blockquote,
   "_blocks/spacer.njk": block_spacer,

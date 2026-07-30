@@ -1,0 +1,83 @@
+/* Window — browser chrome: dot outlines, a pill URL field from card.eyebrow,
+   then a headline / supporting line / solid-accent CTA button. */
+
+.window-frame {
+  width: 100%;
+  border: 1px solid var(--callout-border);
+}
+
+.window-bar {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, calc(var(--gap) * 0.5 * var(--space-scale)), 20px);
+  padding:
+    clamp(12px, calc(var(--padding) * 0.4 * var(--space-scale)), 28px)
+    clamp(16px, calc(var(--padding) * 0.5 * var(--space-scale)), 36px);
+  border-bottom: 1px solid var(--callout-border);
+}
+
+.window-dot {
+  flex: none;
+  width: clamp(8px, calc(0.7rem * var(--space-scale)), 18px);
+  height: clamp(8px, calc(0.7rem * var(--space-scale)), 18px);
+  border-radius: 50%;
+  border: 1px solid var(--callout-border);
+}
+
+.window-url {
+  flex: 1;
+  margin-left: clamp(4px, calc(0.4rem * var(--space-scale)), 12px);
+  font-family: var(--font-body);
+  font-size: clamp(11px, calc(0.8rem * var(--type-scale)), 18px);
+  color: var(--body);
+  border: 1px solid var(--callout-border);
+  border-radius: 100px;
+  padding:
+    clamp(4px, calc(0.35rem * var(--space-scale)), 10px)
+    clamp(12px, calc(1rem * var(--space-scale)), 28px);
+  text-align: center;
+}
+
+.window-body {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, calc(var(--gap) * var(--space-scale)), 32px);
+  padding: clamp(24px, calc(var(--padding) * var(--space-scale)), 72px);
+}
+
+.window-body .headline {
+  font-size: clamp(28px, calc(var(--headline-size) * var(--headline-scale) * 1.05), 120px);
+  line-height: 1.12;
+}
+
+.window-body .block-text p {
+  font-family: var(--font-body);
+  font-size: clamp(var(--body-min), calc(var(--body-size) * var(--type-scale)), 26px);
+  color: var(--body);
+}
+
+.window-body .block-callout {
+  flex: 0 0 auto;
+  align-self: flex-start;
+}
+
+.window-body .block-callout .callout-item {
+  align-self: flex-start;
+  width: fit-content;
+  background: var(--accent);
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 0;
+}
+
+.window-body .callout-label:empty {
+  display: none;
+  margin-bottom: 0;
+}
+
+.window-body .callout-label,
+.window-body .callout-text {
+  color: var(--bg);
+  font-family: var(--font-body);
+  font-weight: 600;
+}

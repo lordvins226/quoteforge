@@ -1,0 +1,28 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "window",
+  "theme": "kyoto",
+  "size": "twitter",
+  "eyebrow": "quoteforge.dev",
+  "blocks": [
+    {
+      "id": "headline",
+      "type": "headline",
+      "parts": [
+        { "text": "JSON in. PNG out.", "style": "normal" }
+      ]
+    },
+    {
+      "id": "sub",
+      "type": "text",
+      "content": "No cloud, no subscription, no drag-and-drop drift."
+    },
+    {
+      "id": "cta",
+      "type": "callout",
+      "items": [
+        { "label": "", "text": "Install in 30s" }
+      ]
+    }
+  ]
+}
