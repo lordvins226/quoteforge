@@ -1,9 +1,10 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { ThemeSchema, SIZES } from "../../cli/utils/validator.js";
+import { ThemeSchema } from "../../cli/utils/validator.js";
 import { renderTemplate } from "../../renderer/template-engine.js";
 import { resolveThemeRead } from "../../assetBundle.js";
 import { assertHttpOrDataImageSrc, LocalImageSrcError } from "../../renderer/image-resolver.js";
+import { resolveDimensions } from "../../renderer/dimensions.js";
 import type { CardContent, Theme, SizeName } from "../../cli/utils/validator.js";
 
 function loadTheme(name: string): Theme {
@@ -25,7 +26,18 @@ export async function previewRoute(req: Request, url: URL): Promise<Response> {
 
   const theme = loadTheme(body.theme);
   const sizeName = (body.size ?? body.card.size ?? "twitter") as SizeName;
-  const dimensions = SIZES[sizeName] ?? { w: 1200, h: 675 };
+
+  let dimensions;
+  try {
+    dimensions = resolveDimensions({
+      size: sizeName,
+      width: body.card.width,
+      height: body.card.height,
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    return Response.json({ error: message }, { status: 400 });
+  }
 
   try {
     assertHttpOrDataImageSrc(body.card);

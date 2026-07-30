@@ -69,6 +69,8 @@ function StudioApp() {
             theme: slide.theme ?? deckStore.deck.defaults.theme,
             size: slide.size ?? deckStore.deck.defaults.size,
             align: slide.align ?? deckStore.deck.defaults.align,
+            width: slide.width ?? deckStore.deck.defaults.width,
+            height: slide.height ?? deckStore.deck.defaults.height,
             blocks: slide.blocks,
           };
           return { card, theme: card.theme, size: card.size, fitContent };
@@ -146,6 +148,8 @@ function StudioApp() {
         theme: activeSlide?.theme ?? deckStore.deck.defaults.theme,
         size: activeSlide?.size ?? deckStore.deck.defaults.size,
         align: activeSlide?.align ?? deckStore.deck.defaults.align,
+        width: activeSlide?.width ?? deckStore.deck.defaults.width,
+        height: activeSlide?.height ?? deckStore.deck.defaults.height,
         blocks: activeSlide?.blocks ?? [],
       };
 
