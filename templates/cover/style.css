@@ -1,0 +1,67 @@
+/* Cover — bottom-weighted title, pinned between a top meta line and a byline row */
+
+.card.cover {
+  justify-content: space-between;
+}
+
+.cover-top {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: clamp(12px, calc(var(--gap) * var(--space-scale)), 32px);
+}
+
+.cover-meta {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: clamp(11px, calc(0.85rem * var(--type-scale)), 18px);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--body);
+}
+
+.cover-mark {
+  flex: none;
+  width: clamp(14px, calc(1.2rem * var(--space-scale)), 34px);
+  height: clamp(14px, calc(1.2rem * var(--space-scale)), 34px);
+  background: var(--accent);
+}
+
+.cover-bottom {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, calc(var(--gap) * var(--space-scale)), 32px);
+}
+
+.cover-bottom .headline {
+  font-size: clamp(28px, calc(var(--headline-size) * var(--headline-scale) * 1.15), 110px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  overflow-wrap: break-word;
+}
+
+.cover-byline {
+  display: flex;
+  justify-content: space-between;
+  gap: clamp(12px, calc(var(--gap) * var(--space-scale)), 32px);
+  border-top: 1px solid var(--callout-border);
+  padding-top: clamp(10px, calc(0.8rem * var(--space-scale)), 24px);
+}
+
+.cover-byline:empty {
+  display: none;
+  border: none;
+  padding: 0;
+}
+
+.cover-byline .block-text {
+  width: auto;
+  flex: 0 0 auto;
+}
+
+.cover-byline .block-text p {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: clamp(11px, calc(0.85rem * var(--type-scale)), 18px);
+  color: var(--body);
+}

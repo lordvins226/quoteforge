@@ -239,3 +239,62 @@ describe("frame template", () => {
   });
 });
 
+describe("cover template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/mono-slate.json"));
+
+  test("anchors the title at the bottom with a byline row", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/cover-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1080, h: 1350 });
+
+    expect(html).toContain("cover-top");
+    expect(html).toContain("cover-bottom");
+    expect(html).toContain("cover-byline");
+    expect(html).toContain("cover-mark");
+  });
+
+  test("renders card.eyebrow as the top meta line when present", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/cover-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1080, h: 1350 });
+
+    expect(card.eyebrow).toBeDefined();
+    expect(html).toContain(`<span class="cover-meta">${card.eyebrow as string}</span>`);
+  });
+
+  test("renders an empty meta line when eyebrow is absent", () => {
+    const card = CardContentSchema.parse({
+      template: "cover",
+      theme: "mono-slate",
+      size: "instagram-port",
+      blocks: [
+        { type: "headline", parts: [{ text: "No meta here", style: "normal" }] },
+      ],
+    });
+    const html = renderTemplate(card, theme, { w: 1080, h: 1350 });
+
+    expect(html).toContain('<span class="cover-meta"></span>');
+  });
+
+  test("a deck slide's editor label never renders as chrome text (regression guard)", () => {
+    const deck = DeckContentSchema.parse({
+      type: "deck",
+      defaults: { template: "cover", theme: "mono-slate", size: "instagram-port" },
+      slides: [
+        {
+          id: "s1",
+          label: "Slide 2",
+          blocks: [{ type: "headline", parts: [{ text: "Body headline", style: "normal" }] }],
+        },
+      ],
+    });
+    const slide = deck.slides[0]!;
+    const card = buildSlideCardContent(slide, deck, {});
+    const html = renderTemplate(card, theme, { w: 1080, h: 1350 });
+
+    expect(html).toContain('<span class="cover-meta"></span>');
+    expect(html).not.toContain("Slide 2");
+  });
+
+  test("style.css has no literal hex color outside theme-injected :root vars", () => {
+    assertNoHardcodedHex("cover");
+  });
+});
