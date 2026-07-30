@@ -3,8 +3,8 @@ import type { Browser, Page } from "puppeteer-core";
 import { renderTemplate } from "./template-engine.js";
 import type { RenderMeta } from "./template-engine.js";
 import type { CardContent, Theme, SizeName } from "../cli/utils/validator.js";
-import { SIZES } from "../cli/utils/validator.js";
 import { resolveChrome } from "./browser-resolver.js";
+import { resolveDimensions } from "./dimensions.js";
 
 async function launch(): Promise<Browser> {
   const { executablePath } = await resolveChrome();
@@ -19,7 +19,11 @@ export async function renderCardOnPage(
   scale = 2,
   meta?: Partial<RenderMeta>,
 ): Promise<Buffer> {
-  const dimensions = SIZES[size];
+  const dimensions = resolveDimensions({
+    size,
+    width: content.width,
+    height: content.height,
+  });
   const html = renderTemplate(content, theme, dimensions, meta);
 
   await page.setViewport({

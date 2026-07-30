@@ -103,6 +103,8 @@ export interface CardContent {
   template: string;
   theme: string;
   size: SizeName;
+  width?: number;
+  height?: number;
   meta?: { title?: string; created?: string; tags?: string[] };
   blocks: Block[];
 }
@@ -113,6 +115,8 @@ export interface Slide {
   template?: string;
   theme?: string;
   size?: SizeName;
+  width?: number;
+  height?: number;
   showCounter?: boolean;
   counter?: CounterConfig;
   blocks: Block[];
