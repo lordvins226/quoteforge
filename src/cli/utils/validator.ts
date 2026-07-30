@@ -38,55 +38,55 @@ export type PartStyle = z.infer<typeof PartStyleSchema>;
 export const PartSchema = z.object({
   text: z.string(),
   style: PartStyleSchema,
-});
+}).strict();
 export type Part = z.infer<typeof PartSchema>;
 
 export const LabeledItemSchema = z.object({
   label: z.string(),
   text: z.string(),
-});
+}).strict();
 export type LabeledItem = z.infer<typeof LabeledItemSchema>;
 
 const HeadlineBlockSchema = z.object({
   type: z.literal("headline"),
   id: z.string().optional(),
   parts: z.array(PartSchema).min(1),
-});
+}).strict();
 
 const BlockquoteBlockSchema = z.object({
   type: z.literal("blockquote"),
   id: z.string().optional(),
   parts: z.array(PartSchema).min(1),
-});
+}).strict();
 
 const TextBlockSchema = z.object({
   type: z.literal("text"),
   id: z.string().optional(),
   content: z.string(),
-});
+}).strict();
 
 const BulletListBlockSchema = z.object({
   type: z.literal("bullet-list"),
   id: z.string().optional(),
   items: z.array(LabeledItemSchema).min(1),
-});
+}).strict();
 
 const CalloutBlockSchema = z.object({
   type: z.literal("callout"),
   id: z.string().optional(),
   items: z.array(LabeledItemSchema).min(1),
-});
+}).strict();
 
 const DividerBlockSchema = z.object({
   type: z.literal("divider"),
   id: z.string().optional(),
-});
+}).strict();
 
 const SpacerBlockSchema = z.object({
   type: z.literal("spacer"),
   id: z.string().optional(),
   size: z.enum(["sm", "md", "lg"]),
-});
+}).strict();
 
 const ImageBlockSchema = z.object({
   type: z.literal("image"),
@@ -95,7 +95,7 @@ const ImageBlockSchema = z.object({
   alt: z.string().optional(),
   width: z.enum(["sm", "md", "lg", "full"]).default("full"),
   align: z.enum(["left", "center", "right"]).default("center"),
-});
+}).strict();
 
 export const BlockSchema = z.discriminatedUnion("type", [
   HeadlineBlockSchema,
@@ -113,7 +113,7 @@ const MetaSchema = z.object({
   title: z.string().optional(),
   created: z.string().optional(),
   tags: z.array(z.string()).optional(),
-});
+}).strict();
 
 export const ThemeColorsSchema = z.object({
   background: z.string(),
@@ -128,7 +128,7 @@ export const ThemeColorsSchema = z.object({
   "bullet-dot": z.string(),
   "slide-counter-bg": z.string(),
   "slide-counter-text": z.string(),
-});
+}).strict();
 
 export const ThemeTypographySchema = z.object({
   "font-headline": z.string(),
@@ -138,12 +138,12 @@ export const ThemeTypographySchema = z.object({
   "headline-size": z.string(),
   "body-size": z.string(),
   "line-height": z.string(),
-});
+}).strict();
 
 export const ThemeSpacingSchema = z.object({
   padding: z.string(),
   "block-gap": z.string(),
-});
+}).strict();
 
 export const ThemeSchema = z.object({
   name: z.string(),
@@ -151,14 +151,14 @@ export const ThemeSchema = z.object({
   colors: ThemeColorsSchema,
   typography: ThemeTypographySchema,
   spacing: ThemeSpacingSchema,
-});
+}).strict();
 export type Theme = z.infer<typeof ThemeSchema>;
 
 const CounterConfigSchema = z.object({
   format: z.string(),
   position: z.enum(["bottom-right", "bottom-left", "bottom-center", "top-right"]),
   style: z.enum(["pill", "plain", "dots"]),
-});
+}).strict();
 
 const DimensionSchema = z.number().int().min(1).max(8000);
 
@@ -210,7 +210,7 @@ export const CardContentSchema = z.object({
   height: DimensionSchema.optional(),
   meta: MetaSchema.optional(),
   blocks: z.array(BlockSchema).min(1),
-}).superRefine(refineCustomDimensions);
+}).strict().superRefine(refineCustomDimensions);
 export type CardContent = z.infer<typeof CardContentSchema>;
 
 const SlideSchema = z.object({
@@ -224,7 +224,7 @@ const SlideSchema = z.object({
   showCounter: z.boolean().optional(),
   counter: CounterConfigSchema.optional(),
   blocks: z.array(BlockSchema).min(1),
-}).superRefine(refineCustomDimensions);
+}).strict().superRefine(refineCustomDimensions);
 
 const DeckDefaultsSchema = z.object({
   template: z.string(),
@@ -234,7 +234,7 @@ const DeckDefaultsSchema = z.object({
   height: DimensionSchema.optional(),
   showCounter: z.boolean().optional(),
   counter: CounterConfigSchema.optional(),
-}).superRefine(refineCustomDimensions);
+}).strict().superRefine(refineCustomDimensions);
 
 export const DeckContentSchema = z.object({
   $schema: z.string().optional(),
@@ -242,7 +242,7 @@ export const DeckContentSchema = z.object({
   meta: MetaSchema.optional(),
   defaults: DeckDefaultsSchema,
   slides: z.array(SlideSchema).min(1),
-});
+}).strict();
 export type DeckContent = z.infer<typeof DeckContentSchema>;
 
 export type ValidationResult =

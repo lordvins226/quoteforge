@@ -1,4 +1,6 @@
 import { describe, test, expect } from "bun:test";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import {
   BlockSchema,
   CardContentSchema,
@@ -334,5 +336,76 @@ describe("Custom dimensions in decks", () => {
       slides: [{ id: "s1", width: 800, height: 600, blocks: slideBlocks }],
     };
     expect(() => DeckContentSchema.parse(deck)).toThrow(/only allowed when size is \\?"custom\\?"/);
+  });
+});
+
+describe("Strict schemas", () => {
+  const card = {
+    template: "manifesto",
+    theme: "dark-teal",
+    size: "twitter",
+    blocks: [{ type: "headline", parts: [{ text: "Test", style: "normal" }] }],
+  };
+
+  test("rejects an unknown root key and names it", () => {
+    expect(() => CardContentSchema.parse({ ...card, bogusKey: 1 }))
+      .toThrow(/bogusKey/);
+  });
+
+  test("rejects a misspelled field inside a block", () => {
+    expect(() => CardContentSchema.parse({
+      ...card,
+      blocks: [{ type: "headline", part: [{ text: "Test", style: "normal" }] }],
+    })).toThrow();
+  });
+
+  test("rejects an unknown key inside a block", () => {
+    expect(() => CardContentSchema.parse({
+      ...card,
+      blocks: [{ type: "headline", parts: [{ text: "T", style: "normal" }], bogus: 1 }],
+    })).toThrow(/bogus/);
+  });
+
+  test("rejects an unknown key inside a part", () => {
+    expect(() => CardContentSchema.parse({
+      ...card,
+      blocks: [{ type: "headline", parts: [{ text: "T", style: "normal", bogus: 1 }] }],
+    })).toThrow(/bogus/);
+  });
+
+  test("rejects an unknown key inside meta", () => {
+    expect(() => CardContentSchema.parse({ ...card, meta: { title: "x", bogus: 1 } }))
+      .toThrow(/bogus/);
+  });
+
+  test("rejects an unknown key in a theme", () => {
+    const theme = JSON.parse(
+      readFileSync(resolve(import.meta.dir, "../../themes/dark-teal.json"), "utf-8"),
+    ) as Record<string, unknown>;
+    expect(() => ThemeSchema.parse({ ...theme, bogus: 1 })).toThrow(/bogus/);
+  });
+
+  test("rejects an unknown key in deck defaults", () => {
+    expect(() => DeckContentSchema.parse({
+      type: "deck",
+      defaults: { template: "quote", theme: "dark-teal", size: "twitter", bogus: 1 },
+      slides: [{ id: "s1", blocks: card.blocks }],
+    })).toThrow(/bogus/);
+  });
+
+  test("rejects an unknown key on a slide", () => {
+    expect(() => DeckContentSchema.parse({
+      type: "deck",
+      defaults: { template: "quote", theme: "dark-teal", size: "twitter" },
+      slides: [{ id: "s1", blocks: card.blocks, bogus: 1 }],
+    })).toThrow(/bogus/);
+  });
+
+  test("still accepts the documented extension points", () => {
+    expect(() => CardContentSchema.parse({
+      ...card,
+      $schema: "./schema.json",
+      meta: { title: "T", created: "2026-07-19", tags: ["a"] },
+    })).not.toThrow();
   });
 });
