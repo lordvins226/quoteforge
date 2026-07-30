@@ -20,13 +20,14 @@ export async function renderCardOnPage(
   scale = 2,
   meta?: Partial<RenderMeta>,
   fitContent = false,
+  safeInset?: { top: number; right: number; bottom: number; left: number },
 ): Promise<Buffer> {
   const dimensions = resolveDimensions({
     size,
     width: content.width,
     height: content.height,
   });
-  const html = renderTemplate(content, theme, dimensions, meta);
+  const html = renderTemplate(content, theme, dimensions, meta, safeInset);
 
   await page.setViewport({
     width: dimensions.w,
@@ -72,13 +73,14 @@ export async function renderCard(
   meta?: Partial<RenderMeta>,
   browser?: Browser,
   fitContent = false,
+  safeInset?: { top: number; right: number; bottom: number; left: number },
 ): Promise<Buffer> {
   const ownBrowser = !browser;
   const b = browser ?? await launch();
   try {
     const page = await b.newPage();
     try {
-      return await renderCardOnPage(page, content, theme, size, scale, meta, fitContent);
+      return await renderCardOnPage(page, content, theme, size, scale, meta, fitContent, safeInset);
     } finally {
       await page.close();
     }

@@ -15,6 +15,7 @@ export interface SlideRenderOptions {
   concurrency?: number;
   scale?: number;
   fitContent?: boolean;
+  safeInset?: { top: number; right: number; bottom: number; left: number };
 }
 
 type Slide = DeckContent["slides"][number];
@@ -123,6 +124,7 @@ export async function renderDeck(
     concurrency = 4,
     scale = 2,
     fitContent = false,
+    safeInset,
   } = opts;
 
   const totalSlides = deck.slides.length;
@@ -165,7 +167,7 @@ export async function renderDeck(
       const page = await pool.acquire();
       let buffer: Buffer;
       try {
-        buffer = await renderCardOnPage(page, cardContent, theme, sizeName, scale, meta, fitContent);
+        buffer = await renderCardOnPage(page, cardContent, theme, sizeName, scale, meta, fitContent, safeInset);
       } finally {
         pool.release(page);
       }

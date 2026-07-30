@@ -22,7 +22,11 @@ body {
 .card {
   width: 100%;
   height: 100vh;
-  padding: clamp(24px, calc(var(--padding) * var(--space-scale)), 72px);
+  padding:
+    calc(clamp(24px, calc(var(--padding) * var(--space-scale)), 72px) + var(--safe-top))
+    calc(clamp(24px, calc(var(--padding) * var(--space-scale)), 72px) + var(--safe-right))
+    calc(clamp(24px, calc(var(--padding) * var(--space-scale)), 72px) + var(--safe-bottom))
+    calc(clamp(24px, calc(var(--padding) * var(--space-scale)), 72px) + var(--safe-left));
   display: flex;
   flex-direction: column;
   gap: clamp(8px, calc(var(--gap) * var(--space-scale)), 48px);
