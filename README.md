@@ -94,6 +94,7 @@ quoteforge generate <file> [options]
 quoteforge generate content/my-card.json
 quoteforge generate content/my-card.json --size facebook-post --theme dark-orange
 quoteforge generate content/my-card.json --no-timestamp --open
+quoteforge generate content/my-card.json --fit-content
 ```
 
 ### `slides` — Deck → numbered PNGs + ZIP

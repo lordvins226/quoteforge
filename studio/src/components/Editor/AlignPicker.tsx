@@ -1,4 +1,5 @@
-type Align = "top" | "center" | "bottom" | "spread";
+import type { Align } from "../../types";
+
 const OPTIONS: { value: Align; label: string }[] = [
   { value: "top", label: "Top" },
   { value: "center", label: "Center" },

@@ -12,5 +12,5 @@ export function computeContentClip(box: Rect, padding: number, canvas: Dimension
   const top = Math.max(0, box.y - padding);
   const right = Math.min(canvas.w, box.x + box.width + padding);
   const bottom = Math.min(canvas.h, box.y + box.height + padding);
-  return { x: left, y: top, width: right - left, height: bottom - top };
+  return { x: left, y: top, width: Math.max(0, right - left), height: Math.max(0, bottom - top) };
 }

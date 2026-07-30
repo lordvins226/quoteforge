@@ -163,6 +163,7 @@ describe("SizeName enum — all 22 sizes", () => {
     "facebook-event", "facebook-group-cover",
     "threads-sq", "threads-port", "threads-land",
     "story", "custom",
+    "og", "readme-hero", "slide-16x9", "4x3", "3x2",
   ];
 
   test("has exactly 22 sizes", () => {

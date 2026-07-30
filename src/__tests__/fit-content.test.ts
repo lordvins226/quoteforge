@@ -31,4 +31,10 @@ describe("computeContentClip", () => {
     expect(clip.width).toBe(1080);
     expect(clip.height).toBe(1080);
   });
+
+  test("never returns negative width/height when box is fully outside the canvas", () => {
+    const clip = computeContentClip({ x: 5000, y: 5000, width: 100, height: 100 }, 40, { w: 1080, h: 1080 });
+    expect(clip.width).toBe(0);
+    expect(clip.height).toBe(0);
+  });
 });

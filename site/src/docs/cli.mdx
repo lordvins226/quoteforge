@@ -12,7 +12,11 @@ quoteforge generate <file> [options]
 
 The `--fit-content` flag (alias `--trim`) crops the output to the content bounding box plus the theme's padding. Output dimensions become content-dependent instead of fixed to the size preset. This is useful for single cards where you want minimal void space.
 
-When used with `slides`, the flag may produce slides with different heights (if content height varies per slide). This is intentional but worth noting in deck workflows.
+```bash
+quoteforge generate card.json --fit-content    # crop to content, no surrounding whitespace
+```
+
+When used with `slides`, the flag may produce slides with different heights (if content height varies per slide). This is intentional but worth noting in deck workflows. On a deck, `--fit-content` also drops the slide-counter overlay, which sits outside the content box.
 
 Options:
 
