@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import type { DeckContent, Block, BlockType, SizeName, Slide, Align } from "../types";
+import { SIZES } from "../types";
 
 interface DeckStore {
   deck: DeckContent;
@@ -27,6 +28,7 @@ interface DeckStore {
   selectBlock: (id: string | null) => void;
   setDeckTheme: (name: string) => void;
   setDeckSize: (size: SizeName) => void;
+  setDeckDimensions: (width: number, height: number) => void;
   setDeckAlign: (align: Align) => void;
   toggleCounter: () => void;
   setZoom: (zoom: number) => void;
@@ -241,8 +243,29 @@ export const useDeckStore = create<DeckStore>((set) => ({
     })),
 
   setDeckSize: (size) =>
+    set((s) => {
+      const defaults = { ...s.deck.defaults, size };
+      if (size === "custom") {
+        if (defaults.width === undefined || defaults.height === undefined) {
+          const dims = SIZES[s.deck.defaults.size];
+          defaults.width = dims.w || 1200;
+          defaults.height = dims.h || 675;
+        }
+      } else {
+        delete defaults.width;
+        delete defaults.height;
+      }
+      return {
+        deck: { ...s.deck, defaults },
+        isDirty: true,
+        past: snapshot(s.past, s.deck),
+        future: [],
+      };
+    }),
+
+  setDeckDimensions: (width, height) =>
     set((s) => ({
-      deck: { ...s.deck, defaults: { ...s.deck.defaults, size } },
+      deck: { ...s.deck, defaults: { ...s.deck.defaults, width, height } },
       isDirty: true,
       past: snapshot(s.past, s.deck),
       future: [],

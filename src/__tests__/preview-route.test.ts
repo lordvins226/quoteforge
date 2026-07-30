@@ -31,6 +31,16 @@ describe("previewRoute", () => {
     expect(res.status).toBe(400);
   });
 
+  test("returns 400 for a custom-size card with width 0", async () => {
+    const req = makeRequest({
+      card: makeCard({ width: 0, height: 600 }),
+      theme: "brutal-white",
+      size: "custom",
+    });
+    const res = await previewRoute(req, new URL("http://localhost/api/preview"));
+    expect(res.status).toBe(400);
+  });
+
   test("resolves custom width/height instead of the 0x0 sentinel", async () => {
     const req = makeRequest({
       card: makeCard({ width: 800, height: 600 }),

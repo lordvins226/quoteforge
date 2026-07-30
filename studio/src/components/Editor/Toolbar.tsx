@@ -9,10 +9,13 @@ interface ToolbarProps {
   mode: ContentMode;
   theme: string;
   size: SizeName;
+  width?: number;
+  height?: number;
   align: Align | undefined;
   fitContent: boolean;
   onThemeChange: (name: string) => void;
   onSizeChange: (size: SizeName) => void;
+  onDimensionsChange: (width: number, height: number) => void;
   onAlignChange: (align: Align) => void;
   onFitContentChange: (fitContent: boolean) => void;
   onExportPng: () => void;
@@ -25,8 +28,8 @@ interface ToolbarProps {
 }
 
 export function Toolbar({
-  mode, theme, size, align, fitContent,
-  onThemeChange, onSizeChange, onAlignChange, onFitContentChange,
+  mode, theme, size, width, height, align, fitContent,
+  onThemeChange, onSizeChange, onDimensionsChange, onAlignChange, onFitContentChange,
   onExportPng, onExportDeck,
   onUndo, onRedo, canUndo, canRedo,
   isDirty,
@@ -40,6 +43,31 @@ export function Toolbar({
 
       <ThemePicker current={theme} onChange={onThemeChange} />
       <SizePicker current={size} onChange={onSizeChange} mode={mode} />
+      {size === "custom" && (
+        <div className="flex items-center gap-1">
+          <input
+            type="number"
+            className="w-16 px-1.5 py-1 text-xs bg-neutral-800 border border-neutral-700 rounded text-neutral-200"
+            value={width ?? ""}
+            onChange={(e) => {
+              const w = Number(e.target.value);
+              if (e.target.value !== "" && Number.isFinite(w) && w > 0) onDimensionsChange(w, height ?? 0);
+            }}
+            title="Width"
+          />
+          <span className="text-neutral-600 text-xs">×</span>
+          <input
+            type="number"
+            className="w-16 px-1.5 py-1 text-xs bg-neutral-800 border border-neutral-700 rounded text-neutral-200"
+            value={height ?? ""}
+            onChange={(e) => {
+              const h = Number(e.target.value);
+              if (e.target.value !== "" && Number.isFinite(h) && h > 0) onDimensionsChange(width ?? 0, h);
+            }}
+            title="Height"
+          />
+        </div>
+      )}
       <AlignPicker current={align} onChange={onAlignChange} />
 
       <div className="w-px h-5 bg-neutral-700" />

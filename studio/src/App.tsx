@@ -167,6 +167,9 @@ function StudioApp() {
         fitContent={fitContent}
         onThemeChange={mode === "card" ? cardStore.setTheme : deckStore.setDeckTheme}
         onSizeChange={mode === "card" ? cardStore.setSize : deckStore.setDeckSize}
+        width={mode === "card" ? cardStore.card.width : deckStore.deck.defaults.width}
+        height={mode === "card" ? cardStore.card.height : deckStore.deck.defaults.height}
+        onDimensionsChange={mode === "card" ? cardStore.setDimensions : deckStore.setDeckDimensions}
         onAlignChange={mode === "card" ? cardStore.setAlign : deckStore.setDeckAlign}
         onFitContentChange={setFitContent}
         onExportPng={handleExportPng}
@@ -212,7 +215,7 @@ function StudioApp() {
           <PreviewPane
             card={previewCard}
             theme={currentTheme}
-            size={currentSize}
+            size={previewCard.size}
             slideIndex={mode === "deck" ? deckStore.activeSlideIndex : 0}
             slideTotal={mode === "deck" ? deckStore.deck.slides.length : 1}
             showCounter={mode === "deck" ? deckStore.showCounter : false}

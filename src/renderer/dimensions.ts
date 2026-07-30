@@ -17,6 +17,12 @@ export function resolveDimensions(input: SizedContent): Dimensions {
     if (input.width === undefined || input.height === undefined) {
       throw new Error('size "custom" requires both "width" and "height"');
     }
+    if (!Number.isInteger(input.width) || input.width < 1 || input.width > 8000) {
+      throw new Error('size "custom" requires "width" to be an integer between 1 and 8000');
+    }
+    if (!Number.isInteger(input.height) || input.height < 1 || input.height > 8000) {
+      throw new Error('size "custom" requires "height" to be an integer between 1 and 8000');
+    }
     return { w: input.width, h: input.height };
   }
 
