@@ -1,6 +1,7 @@
-import type { ContentMode, SizeName } from "../../types";
+import type { ContentMode, SizeName, Align } from "../../types";
 import { ThemePicker } from "./ThemePicker";
 import { SizePicker } from "./SizePicker";
+import { AlignPicker } from "./AlignPicker";
 import { Button } from "../ui/Button";
 import { Download, FolderArchive, Undo2, Redo2 } from "lucide-react";
 
@@ -8,8 +9,15 @@ interface ToolbarProps {
   mode: ContentMode;
   theme: string;
   size: SizeName;
+  width?: number;
+  height?: number;
+  align: Align | undefined;
+  fitContent: boolean;
   onThemeChange: (name: string) => void;
   onSizeChange: (size: SizeName) => void;
+  onDimensionsChange: (width: number, height: number) => void;
+  onAlignChange: (align: Align) => void;
+  onFitContentChange: (fitContent: boolean) => void;
   onExportPng: () => void;
   onExportDeck?: () => void;
   onUndo: () => void;
@@ -20,8 +28,8 @@ interface ToolbarProps {
 }
 
 export function Toolbar({
-  mode, theme, size,
-  onThemeChange, onSizeChange,
+  mode, theme, size, width, height, align, fitContent,
+  onThemeChange, onSizeChange, onDimensionsChange, onAlignChange, onFitContentChange,
   onExportPng, onExportDeck,
   onUndo, onRedo, canUndo, canRedo,
   isDirty,
@@ -35,6 +43,32 @@ export function Toolbar({
 
       <ThemePicker current={theme} onChange={onThemeChange} />
       <SizePicker current={size} onChange={onSizeChange} mode={mode} />
+      {size === "custom" && (
+        <div className="flex items-center gap-1">
+          <input
+            type="number"
+            className="w-16 px-1.5 py-1 text-xs bg-neutral-800 border border-neutral-700 rounded text-neutral-200"
+            value={width ?? ""}
+            onChange={(e) => {
+              const w = Number(e.target.value);
+              if (e.target.value !== "" && Number.isFinite(w) && w > 0) onDimensionsChange(w, height ?? 0);
+            }}
+            title="Width"
+          />
+          <span className="text-neutral-600 text-xs">×</span>
+          <input
+            type="number"
+            className="w-16 px-1.5 py-1 text-xs bg-neutral-800 border border-neutral-700 rounded text-neutral-200"
+            value={height ?? ""}
+            onChange={(e) => {
+              const h = Number(e.target.value);
+              if (e.target.value !== "" && Number.isFinite(h) && h > 0) onDimensionsChange(width ?? 0, h);
+            }}
+            title="Height"
+          />
+        </div>
+      )}
+      <AlignPicker current={align} onChange={onAlignChange} />
 
       <div className="w-px h-5 bg-neutral-700" />
 
@@ -46,6 +80,11 @@ export function Toolbar({
       </Button>
 
       <div className="w-px h-5 bg-neutral-700" />
+
+      <label className="flex items-center gap-1.5 text-xs text-neutral-300 cursor-pointer select-none">
+        <input type="checkbox" checked={fitContent} onChange={(e) => onFitContentChange(e.target.checked)} />
+        Fit content
+      </label>
 
       <Button variant="primary" size="sm" onClick={onExportPng}>
         <Download size={14} className="mr-1" /> PNG

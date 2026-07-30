@@ -6,6 +6,8 @@ import type { RenderMeta } from "./template-engine.js";
 import type { DeckContent, Theme, SizeName, CardContent } from "../cli/utils/validator.js";
 import { ThemeSchema } from "../cli/utils/validator.js";
 import { resolveThemeRead } from "../assetBundle.js";
+import { resolveDimensions } from "./dimensions.js";
+import { computeSafeInset } from "./safe-aspect.js";
 
 export interface SlideRenderOptions {
   sizeOverride?: SizeName;
@@ -14,6 +16,33 @@ export interface SlideRenderOptions {
   noCounter?: boolean;
   concurrency?: number;
   scale?: number;
+  fitContent?: boolean;
+  safeAspectRatio?: number;
+}
+
+type Slide = DeckContent["slides"][number];
+
+export function buildSlideCardContent(
+  slide: Slide,
+  deck: DeckContent,
+  opts: { sizeOverride?: SizeName; themeOverride?: string },
+): CardContent {
+  const themeName = opts.themeOverride ?? slide.theme ?? deck.defaults.theme;
+  const sizeName = (opts.sizeOverride ?? slide.size ?? deck.defaults.size) as SizeName;
+  const templateName = slide.template ?? deck.defaults.template;
+  const width = slide.width ?? deck.defaults.width;
+  const height = slide.height ?? deck.defaults.height;
+  const align = slide.align ?? deck.defaults.align;
+
+  return {
+    template: templateName,
+    theme: themeName,
+    size: sizeName,
+    width,
+    height,
+    align,
+    blocks: slide.blocks,
+  };
 }
 
 function loadTheme(name: string): Theme {
@@ -96,6 +125,8 @@ export async function renderDeck(
     noCounter = false,
     concurrency = 4,
     scale = 2,
+    fitContent = false,
+    safeAspectRatio,
   } = opts;
 
   const totalSlides = deck.slides.length;
@@ -115,7 +146,6 @@ export async function renderDeck(
 
       const themeName = themeOverride ?? slide.theme ?? deck.defaults.theme;
       const sizeName = (sizeOverride ?? slide.size ?? deck.defaults.size) as SizeName;
-      const templateName = slide.template ?? deck.defaults.template;
       const showCounter = noCounter
         ? false
         : (slide.showCounter ?? deck.defaults.showCounter ?? false);
@@ -127,12 +157,7 @@ export async function renderDeck(
 
       const theme = loadTheme(themeName);
 
-      const cardContent: CardContent = {
-        template: templateName,
-        theme: themeName,
-        size: sizeName,
-        blocks: slide.blocks,
-      };
+      const cardContent = buildSlideCardContent(slide, deck, { sizeOverride, themeOverride });
 
       const meta: Partial<RenderMeta> = {
         slideIndex: originalIndex,
@@ -141,10 +166,17 @@ export async function renderDeck(
         counter,
       };
 
+      const safeInset = safeAspectRatio !== undefined
+        ? computeSafeInset(
+            resolveDimensions({ size: sizeName, width: cardContent.width, height: cardContent.height }),
+            safeAspectRatio,
+          )
+        : undefined;
+
       const page = await pool.acquire();
       let buffer: Buffer;
       try {
-        buffer = await renderCardOnPage(page, cardContent, theme, sizeName, scale, meta);
+        buffer = await renderCardOnPage(page, cardContent, theme, sizeName, scale, meta, fitContent, safeInset);
       } finally {
         pool.release(page);
       }

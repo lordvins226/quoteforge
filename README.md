@@ -79,12 +79,14 @@ quoteforge preview content/examples/manifesto-wiki.json
 ```
 quoteforge generate <file> [options]
 
-  -t, --theme <name>   Override theme
-  -s, --size <name>    Override size (see Size Reference below)
-  -o, --output <path>  Output file path
-  --scale <n>          Pixel ratio (default: 2)
-  --open               Open output file after generation
-  --no-timestamp       Omit timestamp from filename
+  -t, --theme <name>      Override theme
+  -s, --size <name>       Override size (see Size Reference below)
+  -o, --output <path>     Output file path
+  --scale <n>             Pixel ratio (default: 2)
+  --safe-aspect <ratio>   Constrain content for center-crop (e.g. 16:9)
+  --fit-content           Crop to content bounding box + theme padding
+  --open                  Open output file after generation
+  --no-timestamp          Omit timestamp from filename
 ```
 
 **Examples:**
@@ -93,6 +95,8 @@ quoteforge generate <file> [options]
 quoteforge generate content/my-card.json
 quoteforge generate content/my-card.json --size facebook-post --theme dark-orange
 quoteforge generate content/my-card.json --no-timestamp --open
+quoteforge generate content/my-card.json --safe-aspect 16:9
+quoteforge generate content/my-card.json --fit-content
 ```
 
 ### `slides` — Deck → numbered PNGs + ZIP
@@ -100,16 +104,18 @@ quoteforge generate content/my-card.json --no-timestamp --open
 ```
 quoteforge slides <file> [options]
 
-  -t, --theme <name>   Override theme for all slides
-  -s, --size <name>    Override size for all slides
-  -o, --output <dir>   Output directory
-  --slide <n>          Render only slide N (1-indexed), no ZIP
-  --no-zip             Skip ZIP creation
-  --no-counter         Disable counter overlay for all slides
-  --concurrency <n>    Parallel render workers (default: 4)
-  --zip-level <n>      ZIP compression level 0-9 (default: 6)
-  --scale <n>          Pixel ratio (default: 2)
-  --open               Open output folder after generation
+  -t, --theme <name>      Override theme for all slides
+  -s, --size <name>       Override size for all slides
+  -o, --output <dir>      Output directory
+  --slide <n>             Render only slide N (1-indexed), no ZIP
+  --no-zip                Skip ZIP creation
+  --no-counter            Disable counter overlay for all slides
+  --safe-aspect <ratio>   Constrain content for center-crop (e.g. 16:9)
+  --fit-content           Crop each slide to content bounding box + theme padding
+  --concurrency <n>       Parallel render workers (default: 4)
+  --zip-level <n>         ZIP compression level 0-9 (default: 6)
+  --scale <n>             Pixel ratio (default: 2)
+  --open                  Open output folder after generation
 ```
 
 **Examples:**
@@ -118,6 +124,7 @@ quoteforge slides <file> [options]
 quoteforge slides decks/intro-deck.json
 quoteforge slides decks/intro-deck.json --size facebook-square
 quoteforge slides decks/intro-deck.json --slide 3
+quoteforge slides decks/intro-deck.json --safe-aspect 16:9
 quoteforge slides decks/intro-deck.json --no-counter --theme light-minimal
 ```
 
@@ -176,11 +183,13 @@ quoteforge themes validate <file>                # Validate a theme file
 ```
 quoteforge batch <directory> [options]
 
-  -t, --theme <name>   Override theme for all files
-  -s, --size <name>    Override size for all files
-  -o, --output <dir>   Output directory
-  --concurrency <n>    Parallel workers (default: 2)
-  --decks              Also process deck files into individual ZIPs
+  -t, --theme <name>      Override theme for all files
+  -s, --size <name>       Override size for all files
+  -o, --output <dir>      Output directory
+  --safe-aspect <ratio>   Constrain content for center-crop (e.g. 16:9)
+  --fit-content           Crop each output to content bounding box + theme padding
+  --concurrency <n>       Parallel workers (default: 2)
+  --decks                 Also process deck files into individual ZIPs
 ```
 
 ### `validate` — Validate content files
@@ -214,9 +223,18 @@ All formats with exact pixel dimensions:
 | `threads-port` | 1080 × 1350 | 4:5 | Threads portrait *(recommended)* |
 | `threads-land` | 1080 × 566 | 1.91:1 | Threads landscape |
 | `story` | 1080 × 1920 | 9:16 | Stories (IG / FB / TW) |
+| `og` | 1200 × 630 | 1.91:1 | Open Graph / default social preview |
+| `readme-hero` | 1280 × 640 | 2:1 | Blog/README header |
+| `slide-16x9` | 1920 × 1080 | 16:9 | Slides (presentation) |
+| `4x3` | 1600 × 1200 | 4:3 | Slides / covers |
+| `3x2` | 1500 × 1000 | 3:2 | Article headers |
 | `custom` | variable | free | Custom dimensions |
 
 > Facebook carousels render best with `facebook-square` (1080×1080).
+
+### Vertical alignment
+
+By default, card content is vertically centered on the canvas. Add `"align": "spread"` to your card root to distribute blocks edge-to-edge (the pre-0.5.0 behavior). Other values are `"top"` and `"bottom"`. In decks, set alignment in `defaults` or override per-slide.
 
 ## Themes
 
@@ -237,7 +255,40 @@ All formats with exact pixel dimensions:
 | `kyoto` | `#FAF8F3` | `#D4411E` | Shippori Mincho / Inter |
 | `mono-slate` | `#F5F5F4` | `#0C0A09` | Syne / JetBrains Mono |
 
-Create your own: `quoteforge themes create my-brand`
+### Themes are fork points, not a fixed menu
+
+The twelve built-ins are starting points. Duplicating one and changing a single color
+is usually enough to match an existing brand:
+
+```bash
+quoteforge themes duplicate terminal-green my-brand
+```
+
+That writes `~/.config/quoteforge/themes/my-brand.json` — plain, hand-editable JSON.
+Change the accent:
+
+```json
+{
+  "name": "my-brand",
+  "displayName": "My Brand",
+  "colors": {
+    "accent": "#4ecdc4"
+  }
+}
+```
+
+Then render with it:
+
+```bash
+quoteforge generate card.json --theme my-brand
+```
+
+`quoteforge themes show my-brand` prints the resolved theme with color swatches, and
+`quoteforge themes list` includes it alongside the built-ins.
+
+`terminal-green` is a good base for a dark developer palette — JetBrains Mono on a
+near-black background. `paper-cream` and `light-minimal` suit editorial and print-like
+work.
 
 ## Templates
 

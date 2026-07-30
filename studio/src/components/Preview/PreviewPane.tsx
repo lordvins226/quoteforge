@@ -20,8 +20,8 @@ export function PreviewPane({ card, theme, size, slideIndex = 0, slideTotal = 1,
   const [scale, setScale] = useState(0.5);
 
   const sizeInfo = SIZES[size];
-  const cardW = sizeInfo?.w || 1200;
-  const cardH = sizeInfo?.h || 675;
+  const cardW = size === "custom" ? card.width || 1200 : sizeInfo?.w || 1200;
+  const cardH = size === "custom" ? card.height || 675 : sizeInfo?.h || 675;
 
   useEffect(() => {
     function updateScale() {

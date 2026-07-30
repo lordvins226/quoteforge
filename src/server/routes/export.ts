@@ -11,6 +11,7 @@ export async function exportRoute(req: Request): Promise<Response> {
     theme: string;
     size: SizeName;
     scale?: number;
+    fitContent?: boolean;
   };
 
   const themePath = resolveThemeRead(body.theme);
@@ -28,7 +29,7 @@ export async function exportRoute(req: Request): Promise<Response> {
     throw err;
   }
 
-  const buf = await renderCard(body.card, theme, body.size, body.scale ?? 2);
+  const buf = await renderCard(body.card, theme, body.size, body.scale ?? 2, undefined, undefined, body.fitContent ?? false);
 
   return new Response(buf, {
     headers: {

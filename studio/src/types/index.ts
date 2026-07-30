@@ -29,7 +29,7 @@ export type SizeName =
   | "facebook-post" | "facebook-square" | "facebook-cover"
   | "facebook-event" | "facebook-group-cover"
   | "threads-sq" | "threads-port" | "threads-land"
-  | "story" | "custom";
+  | "story" | "og" | "readme-hero" | "slide-16x9" | "4x3" | "3x2" | "custom";
 
 export interface SizeInfo {
   w: number;
@@ -55,6 +55,11 @@ export const SIZES: Record<SizeName, SizeInfo> = {
   "threads-port":          { w: 1080, h: 1350, ratio: "4:5",    label: "Threads portrait" },
   "threads-land":          { w: 1080, h: 566,  ratio: "1.91:1", label: "Threads landscape" },
   "story":                 { w: 1080, h: 1920, ratio: "9:16",   label: "Story (IG / FB / TW)" },
+  "og":                    { w: 1200, h: 630,  ratio: "1.91:1", label: "Open Graph / link preview" },
+  "readme-hero":           { w: 1280, h: 640,  ratio: "2:1",    label: "README / docs hero banner" },
+  "slide-16x9":            { w: 1920, h: 1080, ratio: "16:9",   label: "Presentation slide" },
+  "4x3":                   { w: 1600, h: 1200, ratio: "4:3",    label: "4:3 slide / web tile" },
+  "3x2":                   { w: 1500, h: 1000, ratio: "3:2",    label: "3:2 card / web tile" },
   "custom":                { w: 0,    h: 0,    ratio: "free",   label: "Custom dimensions" },
 };
 
@@ -65,6 +70,7 @@ export const SIZE_GROUPS: { label: string; sizes: SizeName[] }[] = [
   { label: "Facebook",   sizes: ["facebook-post", "facebook-square", "facebook-cover", "facebook-event", "facebook-group-cover"] },
   { label: "Threads",    sizes: ["threads-sq", "threads-port", "threads-land"] },
   { label: "Stories",    sizes: ["story"] },
+  { label: "Web / Docs", sizes: ["og", "readme-hero", "slide-16x9", "4x3", "3x2"] },
   { label: "Custom",     sizes: ["custom"] },
 ];
 
@@ -103,6 +109,9 @@ export interface CardContent {
   template: string;
   theme: string;
   size: SizeName;
+  width?: number;
+  height?: number;
+  align?: "top" | "center" | "bottom" | "spread";
   meta?: { title?: string; created?: string; tags?: string[] };
   blocks: Block[];
 }
@@ -113,6 +122,9 @@ export interface Slide {
   template?: string;
   theme?: string;
   size?: SizeName;
+  width?: number;
+  height?: number;
+  align?: "top" | "center" | "bottom" | "spread";
   showCounter?: boolean;
   counter?: CounterConfig;
   blocks: Block[];
@@ -126,6 +138,9 @@ export interface DeckContent {
     template: string;
     theme: string;
     size: SizeName;
+    width?: number;
+    height?: number;
+    align?: "top" | "center" | "bottom" | "spread";
     showCounter?: boolean;
     counter?: CounterConfig;
   };
@@ -133,3 +148,5 @@ export interface DeckContent {
 }
 
 export type ContentMode = "card" | "deck";
+
+export type Align = "top" | "center" | "bottom" | "spread";

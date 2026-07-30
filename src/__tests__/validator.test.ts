@@ -1,4 +1,6 @@
 import { describe, test, expect } from "bun:test";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import {
   BlockSchema,
   CardContentSchema,
@@ -152,7 +154,7 @@ describe("Image block schema", () => {
   });
 });
 
-describe("SizeName enum — all 17 sizes", () => {
+describe("SizeName enum — all 22 sizes", () => {
   const allSizes = [
     "twitter", "twitter-square",
     "linkedin", "linkedin-square",
@@ -161,10 +163,11 @@ describe("SizeName enum — all 17 sizes", () => {
     "facebook-event", "facebook-group-cover",
     "threads-sq", "threads-port", "threads-land",
     "story", "custom",
+    "og", "readme-hero", "slide-16x9", "4x3", "3x2",
   ];
 
-  test("has exactly 17 sizes", () => {
-    expect(Object.keys(SIZES)).toHaveLength(17);
+  test("has exactly 22 sizes", () => {
+    expect(Object.keys(SIZES)).toHaveLength(22);
   });
 
   test.each(allSizes)("accepts '%s'", (size) => {
@@ -173,6 +176,18 @@ describe("SizeName enum — all 17 sizes", () => {
 
   test("rejects unknown size", () => {
     expect(() => SizeNameSchema.parse("tiktok")).toThrow();
+  });
+});
+
+describe("Non-social presets", () => {
+  test.each([
+    ["og", 1200, 630],
+    ["readme-hero", 1280, 640],
+    ["slide-16x9", 1920, 1080],
+    ["4x3", 1600, 1200],
+    ["3x2", 1500, 1000],
+  ])("%s resolves to %i x %i", (name, w, h) => {
+    expect(SIZES[name as keyof typeof SIZES]).toEqual(expect.objectContaining({ w, h }));
   });
 });
 
@@ -247,5 +262,193 @@ describe("detectAndValidate", () => {
 
   test("throws on null input", () => {
     expect(() => detectAndValidate(null)).toThrow();
+  });
+});
+
+describe("Custom dimensions", () => {
+  const base = {
+    template: "manifesto",
+    theme: "dark-teal",
+    blocks: [{ type: "headline", parts: [{ text: "Test", style: "normal" }] }],
+  };
+
+  test("accepts size 'custom' with width and height", () => {
+    const parsed = CardContentSchema.parse({ ...base, size: "custom", width: 1200, height: 900 });
+    expect(parsed.width).toBe(1200);
+    expect(parsed.height).toBe(900);
+  });
+
+  test("rejects size 'custom' without width", () => {
+    expect(() => CardContentSchema.parse({ ...base, size: "custom", height: 900 }))
+      .toThrow(/width/);
+  });
+
+  test("rejects size 'custom' without height", () => {
+    expect(() => CardContentSchema.parse({ ...base, size: "custom", width: 1200 }))
+      .toThrow(/height/);
+  });
+
+  test("rejects size 'custom' with neither dimension", () => {
+    expect(() => CardContentSchema.parse({ ...base, size: "custom" })).toThrow();
+  });
+
+  test("rejects width/height on a preset size", () => {
+    expect(() => CardContentSchema.parse({ ...base, size: "twitter", width: 1200, height: 900 }))
+      .toThrow(/only allowed when size is \\?"custom\\?"/);
+  });
+
+  test("accepts a preset size with no dimensions", () => {
+    expect(() => CardContentSchema.parse({ ...base, size: "twitter" })).not.toThrow();
+  });
+
+  test.each([0, -100, 1.5, 8001])("rejects invalid dimension %p", (bad) => {
+    expect(() => CardContentSchema.parse({ ...base, size: "custom", width: bad, height: 900 }))
+      .toThrow();
+  });
+
+  test("accepts the maximum dimension", () => {
+    expect(() => CardContentSchema.parse({ ...base, size: "custom", width: 8000, height: 8000 }))
+      .not.toThrow();
+  });
+});
+
+describe("Custom dimensions in decks", () => {
+  const slideBlocks = [{ type: "headline", parts: [{ text: "S", style: "normal" }] }];
+
+  test("accepts custom dimensions in deck defaults", () => {
+    const deck = {
+      type: "deck",
+      defaults: { template: "quote", theme: "dark-teal", size: "custom", width: 1600, height: 1200 },
+      slides: [{ id: "s1", blocks: slideBlocks }],
+    };
+    expect(() => DeckContentSchema.parse(deck)).not.toThrow();
+  });
+
+  test("rejects deck defaults with size 'custom' and no dimensions", () => {
+    const deck = {
+      type: "deck",
+      defaults: { template: "quote", theme: "dark-teal", size: "custom" },
+      slides: [{ id: "s1", blocks: slideBlocks }],
+    };
+    expect(() => DeckContentSchema.parse(deck)).toThrow(/width/);
+  });
+
+  test("accepts a per-slide custom size", () => {
+    const deck = {
+      type: "deck",
+      defaults: { template: "quote", theme: "dark-teal", size: "instagram-sq" },
+      slides: [{ id: "s1", size: "custom", width: 800, height: 600, blocks: slideBlocks }],
+    };
+    expect(() => DeckContentSchema.parse(deck)).not.toThrow();
+  });
+
+  test("rejects slide dimensions without an explicit custom size", () => {
+    const deck = {
+      type: "deck",
+      defaults: { template: "quote", theme: "dark-teal", size: "instagram-sq" },
+      slides: [{ id: "s1", width: 800, height: 600, blocks: slideBlocks }],
+    };
+    expect(() => DeckContentSchema.parse(deck)).toThrow(/only allowed when size is \\?"custom\\?"/);
+  });
+});
+
+describe("Strict schemas", () => {
+  const card = {
+    template: "manifesto",
+    theme: "dark-teal",
+    size: "twitter",
+    blocks: [{ type: "headline", parts: [{ text: "Test", style: "normal" }] }],
+  };
+
+  test("rejects an unknown root key and names it", () => {
+    expect(() => CardContentSchema.parse({ ...card, bogusKey: 1 }))
+      .toThrow(/bogusKey/);
+  });
+
+  test("rejects a misspelled field inside a block", () => {
+    expect(() => CardContentSchema.parse({
+      ...card,
+      blocks: [{ type: "headline", part: [{ text: "Test", style: "normal" }] }],
+    })).toThrow();
+  });
+
+  test("rejects an unknown key inside a block", () => {
+    expect(() => CardContentSchema.parse({
+      ...card,
+      blocks: [{ type: "headline", parts: [{ text: "T", style: "normal" }], bogus: 1 }],
+    })).toThrow(/bogus/);
+  });
+
+  test("rejects an unknown key inside a part", () => {
+    expect(() => CardContentSchema.parse({
+      ...card,
+      blocks: [{ type: "headline", parts: [{ text: "T", style: "normal", bogus: 1 }] }],
+    })).toThrow(/bogus/);
+  });
+
+  test("rejects an unknown key inside meta", () => {
+    expect(() => CardContentSchema.parse({ ...card, meta: { title: "x", bogus: 1 } }))
+      .toThrow(/bogus/);
+  });
+
+  test("rejects an unknown key in a theme", () => {
+    const theme = JSON.parse(
+      readFileSync(resolve(import.meta.dir, "../../themes/dark-teal.json"), "utf-8"),
+    ) as Record<string, unknown>;
+    expect(() => ThemeSchema.parse({ ...theme, bogus: 1 })).toThrow(/bogus/);
+  });
+
+  test("rejects an unknown key in deck defaults", () => {
+    expect(() => DeckContentSchema.parse({
+      type: "deck",
+      defaults: { template: "quote", theme: "dark-teal", size: "twitter", bogus: 1 },
+      slides: [{ id: "s1", blocks: card.blocks }],
+    })).toThrow(/bogus/);
+  });
+
+  test("rejects an unknown key on a slide", () => {
+    expect(() => DeckContentSchema.parse({
+      type: "deck",
+      defaults: { template: "quote", theme: "dark-teal", size: "twitter" },
+      slides: [{ id: "s1", blocks: card.blocks, bogus: 1 }],
+    })).toThrow(/bogus/);
+  });
+
+  test("still accepts the documented extension points", () => {
+    expect(() => CardContentSchema.parse({
+      ...card,
+      $schema: "./schema.json",
+      meta: { title: "T", created: "2026-07-19", tags: ["a"] },
+    })).not.toThrow();
+  });
+});
+
+describe("Vertical alignment", () => {
+  const base = {
+    template: "quote",
+    theme: "dark-teal",
+    size: "instagram-sq",
+    blocks: [{ type: "headline", parts: [{ text: "T", style: "normal" }] }],
+  };
+
+  test.each(["top", "center", "bottom", "spread"])("accepts align '%s'", (a) => {
+    expect(() => CardContentSchema.parse({ ...base, align: a })).not.toThrow();
+  });
+
+  test("accepts a card with no align (defaults later, not at parse)", () => {
+    expect(() => CardContentSchema.parse(base)).not.toThrow();
+  });
+
+  test("rejects an unknown align value, naming the field", () => {
+    expect(() => CardContentSchema.parse({ ...base, align: "middle" })).toThrow(/align/);
+  });
+
+  test("accepts align on deck defaults and on a slide", () => {
+    const deck = {
+      type: "deck",
+      defaults: { template: "quote", theme: "dark-teal", size: "instagram-sq", align: "bottom" },
+      slides: [{ id: "s1", align: "top", blocks: base.blocks }],
+    };
+    expect(() => DeckContentSchema.parse(deck)).not.toThrow();
   });
 });

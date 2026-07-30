@@ -9,13 +9,14 @@ import { previewCommand } from "./commands/preview.js";
 import { batchCommand } from "./commands/batch.js";
 import { studioCommand } from "./commands/studio.js";
 import { doctorCommand } from "./commands/doctor.js";
+import { VERSION } from "../version.js";
 
 const program = new Command();
 
 program
   .name("quoteforge")
-  .description("Developer-native typographic social media card + carousel generator")
-  .version("0.1.0");
+  .description("Developer-native typographic card, carousel, and banner generator")
+  .version(VERSION);
 
 program.addCommand(validateCommand);
 program.addCommand(generateCommand);

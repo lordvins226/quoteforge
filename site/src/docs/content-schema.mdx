@@ -28,8 +28,9 @@ Every card and deck is a JSON document validated by Zod. Files are auto-detected
 | `type` | `"card"` | optional | Cards are the default — omitting is fine |
 | `template` | string | yes | `"manifesto"`, `"quote"`, `"list"`, or `"minimal"` |
 | `theme` | string | yes | Name matching a file in `themes/` |
-| `size` | SizeName | yes | One of 14 presets (see below) |
+| `size` | SizeName | yes | One of 22 presets (see below) |
 | `blocks` | Block[] | yes (≥1) | Ordered list of content blocks |
+| `align` | string | optional | `"top"` \| `"center"` \| `"bottom"` \| `"spread"` (default: `"center"`) |
 | `meta` | object | optional | `title`, `created`, `tags` — used by the studio |
 
 ## Deck shape
@@ -160,7 +161,7 @@ This is what makes one line of text read with rhythm: a `normal` start, an `acce
 
 ## Sizes
 
-Seventeen presets, all in CSS pixels:
+Twenty-two presets, all in CSS pixels:
 
 | Name | Dimensions | Ratio | Platform |
 |------|-----------|-------|----------|
@@ -180,7 +181,61 @@ Seventeen presets, all in CSS pixels:
 | `threads-port` | 1080×1350 | 4:5 | Threads portrait *(recommended)* |
 | `threads-land` | 1080×566 | 1.91:1 | Threads landscape |
 | `story` | 1080×1920 | 9:16 | Story (IG / FB / TW) |
+| `og` | 1200×630 | 1.91:1 | Open Graph preview |
+| `readme-hero` | 1280×640 | 2:1 | Blog/README header |
+| `slide-16x9` | 1920×1080 | 16:9 | Presentation slides |
+| `4x3` | 1600×1200 | 4:3 | Slides / covers |
+| `3x2` | 1500×1000 | 3:2 | Article headers |
 | `custom` | user-defined | free | Custom dimensions |
+
+### Custom dimensions
+
+When no preset fits, use `custom` and supply both dimensions at the root of the card:
+
+```json
+{
+  "template": "manifesto",
+  "theme": "dark-teal",
+  "size": "custom",
+  "width": 1200,
+  "height": 900,
+  "blocks": [ ... ]
+}
+```
+
+`width` and `height` are integers between 1 and 8000, and both are required when
+`size` is `"custom"`. Supplying them alongside a preset size is rejected, because the
+preset would win and the values would be silently ignored.
+
+The same keys work in a deck's `defaults`, and on an individual slide that sets
+`"size": "custom"` explicitly.
+
+### Vertical alignment
+
+Every card controls content placement with the `align` field:
+
+```json
+{
+  "template": "manifesto",
+  "theme": "dark-teal",
+  "size": "twitter",
+  "align": "center",
+  "blocks": [ ... ]
+}
+```
+
+`align` accepts four values (default: `center`):
+
+| Value | Effect |
+|-------|--------|
+| `top` | Content aligns to the top of the canvas |
+| `center` | Content is vertically centered (default) |
+| `bottom` | Content aligns to the bottom |
+| `spread` | Content is distributed edge-to-edge (pre-0.5.0 behavior) |
+
+In decks, set `align` in the `defaults` object, or override it on individual slides.
+
+Note: **In v0.5.0, the default changed from `spread` to `center`**. Existing cards will re-render with content grouped in the middle. Add `"align": "spread"` to your card root to restore the previous look.
 
 ## Validation
 

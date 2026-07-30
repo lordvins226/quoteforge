@@ -8,12 +8,14 @@ export async function exportDeckRoute(req: Request): Promise<Response> {
     size?: SizeName;
     theme?: string;
     scale?: number;
+    fitContent?: boolean;
   };
 
   const { buffers, names } = await renderDeck(body.deck, {
     sizeOverride: body.size,
     themeOverride: body.theme,
     scale: body.scale ?? 2,
+    fitContent: body.fitContent ?? false,
   });
 
   const zipBuf = await buildZip(buffers, names);
