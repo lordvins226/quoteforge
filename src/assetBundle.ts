@@ -48,6 +48,8 @@ import ticket_template from "../templates/ticket/template.njk" with { type: "tex
 import ticket_style from "../templates/ticket/style.css" with { type: "text" };
 import calendar_template from "../templates/calendar/template.njk" with { type: "text" };
 import calendar_style from "../templates/calendar/style.css" with { type: "text" };
+import memo_template from "../templates/memo/template.njk" with { type: "text" };
+import memo_style from "../templates/memo/style.css" with { type: "text" };
 
 import block_divider from "../templates/_blocks/divider.njk" with { type: "text" };
 import block_blockquote from "../templates/_blocks/blockquote.njk" with { type: "text" };
@@ -123,6 +125,8 @@ const TEMPLATE_ASSETS: AssetMap = {
   "ticket/style.css": ticket_style,
   "calendar/template.njk": calendar_template,
   "calendar/style.css": calendar_style,
+  "memo/template.njk": memo_template,
+  "memo/style.css": memo_style,
   "_blocks/divider.njk": block_divider,
   "_blocks/blockquote.njk": block_blockquote,
   "_blocks/spacer.njk": block_spacer,

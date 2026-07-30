@@ -1,0 +1,23 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "memo",
+  "theme": "mono-slate",
+  "size": "instagram-port",
+  "eyebrow": "QuoteForge",
+  "blocks": [
+    {
+      "id": "fields",
+      "type": "callout",
+      "items": [
+        { "label": "To", "text": "Everyone shipping images by hand" },
+        { "label": "From", "text": "The CLI" },
+        { "label": "Re", "text": "Deprecation of the screenshot-and-crop workflow" }
+      ]
+    },
+    {
+      "id": "body",
+      "type": "text",
+      "content": "Effective immediately, the source of a card is a file you can review, diff, and regenerate. Design tools remain available for design."
+    }
+  ]
+}

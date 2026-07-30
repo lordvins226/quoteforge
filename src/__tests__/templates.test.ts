@@ -670,3 +670,22 @@ describe("calendar template", () => {
     assertNoHardcodedHex("calendar");
   });
 });
+
+describe("memo template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/mono-slate.json"));
+
+  test("renders field name/value rows and the letterhead", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/memo-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1080, h: 1350 });
+
+    expect(html).toContain("<dt>To</dt><dd>Everyone shipping images by hand</dd>");
+    expect(html).toContain("<dt>From</dt><dd>The CLI</dd>");
+    expect(html).toContain("<dt>Re</dt><dd>Deprecation of the screenshot-and-crop workflow</dd>");
+    expect(html).toContain("mm-body");
+    expect(html).toContain("Memorandum");
+  });
+
+  test("style.css has no literal hex color outside theme-injected :root vars", () => {
+    assertNoHardcodedHex("memo");
+  });
+});
