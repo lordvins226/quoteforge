@@ -92,3 +92,29 @@ describe("template-engine: renderTemplate", () => {
     expect(matches).toBeNull();
   });
 });
+
+describe("Vertical alignment rendering", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/dark-teal.json"));
+  const card = {
+    template: "quote",
+    theme: "dark-teal",
+    size: "instagram-sq" as const,
+    blocks: [{ type: "headline" as const, parts: [{ text: "T", style: "normal" as const }] }],
+  };
+
+  test("defaults to align-center when align is absent", () => {
+    const html = renderTemplate({ ...card }, theme, { w: 1080, h: 1080 });
+    expect(html).toContain('class="card align-center"');
+  });
+
+  test("emits the requested align class", () => {
+    const html = renderTemplate({ ...card, align: "bottom" }, theme, { w: 1080, h: 1080 });
+    expect(html).toContain('class="card align-bottom"');
+  });
+
+  test("blocks no longer grow to fill the canvas", () => {
+    const html = renderTemplate({ ...card }, theme, { w: 1080, h: 1080 });
+    expect(html).not.toContain("flex: 1 1 0");
+    expect(html).toContain("flex: 0 0 auto");
+  });
+});

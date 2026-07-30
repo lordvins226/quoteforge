@@ -28,6 +28,7 @@ export function buildSlideCardContent(
   const templateName = slide.template ?? deck.defaults.template;
   const width = slide.width ?? deck.defaults.width;
   const height = slide.height ?? deck.defaults.height;
+  const align = slide.align ?? deck.defaults.align;
 
   return {
     template: templateName,
@@ -35,6 +36,7 @@ export function buildSlideCardContent(
     size: sizeName,
     width,
     height,
+    align,
     blocks: slide.blocks,
   };
 }

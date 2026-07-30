@@ -14,7 +14,7 @@
   </style>
 </head>
 <body>
-  <div class="card">
+  <div class="card align-{{ card.align or 'center' }}">
     {% for block in card.blocks %}
       {% if block.type == "headline" %}
         {% include "_blocks/headline.njk" %}

@@ -30,12 +30,16 @@ body {
   overflow: hidden;
 }
 
+.card.align-top    { justify-content: flex-start; }
+.card.align-center { justify-content: center; }
+.card.align-bottom { justify-content: flex-end; }
+.card.align-spread { justify-content: space-between; }
+
 .block {
   width: 100%;
-  flex: 1 1 0;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   min-height: 0;
 }
 

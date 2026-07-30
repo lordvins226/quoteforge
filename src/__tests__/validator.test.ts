@@ -421,3 +421,33 @@ describe("Strict schemas", () => {
     })).not.toThrow();
   });
 });
+
+describe("Vertical alignment", () => {
+  const base = {
+    template: "quote",
+    theme: "dark-teal",
+    size: "instagram-sq",
+    blocks: [{ type: "headline", parts: [{ text: "T", style: "normal" }] }],
+  };
+
+  test.each(["top", "center", "bottom", "spread"])("accepts align '%s'", (a) => {
+    expect(() => CardContentSchema.parse({ ...base, align: a })).not.toThrow();
+  });
+
+  test("accepts a card with no align (defaults later, not at parse)", () => {
+    expect(() => CardContentSchema.parse(base)).not.toThrow();
+  });
+
+  test("rejects an unknown align value, naming the field", () => {
+    expect(() => CardContentSchema.parse({ ...base, align: "middle" })).toThrow(/align/);
+  });
+
+  test("accepts align on deck defaults and on a slide", () => {
+    const deck = {
+      type: "deck",
+      defaults: { template: "quote", theme: "dark-teal", size: "instagram-sq", align: "bottom" },
+      slides: [{ id: "s1", align: "top", blocks: base.blocks }],
+    };
+    expect(() => DeckContentSchema.parse(deck)).not.toThrow();
+  });
+});

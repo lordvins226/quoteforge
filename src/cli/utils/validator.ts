@@ -205,6 +205,9 @@ function refineCustomDimensions(
   }
 }
 
+export const AlignSchema = z.enum(["top", "center", "bottom", "spread"]);
+export type Align = z.infer<typeof AlignSchema>;
+
 export const CardContentSchema = z.object({
   $schema: z.string().optional(),
   type: z.literal("card").optional(),
@@ -213,6 +216,7 @@ export const CardContentSchema = z.object({
   size: SizeNameSchema,
   width: DimensionSchema.optional(),
   height: DimensionSchema.optional(),
+  align: AlignSchema.optional(),
   meta: MetaSchema.optional(),
   blocks: z.array(BlockSchema).min(1),
 }).strict().superRefine(refineCustomDimensions);
@@ -226,6 +230,7 @@ const SlideSchema = z.object({
   size: SizeNameSchema.optional(),
   width: DimensionSchema.optional(),
   height: DimensionSchema.optional(),
+  align: AlignSchema.optional(),
   showCounter: z.boolean().optional(),
   counter: CounterConfigSchema.optional(),
   blocks: z.array(BlockSchema).min(1),
@@ -237,6 +242,7 @@ const DeckDefaultsSchema = z.object({
   size: SizeNameSchema,
   width: DimensionSchema.optional(),
   height: DimensionSchema.optional(),
+  align: AlignSchema.optional(),
   showCounter: z.boolean().optional(),
   counter: CounterConfigSchema.optional(),
 }).strict().superRefine(refineCustomDimensions);

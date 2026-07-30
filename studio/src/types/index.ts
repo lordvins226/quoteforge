@@ -110,6 +110,7 @@ export interface CardContent {
   size: SizeName;
   width?: number;
   height?: number;
+  align?: "top" | "center" | "bottom" | "spread";
   meta?: { title?: string; created?: string; tags?: string[] };
   blocks: Block[];
 }
@@ -122,6 +123,7 @@ export interface Slide {
   size?: SizeName;
   width?: number;
   height?: number;
+  align?: "top" | "center" | "bottom" | "spread";
   showCounter?: boolean;
   counter?: CounterConfig;
   blocks: Block[];
@@ -137,6 +139,7 @@ export interface DeckContent {
     size: SizeName;
     width?: number;
     height?: number;
+    align?: "top" | "center" | "bottom" | "spread";
     showCounter?: boolean;
     counter?: CounterConfig;
   };
