@@ -803,3 +803,34 @@ describe("stat template", () => {
     assertNoHardcodedHex("stat");
   });
 });
+
+describe("code template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/terminal-green.json"));
+
+  test("renders the filename tab and numbered lines", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/code-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1200, h: 675 });
+
+    expect(html).toContain("code-tab");
+    expect(html).toContain("renderer.ts");
+    expect(html).toContain("code-line");
+    expect(html).toContain("code-n");
+    expect(html).toContain("export function render(card: Card): Buffer {");
+  });
+
+  test("renders without a filename tab when filename is absent", () => {
+    const card = CardContentSchema.parse({
+      template: "code",
+      theme: "terminal-green",
+      size: "instagram-sq",
+      blocks: [{ type: "code", lines: ["const x = 1;"] }],
+    });
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    expect(bodyOnly(html)).not.toContain("code-tab");
+  });
+
+  test("style.css has no literal hex color outside theme-injected :root vars", () => {
+    assertNoHardcodedHex("code");
+  });
+});

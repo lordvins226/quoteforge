@@ -1,0 +1,14 @@
+/* Code — snippet card with a filename tab and numbered lines, three-color scheme */
+
+.card.code-tpl {
+  justify-content: center;
+}
+
+.code-tpl .code-body {
+  font-size: clamp(16px, calc(var(--body-size) * var(--type-scale) * 1.3), 30px);
+  line-height: 1.75;
+}
+
+.code-tpl .code-tab {
+  font-size: clamp(13px, calc(0.95rem * var(--type-scale)), 18px);
+}
