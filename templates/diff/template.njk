@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {{ fontImports | safe }}
+  <style>
+    :root {
+      {{ cssVars | safe }}
+    }
+
+    {{ baseCSS | safe }}
+    {{ styleCSS | safe }}
+  </style>
+</head>
+<body>
+  <div class="card align-{{ card.align or 'center' }} diff">
+    {% for block in card.blocks %}
+      {% if block.type == "bullet-list" or block.type == "callout" %}
+        <div class="diff-rows">
+          {%- for item in block.items %}
+          <div class="diff-row {{ 'plus' if item.label == '+' else 'minus' }}">
+            <span class="mark">{{ item.label }}</span><span>{{ item.text }}</span>
+          </div>
+          {%- endfor %}
+        </div>
+      {% elif loop.first and (block.type == "headline" or block.type == "text") %}
+        <div class="diff-head">
+          {%- if block.type == "headline" -%}
+            {%- for part in block.parts -%}{{ renderPart(part) | safe }}{%- endfor -%}
+          {%- else -%}
+            {{ block.content }}
+          {%- endif -%}
+        </div>
+      {% elif loop.last and block.type == "text" %}
+        <div class="diff-foot">{{ block.content }}</div>
+      {% endif %}
+    {% endfor %}
+
+    {% include "_blocks/slide-counter.njk" %}
+  </div>
+</body>
+</html>

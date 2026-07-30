@@ -570,3 +570,26 @@ describe("chat template", () => {
     assertNoHardcodedHex("chat");
   });
 });
+
+describe("diff template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/dark-orange.json"));
+
+  test("renders '-' as a removal and '+' as an addition, with head and foot text", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/diff-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1200, h: 675 });
+
+    const body = bodyOnly(html);
+    expect(body.match(/diff-row minus/g)?.length).toBe(1);
+    expect(body.match(/diff-row plus/g)?.length).toBe(2);
+    expect(html).toContain("diff-head");
+    expect(html).toContain("diff-foot");
+    expect(html).toContain("Content groups instead of stranding.");
+  });
+
+  test("style.css uses only opacity and line-through to distinguish removals — no hex, no color-name literals", () => {
+    assertNoHardcodedHex("diff");
+    const styleCSS = readFileSync(resolve(ROOT, "templates/diff/style.css"), "utf-8");
+    expect(styleCSS).toContain("text-decoration: line-through");
+    expect(styleCSS).not.toMatch(/\b(red|green|crimson|darkred|forestgreen)\b/i);
+  });
+});
