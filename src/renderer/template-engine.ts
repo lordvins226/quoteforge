@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { buildFontImports } from "./font-loader.js";
 import { templatesDir } from "../assetBundle.js";
+import { assertTemplateExists } from "./templates.js";
 import type { CardContent, Theme, Part, PartStyle } from "../cli/utils/validator.js";
 import type { SafeInset } from "./safe-aspect.js";
 
@@ -123,6 +124,8 @@ export function renderTemplate(
   meta?: Partial<RenderMeta>,
   safeInset?: SafeInset,
 ): string {
+  assertTemplateExists(content.template);
+
   const resolvedMeta = { ...DEFAULT_META, ...meta };
   const fontImports = buildFontImports(theme);
   const cssVars = buildCssVars(theme, dimensions, safeInset);

@@ -92,7 +92,14 @@ export const generateCommand = new Command("generate")
       safeInset = computeSafeInset(dimensions, ratio);
     }
 
-    const buf = await renderCard(card, theme, sizeName, scale, undefined, undefined, fitContent, safeInset);
+    let buf: Buffer;
+    try {
+      buf = await renderCard(card, theme, sizeName, scale, undefined, undefined, fitContent, safeInset);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error(chalk.red(`✗ ${msg}`));
+      process.exit(1);
+    }
 
     const outputDir = resolve("outputs");
     if (!existsSync(outputDir)) {
