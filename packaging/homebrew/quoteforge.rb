@@ -1,5 +1,5 @@
 class Quoteforge < Formula
-  desc "Developer-native typographic social media card and carousel generator"
+  desc "Developer-native typographic card, carousel, and banner generator"
   homepage "https://github.com/lordvins226/quoteforge"
   version "0.1.0"
   license "MIT"
@@ -45,6 +45,6 @@ class Quoteforge < Formula
   end
 
   test do
-    assert_match "0.1.0", shell_output("#{bin}/quoteforge --version")
+    assert_match version.to_s, shell_output("#{bin}/quoteforge --version")
   end
 end
