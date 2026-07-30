@@ -452,3 +452,57 @@ describe("Vertical alignment", () => {
     expect(() => DeckContentSchema.parse(deck)).not.toThrow();
   });
 });
+
+describe("Card eyebrow", () => {
+  const base = {
+    template: "split",
+    theme: "dark-teal",
+    size: "instagram-sq",
+    blocks: [{ type: "headline", parts: [{ text: "T", style: "normal" }] }],
+  };
+
+  test("accepts a card with a valid eyebrow", () => {
+    const parsed = CardContentSchema.parse({ ...base, eyebrow: "Featured" });
+    expect(parsed.eyebrow).toBe("Featured");
+  });
+
+  test("accepts a card with no eyebrow", () => {
+    expect(() => CardContentSchema.parse(base)).not.toThrow();
+  });
+
+  test("rejects an eyebrow over 48 characters", () => {
+    expect(() => CardContentSchema.parse({ ...base, eyebrow: "x".repeat(49) }))
+      .toThrow(/eyebrow/);
+  });
+
+  test("a deck slide inherits eyebrow from defaults and can override it", () => {
+    const inheritedDeck = {
+      type: "deck",
+      defaults: { template: "split", theme: "dark-teal", size: "instagram-sq", eyebrow: "From Defaults" },
+      slides: [{ id: "s1", blocks: base.blocks }],
+    };
+    const overriddenDeck = {
+      type: "deck",
+      defaults: { template: "split", theme: "dark-teal", size: "instagram-sq", eyebrow: "From Defaults" },
+      slides: [{ id: "s1", eyebrow: "Slide Override", blocks: base.blocks }],
+    };
+
+    const inherited = DeckContentSchema.parse(inheritedDeck);
+    const overridden = DeckContentSchema.parse(overriddenDeck);
+
+    expect(inherited.defaults.eyebrow).toBe("From Defaults");
+    expect(inherited.slides[0]?.eyebrow).toBeUndefined();
+    expect(overridden.slides[0]?.eyebrow).toBe("Slide Override");
+  });
+
+  test("slide's pre-existing editor label is a distinct field from eyebrow", () => {
+    const deck = {
+      type: "deck",
+      defaults: { template: "split", theme: "dark-teal", size: "instagram-sq" },
+      slides: [{ id: "s1", label: "Slide 2", blocks: base.blocks }],
+    };
+    const parsed = DeckContentSchema.parse(deck);
+    expect(parsed.slides[0]?.label).toBe("Slide 2");
+    expect(parsed.slides[0]?.eyebrow).toBeUndefined();
+  });
+});

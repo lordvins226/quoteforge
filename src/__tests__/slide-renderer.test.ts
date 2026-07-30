@@ -65,4 +65,40 @@ describe("buildSlideCardContent", () => {
     expect(cardContent.size).toBe("instagram-sq");
     expect(resolveDimensions(cardContent)).toEqual({ w: 1080, h: 1080 });
   });
+
+  test("inherits eyebrow from deck defaults", () => {
+    const deck = makeDeck({ eyebrow: "From Defaults" });
+    const slide = deck.slides[0]!;
+
+    const cardContent = buildSlideCardContent(slide, deck, {});
+
+    expect(cardContent.eyebrow).toBe("From Defaults");
+  });
+
+  test("slide eyebrow overrides deck defaults", () => {
+    const deck = makeDeck({ eyebrow: "From Defaults" });
+    const slide = {
+      id: "slide-1",
+      eyebrow: "Slide Override",
+      blocks: [{ type: "text" as const, content: "hello" }],
+    };
+
+    const cardContent = buildSlideCardContent(slide, deck, {});
+
+    expect(cardContent.eyebrow).toBe("Slide Override");
+  });
+
+  test("a slide's editor label never propagates into rendered CardContent as eyebrow", () => {
+    const deck = makeDeck({});
+    const slide = {
+      id: "slide-1",
+      label: "Slide 2",
+      blocks: [{ type: "text" as const, content: "hello" }],
+    };
+
+    const cardContent = buildSlideCardContent(slide, deck, {});
+
+    expect(cardContent.eyebrow).toBeUndefined();
+    expect(cardContent).not.toHaveProperty("label");
+  });
 });

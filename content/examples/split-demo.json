@@ -3,6 +3,7 @@
   "template": "split",
   "theme": "dark-teal",
   "size": "og",
+  "eyebrow": "Release Notes",
   "meta": {
     "title": "Changelog"
   },

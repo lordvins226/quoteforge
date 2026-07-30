@@ -217,6 +217,7 @@ export const CardContentSchema = z.object({
   width: DimensionSchema.optional(),
   height: DimensionSchema.optional(),
   align: AlignSchema.optional(),
+  eyebrow: z.string().max(48).optional(),
   meta: MetaSchema.optional(),
   blocks: z.array(BlockSchema).min(1),
 }).strict().superRefine(refineCustomDimensions);
@@ -231,6 +232,7 @@ const SlideSchema = z.object({
   width: DimensionSchema.optional(),
   height: DimensionSchema.optional(),
   align: AlignSchema.optional(),
+  eyebrow: z.string().max(48).optional(),
   showCounter: z.boolean().optional(),
   counter: CounterConfigSchema.optional(),
   blocks: z.array(BlockSchema).min(1),
@@ -243,6 +245,7 @@ const DeckDefaultsSchema = z.object({
   width: DimensionSchema.optional(),
   height: DimensionSchema.optional(),
   align: AlignSchema.optional(),
+  eyebrow: z.string().max(48).optional(),
   showCounter: z.boolean().optional(),
   counter: CounterConfigSchema.optional(),
 }).strict().superRefine(refineCustomDimensions);

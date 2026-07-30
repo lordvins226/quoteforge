@@ -16,7 +16,9 @@
 <body>
   <div class="card align-{{ card.align or 'center' }} split">
     <div class="split-rail">
-      <div class="split-rail-label">{{ (card.meta and card.meta.title) or "Featured" }}</div>
+      {% if card.eyebrow %}
+        <div class="split-rail-label">{{ card.eyebrow }}</div>
+      {% endif %}
       {% if card.blocks[0].type == "headline" %}
         {% set block = card.blocks[0] %}
         {% include "_blocks/headline.njk" %}

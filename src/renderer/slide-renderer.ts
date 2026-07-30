@@ -33,6 +33,7 @@ export function buildSlideCardContent(
   const width = slide.width ?? deck.defaults.width;
   const height = slide.height ?? deck.defaults.height;
   const align = slide.align ?? deck.defaults.align;
+  const eyebrow = slide.eyebrow ?? deck.defaults.eyebrow;
 
   return {
     template: templateName,
@@ -41,6 +42,7 @@ export function buildSlideCardContent(
     width,
     height,
     align,
+    eyebrow,
     blocks: slide.blocks,
   };
 }
