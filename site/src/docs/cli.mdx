@@ -18,6 +18,42 @@ quoteforge generate card.json --fit-content    # crop to content, no surrounding
 
 When used with `slides`, the flag may produce slides with different heights (if content height varies per slide). This is intentional but worth noting in deck workflows. On a deck, `--fit-content` also drops the slide-counter overlay, which sits outside the content box.
 
+### `--safe-aspect`
+
+The `--safe-aspect <ratio>` flag constrains the layout so all content survives a center-crop toward the given ratio. This is useful when rendering cards for embedded display in mismatched `object-fit: cover` containers (e.g., a square card to be embedded in a 16:9 player or carousel).
+
+**Accepted ratio formats:**
+- `W:H` (e.g., `16:9`, `4:3`)
+- `WxH` (e.g., `16x9`)
+- Decimal (e.g., `1.78` for 16:9)
+
+**Recommendation:** pair `--safe-aspect` with `align: center` (the default). Do not combine with `--fit-content` (they have opposite intents: safe-aspect maintains full size, fit-content crops to content).
+
+**Example:** A square card (1080×1080) made safe for a 16:9 embed:
+
+1. Create a card with square dimensions (`size: "instagram-sq"`) and `align: "center"`:
+
+```json
+{
+  "template": "quote",
+  "theme": "dark-teal",
+  "size": "instagram-sq",
+  "align": "center",
+  "blocks": [
+    { "type": "headline", "parts": [{ "text": "Center-safe for 16:9", "style": "normal" }] },
+    { "type": "text", "content": "All content fits in the central 1920×1080 band, surviving center-crop to 16:9." }
+  ]
+}
+```
+
+2. Render it with `--safe-aspect 16:9`:
+
+```bash
+quoteforge generate card.json --safe-aspect 16:9
+```
+
+The output remains 1080×1080 but all content is constrained to the central 16:9 region (1080×607px). When embedded in a 16:9 container with `object-fit: cover`, the entire content box will remain visible.
+
 Options:
 
 | Flag | Default | Description |
@@ -26,6 +62,7 @@ Options:
 | `-s, --size <name>` | (from file) | Override size (e.g. `instagram-sq`) |
 | `-o, --output <path>` | `outputs/` | Output directory |
 | `--scale <n>` | `2` | Pixel ratio (1 or 2) |
+| `--safe-aspect <ratio>` | — | Constrain content to safe band for center-crop (e.g. `16:9`) |
 | `--fit-content` | — | Crop output to content bounding box + theme padding |
 | `--no-timestamp` | — | Don't append ISO timestamp to filename |
 | `--open` | — | Open the PNG after generation |
@@ -48,6 +85,7 @@ Options:
 | `--slide <n>` | — | Render only slide N (1-indexed), no ZIP |
 | `--no-zip` | — | Skip ZIP creation |
 | `--no-counter` | — | Disable counter overlay |
+| `--safe-aspect <ratio>` | — | Constrain content to safe band for center-crop (e.g. `16:9`) |
 | `--fit-content` | — | Crop each slide to content bounding box + theme padding |
 | `--concurrency <n>` | `4` | Parallel render workers |
 | `--scale <n>` | `2` | Pixel ratio |
@@ -61,7 +99,7 @@ Render every JSON file in a directory.
 quoteforge batch <dir> [options]
 ```
 
-Options include `--theme`, `--size`, `--output`, `--fit-content`, `--concurrency`, and `--decks` (to also process deck files).
+Options include `--theme`, `--size`, `--output`, `--safe-aspect`, `--fit-content`, `--concurrency`, and `--decks` (to also process deck files).
 
 ## `validate`
 

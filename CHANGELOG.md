@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0
+
+### Added
+- `--safe-aspect <ratio>` on `generate`/`slides`/`batch`: constrains the layout so all content
+  survives a center-crop toward the given ratio (e.g. `--safe-aspect 4:3`), for images embedded
+  in mismatched `object-fit: cover` containers. Opt-in; no effect when absent.
+
 ## 0.5.0
 
 ### Added
@@ -9,6 +16,9 @@
   controlling vertical placement of content.
 - `--fit-content` (alias `--trim`) on `generate`/`slides`/`batch`, cropping the output to the
   content bounding box plus theme padding.
+
+### Fixed
+- Studio: `size: "custom"` cards and deck slides now render at their given dimensions in preview and export (previously blank).
 
 ### Changed
 - **Rendering change:** content is now vertically centered by default instead of distributed
