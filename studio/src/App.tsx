@@ -13,6 +13,7 @@ import { ErrorBoundary } from "./components/ui/ErrorBoundary";
 
 function StudioApp() {
   const [mode, setMode] = useState<ContentMode>("card");
+  const [fitContent, setFitContent] = useState(false);
   const { toast } = useToast();
 
   const cardStore = useCardStore();
@@ -59,7 +60,7 @@ function StudioApp() {
 
   const handleExportPng = useCallback(async () => {
     const body = mode === "card"
-      ? { card: cardStore.card, theme: cardStore.card.theme, size: cardStore.card.size }
+      ? { card: cardStore.card, theme: cardStore.card.theme, size: cardStore.card.size, fitContent }
       : (() => {
           const slide = deckStore.deck.slides[deckStore.activeSlideIndex];
           if (!slide) return null;
@@ -67,9 +68,10 @@ function StudioApp() {
             template: slide.template ?? deckStore.deck.defaults.template,
             theme: slide.theme ?? deckStore.deck.defaults.theme,
             size: slide.size ?? deckStore.deck.defaults.size,
+            align: slide.align ?? deckStore.deck.defaults.align,
             blocks: slide.blocks,
           };
-          return { card, theme: card.theme, size: card.size };
+          return { card, theme: card.theme, size: card.size, fitContent };
         })();
 
     if (!body) return;
@@ -91,14 +93,14 @@ function StudioApp() {
     } catch {
       toast("Export failed", "error");
     }
-  }, [mode, cardStore.card, deckStore.deck, deckStore.activeSlideIndex]);
+  }, [mode, cardStore.card, deckStore.deck, deckStore.activeSlideIndex, fitContent]);
 
   const handleExportDeck = useCallback(async () => {
     try {
       const res = await fetch("/api/export-deck", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ deck: deckStore.deck }),
+        body: JSON.stringify({ deck: deckStore.deck, fitContent }),
       });
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
@@ -111,7 +113,7 @@ function StudioApp() {
     } catch {
       toast("Deck export failed", "error");
     }
-  }, [deckStore.deck]);
+  }, [deckStore.deck, fitContent]);
 
   useEffect(() => {
     function handleKeyboard(e: KeyboardEvent) {
@@ -143,11 +145,13 @@ function StudioApp() {
         template: activeSlide?.template ?? deckStore.deck.defaults.template,
         theme: activeSlide?.theme ?? deckStore.deck.defaults.theme,
         size: activeSlide?.size ?? deckStore.deck.defaults.size,
+        align: activeSlide?.align ?? deckStore.deck.defaults.align,
         blocks: activeSlide?.blocks ?? [],
       };
 
   const currentTheme = mode === "card" ? cardStore.card.theme : deckStore.deck.defaults.theme;
   const currentSize = mode === "card" ? cardStore.card.size : deckStore.deck.defaults.size;
+  const currentAlign = mode === "card" ? cardStore.card.align : deckStore.deck.defaults.align;
 
   return (
     <div className="h-screen flex flex-col">
@@ -155,8 +159,12 @@ function StudioApp() {
         mode={mode}
         theme={currentTheme}
         size={currentSize}
+        align={currentAlign}
+        fitContent={fitContent}
         onThemeChange={mode === "card" ? cardStore.setTheme : deckStore.setDeckTheme}
         onSizeChange={mode === "card" ? cardStore.setSize : deckStore.setDeckSize}
+        onAlignChange={mode === "card" ? cardStore.setAlign : deckStore.setDeckAlign}
+        onFitContentChange={setFitContent}
         onExportPng={handleExportPng}
         onExportDeck={mode === "deck" ? handleExportDeck : undefined}
         onUndo={mode === "card" ? cardStore.undo : deckStore.undo}

@@ -1,6 +1,7 @@
-import type { ContentMode, SizeName } from "../../types";
+import type { ContentMode, SizeName, Align } from "../../types";
 import { ThemePicker } from "./ThemePicker";
 import { SizePicker } from "./SizePicker";
+import { AlignPicker } from "./AlignPicker";
 import { Button } from "../ui/Button";
 import { Download, FolderArchive, Undo2, Redo2 } from "lucide-react";
 
@@ -8,8 +9,12 @@ interface ToolbarProps {
   mode: ContentMode;
   theme: string;
   size: SizeName;
+  align: Align | undefined;
+  fitContent: boolean;
   onThemeChange: (name: string) => void;
   onSizeChange: (size: SizeName) => void;
+  onAlignChange: (align: Align) => void;
+  onFitContentChange: (fitContent: boolean) => void;
   onExportPng: () => void;
   onExportDeck?: () => void;
   onUndo: () => void;
@@ -20,8 +25,8 @@ interface ToolbarProps {
 }
 
 export function Toolbar({
-  mode, theme, size,
-  onThemeChange, onSizeChange,
+  mode, theme, size, align, fitContent,
+  onThemeChange, onSizeChange, onAlignChange, onFitContentChange,
   onExportPng, onExportDeck,
   onUndo, onRedo, canUndo, canRedo,
   isDirty,
@@ -35,6 +40,7 @@ export function Toolbar({
 
       <ThemePicker current={theme} onChange={onThemeChange} />
       <SizePicker current={size} onChange={onSizeChange} mode={mode} />
+      <AlignPicker current={align} onChange={onAlignChange} />
 
       <div className="w-px h-5 bg-neutral-700" />
 
@@ -46,6 +52,11 @@ export function Toolbar({
       </Button>
 
       <div className="w-px h-5 bg-neutral-700" />
+
+      <label className="flex items-center gap-1.5 text-xs text-neutral-300 cursor-pointer select-none">
+        <input type="checkbox" checked={fitContent} onChange={(e) => onFitContentChange(e.target.checked)} />
+        Fit content
+      </label>
 
       <Button variant="primary" size="sm" onClick={onExportPng}>
         <Download size={14} className="mr-1" /> PNG

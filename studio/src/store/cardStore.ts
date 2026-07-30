@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { CardContent, Block, BlockType, SizeName } from "../types";
+import type { CardContent, Block, BlockType, SizeName, Align } from "../types";
 
 interface CardStore {
   card: CardContent;
@@ -19,6 +19,7 @@ interface CardStore {
   selectBlock: (id: string | null) => void;
   setTheme: (name: string) => void;
   setSize: (size: SizeName) => void;
+  setAlign: (align: Align) => void;
   setZoom: (zoom: number) => void;
   undo: () => void;
   redo: () => void;
@@ -126,6 +127,14 @@ export const useCardStore = create<CardStore>((set) => ({
   setSize: (size) =>
     set((s) => ({
       card: { ...s.card, size },
+      isDirty: true,
+      past: [...s.past.slice(-49), s.card],
+      future: [],
+    })),
+
+  setAlign: (align) =>
+    set((s) => ({
+      card: { ...s.card, align },
       isDirty: true,
       past: [...s.past.slice(-49), s.card],
       future: [],

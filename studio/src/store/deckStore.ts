@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { DeckContent, Block, BlockType, SizeName, Slide } from "../types";
+import type { DeckContent, Block, BlockType, SizeName, Slide, Align } from "../types";
 
 interface DeckStore {
   deck: DeckContent;
@@ -27,6 +27,7 @@ interface DeckStore {
   selectBlock: (id: string | null) => void;
   setDeckTheme: (name: string) => void;
   setDeckSize: (size: SizeName) => void;
+  setDeckAlign: (align: Align) => void;
   toggleCounter: () => void;
   setZoom: (zoom: number) => void;
   undo: () => void;
@@ -242,6 +243,14 @@ export const useDeckStore = create<DeckStore>((set) => ({
   setDeckSize: (size) =>
     set((s) => ({
       deck: { ...s.deck, defaults: { ...s.deck.defaults, size } },
+      isDirty: true,
+      past: snapshot(s.past, s.deck),
+      future: [],
+    })),
+
+  setDeckAlign: (align) =>
+    set((s) => ({
+      deck: { ...s.deck, defaults: { ...s.deck.defaults, align } },
       isDirty: true,
       past: snapshot(s.past, s.deck),
       future: [],

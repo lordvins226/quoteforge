@@ -70,6 +70,7 @@ export const SIZE_GROUPS: { label: string; sizes: SizeName[] }[] = [
   { label: "Facebook",   sizes: ["facebook-post", "facebook-square", "facebook-cover", "facebook-event", "facebook-group-cover"] },
   { label: "Threads",    sizes: ["threads-sq", "threads-port", "threads-land"] },
   { label: "Stories",    sizes: ["story"] },
+  { label: "Web / Docs", sizes: ["og", "readme-hero", "slide-16x9", "4x3", "3x2"] },
   { label: "Custom",     sizes: ["custom"] },
 ];
 
@@ -147,3 +148,5 @@ export interface DeckContent {
 }
 
 export type ContentMode = "card" | "deck";
+
+export type Align = "top" | "center" | "bottom" | "spread";
