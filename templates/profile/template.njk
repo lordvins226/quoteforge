@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {{ fontImports | safe }}
+  <style>
+    :root {
+      {{ cssVars | safe }}
+    }
+
+    {{ baseCSS | safe }}
+    {{ styleCSS | safe }}
+  </style>
+</head>
+<body>
+  <div class="card align-{{ card.align or 'center' }} profile">
+    {% for block in card.blocks %}
+      {% if block.type == "blockquote" %}
+        {% include "_blocks/blockquote.njk" %}
+      {% endif %}
+    {% endfor %}
+
+    {% set nameItem = none %}
+    {% set avatarBlock = none %}
+    {% for block in card.blocks %}
+      {% if block.type == "callout" and not nameItem %}
+        {% set nameItem = block.items[0] %}
+      {% elif block.type == "image" and not avatarBlock %}
+        {% set avatarBlock = block %}
+      {% endif %}
+    {% endfor %}
+
+    {% if nameItem %}
+      <div class="profile-who">
+        {% if avatarBlock %}
+          <div class="profile-avatar profile-avatar--image">
+            <img src="{{ avatarBlock.src }}" alt="{{ avatarBlock.alt or nameItem.label }}">
+          </div>
+        {% else %}
+          <div class="profile-avatar profile-avatar--initials">{{ initials(nameItem.label) }}</div>
+        {% endif %}
+        <div class="profile-meta">
+          <span class="profile-name">{{ nameItem.label }}</span>
+          <span class="profile-role">{{ nameItem.text }}</span>
+        </div>
+      </div>
+    {% endif %}
+
+    {% include "_blocks/slide-counter.njk" %}
+  </div>
+</body>
+</html>

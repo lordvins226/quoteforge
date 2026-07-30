@@ -417,3 +417,41 @@ describe("window template", () => {
     assertNoHardcodedHex("window");
   });
 });
+
+describe("profile template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/dark-teal.json"));
+
+  test("renders the quote and falls back to initials derived from the name when no image block is present", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/profile-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    expect(bodyOnly(html)).toContain("profile-who");
+    expect(bodyOnly(html)).toContain("profile-avatar--initials");
+    expect(html).toContain(">KW<");
+    expect(html).toContain("Kevin W.");
+    expect(html).toContain("Maintainer, QuoteForge");
+    expect(bodyOnly(html)).not.toContain("profile-avatar--image");
+  });
+
+  test("renders an image avatar instead of initials when an image block is present", () => {
+    const card = CardContentSchema.parse({
+      template: "profile",
+      theme: "dark-teal",
+      size: "instagram-sq",
+      blocks: [
+        { type: "blockquote", parts: [{ text: "Great tool.", style: "normal" }] },
+        { type: "image", src: "data:image/png;base64,abc", alt: "Ada L." },
+        { type: "callout", items: [{ label: "Ada Lovelace", text: "Engineer" }] },
+      ],
+    });
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    expect(bodyOnly(html)).toContain("profile-avatar--image");
+    expect(bodyOnly(html)).not.toContain("profile-avatar--initials");
+    expect(html).toContain('src="data:image/png;base64,abc"');
+  });
+
+  test("style.css has no literal hex color outside theme-injected :root vars", () => {
+    assertNoHardcodedHex("profile");
+  });
+});
