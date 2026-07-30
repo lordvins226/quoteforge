@@ -22,6 +22,8 @@ import frame_template from "../templates/frame/template.njk" with { type: "text"
 import frame_style from "../templates/frame/style.css" with { type: "text" };
 import cover_template from "../templates/cover/template.njk" with { type: "text" };
 import cover_style from "../templates/cover/style.css" with { type: "text" };
+import sticky_template from "../templates/sticky/template.njk" with { type: "text" };
+import sticky_style from "../templates/sticky/style.css" with { type: "text" };
 
 import block_divider from "../templates/_blocks/divider.njk" with { type: "text" };
 import block_blockquote from "../templates/_blocks/blockquote.njk" with { type: "text" };
@@ -71,6 +73,8 @@ const TEMPLATE_ASSETS: AssetMap = {
   "frame/style.css": frame_style,
   "cover/template.njk": cover_template,
   "cover/style.css": cover_style,
+  "sticky/template.njk": sticky_template,
+  "sticky/style.css": sticky_style,
   "_blocks/divider.njk": block_divider,
   "_blocks/blockquote.njk": block_blockquote,
   "_blocks/spacer.njk": block_spacer,

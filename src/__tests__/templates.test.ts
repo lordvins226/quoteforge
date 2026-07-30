@@ -298,3 +298,37 @@ describe("cover template", () => {
     assertNoHardcodedHex("cover");
   });
 });
+
+describe("sticky template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/brutal-white.json"));
+
+  test("renders the tilted note with body and a trailing signature line", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/sticky-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    expect(html).toContain("sticky-note");
+    expect(html).toContain("sticky-sign");
+    expect(html).toContain("pinned to the monitor");
+  });
+
+  test("without a trailing text block, the whole note is body and no signature renders", () => {
+    const card = CardContentSchema.parse({
+      template: "sticky",
+      theme: "brutal-white",
+      size: "instagram-sq",
+      blocks: [
+        { type: "headline", parts: [{ text: "No signature here", style: "normal" }] },
+      ],
+    });
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    expect(bodyOnly(html)).not.toContain('class="sticky-sign"');
+    expect(html).toContain("No signature here");
+  });
+
+  test("style.css allows the documented rgba() drop-shadow but no literal hex", () => {
+    assertNoHardcodedHex("sticky");
+    const styleCSS = readFileSync(resolve(ROOT, "templates/sticky/style.css"), "utf-8");
+    expect(styleCSS).toContain("rgba(0, 0, 0,");
+  });
+});

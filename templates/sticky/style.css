@@ -1,0 +1,68 @@
+/* Sticky — a note on --accent, tilted, dropped on the desk. Uses the documented
+   rgba() drop-shadow exception: a shadow is not a palette color. */
+
+.card.sticky {
+  align-items: center;
+}
+
+.sticky-note {
+  width: 74%;
+  background: var(--accent);
+  padding: clamp(24px, calc(var(--padding) * var(--space-scale)), 96px);
+  transform: rotate(-2.2deg);
+  box-shadow: 0 32px 72px -28px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(16px, calc(var(--gap) * var(--space-scale)), 48px);
+}
+
+.sticky-note .block {
+  flex: 0 0 auto;
+}
+
+.sticky-note .headline {
+  color: var(--bg);
+}
+
+.sticky-note .part-normal,
+.sticky-note .part-bold,
+.sticky-note .part-italic,
+.sticky-note .part-mono {
+  color: var(--bg);
+}
+
+.sticky-note .part-accent,
+.sticky-note .part-accent-italic {
+  color: var(--bg);
+  opacity: 0.75;
+}
+
+.sticky-note .part-muted {
+  opacity: 0.55;
+}
+
+.sticky-note .block-text p,
+.sticky-note .block-blockquote blockquote,
+.sticky-note .callout-label,
+.sticky-note .callout-text,
+.sticky-note .bullet-label,
+.sticky-note .bullet-text {
+  color: var(--bg);
+}
+
+.sticky-note .block-blockquote blockquote {
+  border-left-color: var(--bg);
+}
+
+.sticky-sign {
+  flex: 0 0 auto;
+}
+
+.sticky-sign .block-text p {
+  font-family: var(--font-body);
+  font-size: clamp(11px, calc(0.85rem * var(--type-scale)), 20px);
+  letter-spacing: 0.04em;
+  color: var(--bg);
+  opacity: 0.72;
+}
