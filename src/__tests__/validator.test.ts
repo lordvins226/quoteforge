@@ -154,7 +154,7 @@ describe("Image block schema", () => {
   });
 });
 
-describe("SizeName enum — all 17 sizes", () => {
+describe("SizeName enum — all 22 sizes", () => {
   const allSizes = [
     "twitter", "twitter-square",
     "linkedin", "linkedin-square",
@@ -165,8 +165,8 @@ describe("SizeName enum — all 17 sizes", () => {
     "story", "custom",
   ];
 
-  test("has exactly 17 sizes", () => {
-    expect(Object.keys(SIZES)).toHaveLength(17);
+  test("has exactly 22 sizes", () => {
+    expect(Object.keys(SIZES)).toHaveLength(22);
   });
 
   test.each(allSizes)("accepts '%s'", (size) => {
@@ -175,6 +175,18 @@ describe("SizeName enum — all 17 sizes", () => {
 
   test("rejects unknown size", () => {
     expect(() => SizeNameSchema.parse("tiktok")).toThrow();
+  });
+});
+
+describe("Non-social presets", () => {
+  test.each([
+    ["og", 1200, 630],
+    ["readme-hero", 1280, 640],
+    ["slide-16x9", 1920, 1080],
+    ["4x3", 1600, 1200],
+    ["3x2", 1500, 1000],
+  ])("%s resolves to %i x %i", (name, w, h) => {
+    expect(SIZES[name as keyof typeof SIZES]).toEqual(expect.objectContaining({ w, h }));
   });
 });
 
