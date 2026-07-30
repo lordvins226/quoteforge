@@ -237,7 +237,40 @@ All formats with exact pixel dimensions:
 | `kyoto` | `#FAF8F3` | `#D4411E` | Shippori Mincho / Inter |
 | `mono-slate` | `#F5F5F4` | `#0C0A09` | Syne / JetBrains Mono |
 
-Create your own: `quoteforge themes create my-brand`
+### Themes are fork points, not a fixed menu
+
+The twelve built-ins are starting points. Duplicating one and changing a single color
+is usually enough to match an existing brand:
+
+```bash
+quoteforge themes duplicate terminal-green my-brand
+```
+
+That writes `~/.config/quoteforge/themes/my-brand.json` — plain, hand-editable JSON.
+Change the accent:
+
+```json
+{
+  "name": "my-brand",
+  "displayName": "My Brand",
+  "colors": {
+    "accent": "#4ecdc4"
+  }
+}
+```
+
+Then render with it:
+
+```bash
+quoteforge generate card.json --theme my-brand
+```
+
+`quoteforge themes show my-brand` prints the resolved theme with color swatches, and
+`quoteforge themes list` includes it alongside the built-ins.
+
+`terminal-green` is a good base for a dark developer palette — JetBrains Mono on a
+near-black background. `paper-cream` and `light-minimal` suit editorial and print-like
+work.
 
 ## Templates
 

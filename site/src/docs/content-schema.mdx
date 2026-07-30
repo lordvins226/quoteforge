@@ -182,6 +182,28 @@ Seventeen presets, all in CSS pixels:
 | `story` | 1080×1920 | 9:16 | Story (IG / FB / TW) |
 | `custom` | user-defined | free | Custom dimensions |
 
+### Custom dimensions
+
+When no preset fits, use `custom` and supply both dimensions at the root of the card:
+
+```json
+{
+  "template": "manifesto",
+  "theme": "dark-teal",
+  "size": "custom",
+  "width": 1200,
+  "height": 900,
+  "blocks": [ ... ]
+}
+```
+
+`width` and `height` are integers between 1 and 8000, and both are required when
+`size` is `"custom"`. Supplying them alongside a preset size is rejected, because the
+preset would win and the values would be silently ignored.
+
+The same keys work in a deck's `defaults`, and on an individual slide that sets
+`"size": "custom"` explicitly.
+
 ## Validation
 
 Check any card or deck without rendering it:
