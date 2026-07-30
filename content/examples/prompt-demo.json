@@ -1,0 +1,16 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "prompt",
+  "theme": "dark-teal",
+  "size": "instagram-sq",
+  "blocks": [
+    {
+      "id": "turns",
+      "type": "callout",
+      "items": [
+        { "label": "Prompt", "text": "Make me a carousel about shipping small." },
+        { "label": "QuoteForge", "text": "Ten slides, one theme, one command. The JSON lives in your repo, so the next one takes thirty seconds." }
+      ]
+    }
+  ]
+}

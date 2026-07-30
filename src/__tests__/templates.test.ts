@@ -689,3 +689,50 @@ describe("memo template", () => {
     assertNoHardcodedHex("memo");
   });
 });
+
+describe("prompt template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/dark-teal.json"));
+
+  test("renders the first item as the prompt turn and the second as the answer turn", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/prompt-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    const body = bodyOnly(html);
+    expect(body.match(/pr-turn you/g)?.length).toBe(1);
+    expect(body.match(/pr-turn ai/g)?.length).toBe(1);
+    expect(html).toContain("Make me a carousel about shipping small.");
+    expect(html).toContain("pr-cursor");
+  });
+
+  test("degrades gracefully with fewer or more than 2 items", () => {
+    const build = (labels: string[]) =>
+      CardContentSchema.parse({
+        template: "prompt",
+        theme: "dark-teal",
+        size: "instagram-sq",
+        blocks: [
+          {
+            type: "callout",
+            items: labels.map((label, i) => ({ label, text: `Turn ${i + 1}` })),
+          },
+        ],
+      });
+
+    // the schema requires >=1 item on bullet-list/callout, so 0 items is not a
+    // reachable case through valid content — 1 item is the true floor.
+    const one = bodyOnly(renderTemplate(build(["Prompt"]), theme, { w: 1080, h: 1080 }));
+    expect(one.match(/pr-turn you/g)?.length).toBe(1);
+    expect(one.match(/pr-turn ai/g)).toBeNull();
+
+    const three = bodyOnly(
+      renderTemplate(build(["Prompt", "QuoteForge", "Extra"]), theme, { w: 1080, h: 1080 })
+    );
+    expect(three.match(/pr-turn you/g)?.length).toBe(1);
+    expect(three.match(/pr-turn ai/g)?.length).toBe(1);
+    expect(three).not.toContain("Turn 3");
+  });
+
+  test("style.css has no literal hex color outside theme-injected :root vars", () => {
+    assertNoHardcodedHex("prompt");
+  });
+});
