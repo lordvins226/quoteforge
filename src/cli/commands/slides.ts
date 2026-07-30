@@ -6,6 +6,7 @@ import { detectAndValidate } from "../utils/validator.js";
 import { renderDeck } from "../../renderer/slide-renderer.js";
 import { resolveImageBlocks } from "../../renderer/image-resolver.js";
 import { buildZip } from "../utils/zip.js";
+import { parseAspectRatio } from "../../renderer/safe-aspect.js";
 
 export const slidesCommand = new Command("slides")
   .description("Generate numbered PNGs + ZIP from a deck JSON file")
@@ -22,6 +23,7 @@ export const slidesCommand = new Command("slides")
   .option("--open", "Open output folder after generation")
   .option("--fit-content", "Crop each slide to the content bounding box plus theme padding")
   .option("--trim", "Alias for --fit-content")
+  .option("--safe-aspect <ratio>", "Constrain layout to survive a center-crop toward this ratio (e.g. 4:3)")
   .action(async (file: string, opts: {
     theme?: string;
     size?: string;
@@ -35,6 +37,7 @@ export const slidesCommand = new Command("slides")
     open?: boolean;
     fitContent?: boolean;
     trim?: boolean;
+    safeAspect?: string;
   }) => {
     const filePath = resolve(file);
 
@@ -88,6 +91,17 @@ export const slidesCommand = new Command("slides")
       console.warn(chalk.yellow("⚠ --fit-content on a deck may produce slides with differing heights."));
     }
 
+    let safeAspectRatio: number | undefined;
+    if (opts.safeAspect) {
+      try {
+        safeAspectRatio = parseAspectRatio(opts.safeAspect);
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err);
+        console.error(chalk.red(`✗ ${msg}`));
+        process.exit(1);
+      }
+    }
+
     const totalSlides = slideIndex !== undefined ? 1 : deck.slides.length;
     console.log(chalk.dim(`Rendering ${totalSlides} slide${totalSlides > 1 ? "s" : ""} from ${basename(filePath)}…`));
 
@@ -99,6 +113,7 @@ export const slidesCommand = new Command("slides")
       concurrency,
       scale,
       fitContent,
+      safeAspectRatio,
     });
 
     const deckName = basename(filePath, ".json");

@@ -9,6 +9,9 @@ import { renderDeck } from "../../renderer/slide-renderer.js";
 import { resolveImageBlocks } from "../../renderer/image-resolver.js";
 import { buildZip } from "../utils/zip.js";
 import { resolveThemeRead } from "../../assetBundle.js";
+import { resolveDimensions } from "../../renderer/dimensions.js";
+import { parseAspectRatio, computeSafeInset } from "../../renderer/safe-aspect.js";
+import type { SafeInset } from "../../renderer/safe-aspect.js";
 
 export const batchCommand = new Command("batch")
   .description("Generate PNGs from a directory of card/deck JSON files")
@@ -20,6 +23,7 @@ export const batchCommand = new Command("batch")
   .option("--decks", "Also process deck files into individual ZIPs")
   .option("--fit-content", "Crop output(s) to the content bounding box plus theme padding")
   .option("--trim", "Alias for --fit-content")
+  .option("--safe-aspect <ratio>", "Constrain layout to survive a center-crop toward this ratio (e.g. 4:3)")
   .action(async (directory: string, opts: {
     theme?: string;
     size?: string;
@@ -28,6 +32,7 @@ export const batchCommand = new Command("batch")
     decks?: boolean;
     fitContent?: boolean;
     trim?: boolean;
+    safeAspect?: string;
   }) => {
     const dir = resolve(directory);
     const files = readdirSync(dir).filter((f) => f.endsWith(".json") && !f.startsWith("_"));
@@ -45,6 +50,18 @@ export const batchCommand = new Command("batch")
 
     const concurrency = parseInt(opts.concurrency, 10);
     const fitContent = Boolean(opts.fitContent || opts.trim);
+
+    let safeAspectRatio: number | undefined;
+    if (opts.safeAspect) {
+      try {
+        safeAspectRatio = parseAspectRatio(opts.safeAspect);
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err);
+        console.error(chalk.red(`✗ ${msg}`));
+        process.exit(1);
+      }
+    }
+
     let processed = 0;
     let skipped = 0;
 
@@ -74,7 +91,13 @@ export const batchCommand = new Command("batch")
           if (!themePath) throw new Error(`Theme not found: ${themeName}`);
           const theme = ThemeSchema.parse(JSON.parse(readFileSync(themePath, "utf-8")));
 
-          const buf = await renderCard(card, theme, sizeName, 2, undefined, undefined, fitContent);
+          let safeInset: SafeInset | undefined;
+          if (safeAspectRatio !== undefined) {
+            const dimensions = resolveDimensions({ size: sizeName, width: card.width, height: card.height });
+            safeInset = computeSafeInset(dimensions, safeAspectRatio);
+          }
+
+          const buf = await renderCard(card, theme, sizeName, 2, undefined, undefined, fitContent, safeInset);
           const outPath = join(outputDir, `${basename(file, ".json")}.png`);
           writeFileSync(outPath, buf);
           console.log(chalk.green("  ✓"), chalk.dim(outPath));
@@ -102,6 +125,7 @@ export const batchCommand = new Command("batch")
             themeOverride: opts.theme,
             concurrency,
             fitContent,
+            safeAspectRatio,
           });
 
           for (let i = 0; i < buffers.length; i++) {

@@ -6,6 +6,8 @@ import type { RenderMeta } from "./template-engine.js";
 import type { DeckContent, Theme, SizeName, CardContent } from "../cli/utils/validator.js";
 import { ThemeSchema } from "../cli/utils/validator.js";
 import { resolveThemeRead } from "../assetBundle.js";
+import { resolveDimensions } from "./dimensions.js";
+import { computeSafeInset } from "./safe-aspect.js";
 
 export interface SlideRenderOptions {
   sizeOverride?: SizeName;
@@ -15,7 +17,7 @@ export interface SlideRenderOptions {
   concurrency?: number;
   scale?: number;
   fitContent?: boolean;
-  safeInset?: { top: number; right: number; bottom: number; left: number };
+  safeAspectRatio?: number;
 }
 
 type Slide = DeckContent["slides"][number];
@@ -124,7 +126,7 @@ export async function renderDeck(
     concurrency = 4,
     scale = 2,
     fitContent = false,
-    safeInset,
+    safeAspectRatio,
   } = opts;
 
   const totalSlides = deck.slides.length;
@@ -163,6 +165,13 @@ export async function renderDeck(
         showCounter,
         counter,
       };
+
+      const safeInset = safeAspectRatio !== undefined
+        ? computeSafeInset(
+            resolveDimensions({ size: sizeName, width: cardContent.width, height: cardContent.height }),
+            safeAspectRatio,
+          )
+        : undefined;
 
       const page = await pool.acquire();
       let buffer: Buffer;
