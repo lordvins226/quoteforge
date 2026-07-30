@@ -18,6 +18,8 @@ export const generateCommand = new Command("generate")
   .option("--scale <n>", "Pixel ratio", "2")
   .option("--open", "Open output file after generation")
   .option("--no-timestamp", "Omit timestamp from filename")
+  .option("--fit-content", "Crop the output to the content bounding box plus theme padding")
+  .option("--trim", "Alias for --fit-content")
   .action(async (file: string, opts: {
     theme?: string;
     size?: string;
@@ -25,6 +27,8 @@ export const generateCommand = new Command("generate")
     scale: string;
     open?: boolean;
     timestamp: boolean;
+    fitContent?: boolean;
+    trim?: boolean;
   }) => {
     const filePath = resolve(file);
 
@@ -67,7 +71,8 @@ export const generateCommand = new Command("generate")
 
     console.log(chalk.dim(`Rendering ${basename(filePath)} with theme "${themeName}" at size "${sizeName}"…`));
 
-    const buf = await renderCard(card, theme, sizeName, scale);
+    const fitContent = Boolean(opts.fitContent || opts.trim);
+    const buf = await renderCard(card, theme, sizeName, scale, undefined, undefined, fitContent);
 
     const outputDir = resolve("outputs");
     if (!existsSync(outputDir)) {

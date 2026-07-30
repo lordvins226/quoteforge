@@ -14,6 +14,7 @@ export interface SlideRenderOptions {
   noCounter?: boolean;
   concurrency?: number;
   scale?: number;
+  fitContent?: boolean;
 }
 
 type Slide = DeckContent["slides"][number];
@@ -121,6 +122,7 @@ export async function renderDeck(
     noCounter = false,
     concurrency = 4,
     scale = 2,
+    fitContent = false,
   } = opts;
 
   const totalSlides = deck.slides.length;
@@ -163,7 +165,7 @@ export async function renderDeck(
       const page = await pool.acquire();
       let buffer: Buffer;
       try {
-        buffer = await renderCardOnPage(page, cardContent, theme, sizeName, scale, meta);
+        buffer = await renderCardOnPage(page, cardContent, theme, sizeName, scale, meta, fitContent);
       } finally {
         pool.release(page);
       }

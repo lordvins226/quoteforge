@@ -20,6 +20,8 @@ export const slidesCommand = new Command("slides")
   .option("--zip-level <n>", "ZIP compression level 0-9 (0=store, 6=default, 9=max)", "6")
   .option("--scale <n>", "Pixel ratio", "2")
   .option("--open", "Open output folder after generation")
+  .option("--fit-content", "Crop each slide to the content bounding box plus theme padding")
+  .option("--trim", "Alias for --fit-content")
   .action(async (file: string, opts: {
     theme?: string;
     size?: string;
@@ -31,6 +33,8 @@ export const slidesCommand = new Command("slides")
     zipLevel: string;
     scale: string;
     open?: boolean;
+    fitContent?: boolean;
+    trim?: boolean;
   }) => {
     const filePath = resolve(file);
 
@@ -78,6 +82,11 @@ export const slidesCommand = new Command("slides")
     const slideIndex = opts.slide ? parseInt(opts.slide, 10) - 1 : undefined;
     const concurrency = parseInt(opts.concurrency, 10);
     const scale = parseInt(opts.scale, 10);
+    const fitContent = Boolean(opts.fitContent || opts.trim);
+
+    if (fitContent) {
+      console.warn(chalk.yellow("⚠ --fit-content on a deck may produce slides with differing heights."));
+    }
 
     const totalSlides = slideIndex !== undefined ? 1 : deck.slides.length;
     console.log(chalk.dim(`Rendering ${totalSlides} slide${totalSlides > 1 ? "s" : ""} from ${basename(filePath)}…`));
@@ -89,6 +98,7 @@ export const slidesCommand = new Command("slides")
       noCounter: !opts.counter,
       concurrency,
       scale,
+      fitContent,
     });
 
     const deckName = basename(filePath, ".json");

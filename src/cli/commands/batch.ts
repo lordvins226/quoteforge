@@ -18,12 +18,16 @@ export const batchCommand = new Command("batch")
   .option("-o, --output <dir>", "Output directory")
   .option("--concurrency <n>", "Parallel workers", "2")
   .option("--decks", "Also process deck files into individual ZIPs")
+  .option("--fit-content", "Crop output(s) to the content bounding box plus theme padding")
+  .option("--trim", "Alias for --fit-content")
   .action(async (directory: string, opts: {
     theme?: string;
     size?: string;
     output?: string;
     concurrency: string;
     decks?: boolean;
+    fitContent?: boolean;
+    trim?: boolean;
   }) => {
     const dir = resolve(directory);
     const files = readdirSync(dir).filter((f) => f.endsWith(".json") && !f.startsWith("_"));
@@ -40,6 +44,7 @@ export const batchCommand = new Command("batch")
     }
 
     const concurrency = parseInt(opts.concurrency, 10);
+    const fitContent = Boolean(opts.fitContent || opts.trim);
     let processed = 0;
     let skipped = 0;
 
@@ -69,7 +74,7 @@ export const batchCommand = new Command("batch")
           if (!themePath) throw new Error(`Theme not found: ${themeName}`);
           const theme = ThemeSchema.parse(JSON.parse(readFileSync(themePath, "utf-8")));
 
-          const buf = await renderCard(card, theme, sizeName);
+          const buf = await renderCard(card, theme, sizeName, 2, undefined, undefined, fitContent);
           const outPath = join(outputDir, `${basename(file, ".json")}.png`);
           writeFileSync(outPath, buf);
           console.log(chalk.green("  ✓"), chalk.dim(outPath));
@@ -88,10 +93,15 @@ export const batchCommand = new Command("batch")
             mkdirSync(deckDir, { recursive: true });
           }
 
+          if (fitContent) {
+            console.warn(chalk.yellow(`  ⚠ --fit-content on deck "${file}" may produce slides with differing heights.`));
+          }
+
           const { buffers, names } = await renderDeck(deck, {
             sizeOverride: opts.size as SizeName | undefined,
             themeOverride: opts.theme,
             concurrency,
+            fitContent,
           });
 
           for (let i = 0; i < buffers.length; i++) {
