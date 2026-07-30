@@ -1,0 +1,47 @@
+/* Polaroid — an instant-photo plate on --headline ground, image in a square well,
+   caption inverted in --bg so it reads on every theme. Shadow is the documented
+   rgba() exception, not a palette color. */
+
+.card.polaroid {
+  align-items: center;
+}
+
+.polaroid-plate {
+  width: 74%;
+  background: var(--headline);
+  padding:
+    clamp(20px, calc(var(--padding) * 0.7 * var(--space-scale)), 64px)
+    clamp(20px, calc(var(--padding) * 0.7 * var(--space-scale)), 64px)
+    clamp(32px, calc(var(--padding) * 1.3 * var(--space-scale)), 120px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, calc(var(--gap) * var(--space-scale)), 40px);
+  box-shadow: 0 32px 72px -28px rgba(0, 0, 0, 0.45);
+}
+
+.polaroid-well {
+  flex: 0 0 auto;
+  aspect-ratio: 1 / 1;
+  background: var(--bg);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.polaroid-well .block-image {
+  width: 100%;
+  height: auto;
+}
+
+.polaroid-caption {
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+.polaroid-caption .block-text p {
+  font-family: var(--font-headline);
+  color: var(--bg);
+  font-size: clamp(15px, calc(var(--body-size) * var(--type-scale) * 1.1), 30px);
+  line-height: 1.4;
+}

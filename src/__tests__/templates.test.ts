@@ -332,3 +332,56 @@ describe("sticky template", () => {
     expect(styleCSS).toContain("rgba(0, 0, 0,");
   });
 });
+
+describe("polaroid template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/mono-slate.json"));
+
+  test("renders the plate, photo well, and caption", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/polaroid-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    expect(html).toContain("polaroid-plate");
+    expect(html).toContain("polaroid-well");
+    expect(html).toContain("polaroid-caption");
+    expect(html).toContain("block-image");
+    expect(html).toContain("first render, 3am");
+  });
+
+  test("composes with the image block's own width and align options instead of overriding them", () => {
+    const card = CardContentSchema.parse({
+      template: "polaroid",
+      theme: "mono-slate",
+      size: "instagram-sq",
+      blocks: [
+        { type: "image", src: "data:image/png;base64,abc", width: "sm", align: "right" },
+        { type: "text", content: "cropped tight" },
+      ],
+    });
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    expect(html).toContain('is-sm');
+    expect(html).toContain('align-right');
+  });
+
+  test("survives a missing image block — empty well, nothing broken", () => {
+    const card = CardContentSchema.parse({
+      template: "polaroid",
+      theme: "mono-slate",
+      size: "instagram-sq",
+      blocks: [
+        { type: "text", content: "no photo yet" },
+      ],
+    });
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    expect(bodyOnly(html)).toContain("polaroid-well");
+    expect(bodyOnly(html)).not.toContain("block-image");
+    expect(html).toContain("no photo yet");
+  });
+
+  test("style.css allows the documented rgba() drop-shadow but no literal hex", () => {
+    assertNoHardcodedHex("polaroid");
+    const styleCSS = readFileSync(resolve(ROOT, "templates/polaroid/style.css"), "utf-8");
+    expect(styleCSS).toContain("rgba(0, 0, 0,");
+  });
+});
