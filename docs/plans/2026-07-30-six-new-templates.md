@@ -154,3 +154,36 @@
 - [ ] Each of the six renders at two different aspect ratios without clipping or overflow
 - [ ] `grep -nE '#[0-9a-fA-F]{3,8}' templates/*/style.css` returns nothing for the new templates
 - [ ] A release build would ship them: every new template appears in `TEMPLATE_ASSETS`
+
+---
+
+## Decisions taken mid-flight
+
+### Card `label` field (replaces the `meta.title` improvisation)
+
+Task 1 needed a short rail label and reached for `card.meta.title`. That is wrong: `meta.title`
+already drives the **output filename** for deck slides (`slide-renderer.ts` derives `deckName`
+from it), so rendering it as visible chrome conflates document metadata with card content.
+
+Add an optional card-level `label` instead — one short string a template may render as chrome
+(a rail label, a window title, a letterhead, a kicker). Templates without chrome ignore it.
+
+- `label: z.string().max(48).optional()` on `CardContentSchema`, `SlideSchema`, `DeckDefaultsSchema`
+- Inherits slide → deck defaults, exactly like `align` (no Zod `.default()`)
+- Mirrored in `studio/src/types/index.ts` on `CardContent`, `Slide`, and `DeckContent.defaults`
+- Each template documents what it renders `label` as; templates that ignore it say so
+
+### Template families (studio picker + site docs grouping)
+
+28 templates need grouping in both the studio picker and `templates.mdx`:
+
+| Family | Templates |
+|--------|-----------|
+| Statement | manifesto, quote, minimal, spotlight, frame, sticky |
+| Structure & data | list, ledger, index, grid, timeline, versus, stat, chart |
+| Developer | terminal, code, diff, window |
+| Editorial | cover, split, memo, receipt, ticket, calendar |
+| People & media | profile, chat, prompt, polaroid |
+
+Export as `TEMPLATE_FAMILIES` from `studio/src/types/index.ts`, mirroring the existing
+`SIZE_GROUPS` shape, and use the same grouping as the heading structure in `templates.mdx`.
