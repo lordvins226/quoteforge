@@ -495,3 +495,21 @@ describe("ledger template", () => {
     assertNoHardcodedHex("ledger");
   });
 });
+
+describe("index template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/paper-cream.json"));
+
+  test("renders the title and dot-leader rows with label as the trailing figure", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/index-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    expect(html).toContain("index-title");
+    expect(html).toContain("index-leader");
+    expect(html).toContain('<span class="index-entry">Install</span>');
+    expect(html).toContain('<span class="index-figure">01</span>');
+  });
+
+  test("style.css has no literal hex color outside theme-injected :root vars", () => {
+    assertNoHardcodedHex("index");
+  });
+});

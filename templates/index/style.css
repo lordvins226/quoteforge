@@ -1,0 +1,47 @@
+/* Index — dot-leader rows. `label` means the figure at the right edge
+   (a page number, a count); `text` is the entry it points at. */
+
+.index-title {
+  flex: 0 0 auto;
+  font-family: var(--font-headline);
+  font-size: clamp(26px, calc(var(--headline-size) * var(--headline-scale) * 0.55), 72px);
+  line-height: 1.1;
+  font-weight: 600;
+  color: var(--headline);
+}
+
+.index-rows {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, calc(1.2rem * var(--space-scale)), 30px);
+  min-height: 0;
+}
+
+.index-row {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(8px, calc(0.7rem * var(--space-scale)), 20px);
+  font-size: clamp(var(--body-min), calc(1rem * var(--type-scale)), 30px);
+}
+
+.index-entry {
+  font-family: var(--font-headline);
+  color: var(--headline);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.index-leader {
+  flex: 1 1 auto;
+  border-bottom: 1px dotted var(--callout-border);
+  transform: translateY(-0.3em);
+}
+
+.index-figure {
+  flex: 0 0 auto;
+  font-family: var(--font-body);
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}

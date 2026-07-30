@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {{ fontImports | safe }}
+  <style>
+    :root {
+      {{ cssVars | safe }}
+    }
+
+    {{ baseCSS | safe }}
+    {{ styleCSS | safe }}
+  </style>
+</head>
+<body>
+  <div class="card align-{{ card.align or 'center' }} index-tpl">
+    {% for block in card.blocks %}
+      {% if block.type == "headline" %}
+        <div class="index-title">
+          {%- for part in block.parts -%}
+            {{ renderPart(part) | safe }}
+          {%- endfor -%}
+        </div>
+      {% elif block.type == "bullet-list" or block.type == "callout" %}
+        <div class="index-rows">
+          {%- for item in block.items %}
+          <div class="index-row">
+            <span class="index-entry">{{ item.text }}</span>
+            <span class="index-leader"></span>
+            <span class="index-figure">{{ item.label }}</span>
+          </div>
+          {%- endfor %}
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    {% include "_blocks/slide-counter.njk" %}
+  </div>
+</body>
+</html>
