@@ -16,6 +16,29 @@ export interface SlideRenderOptions {
   scale?: number;
 }
 
+type Slide = DeckContent["slides"][number];
+
+export function buildSlideCardContent(
+  slide: Slide,
+  deck: DeckContent,
+  opts: { sizeOverride?: SizeName; themeOverride?: string },
+): CardContent {
+  const themeName = opts.themeOverride ?? slide.theme ?? deck.defaults.theme;
+  const sizeName = (opts.sizeOverride ?? slide.size ?? deck.defaults.size) as SizeName;
+  const templateName = slide.template ?? deck.defaults.template;
+  const width = slide.width ?? deck.defaults.width;
+  const height = slide.height ?? deck.defaults.height;
+
+  return {
+    template: templateName,
+    theme: themeName,
+    size: sizeName,
+    width,
+    height,
+    blocks: slide.blocks,
+  };
+}
+
 function loadTheme(name: string): Theme {
   const themePath = resolveThemeRead(name);
   if (!themePath) throw new Error(`Theme not found: ${name}`);
@@ -115,7 +138,6 @@ export async function renderDeck(
 
       const themeName = themeOverride ?? slide.theme ?? deck.defaults.theme;
       const sizeName = (sizeOverride ?? slide.size ?? deck.defaults.size) as SizeName;
-      const templateName = slide.template ?? deck.defaults.template;
       const showCounter = noCounter
         ? false
         : (slide.showCounter ?? deck.defaults.showCounter ?? false);
@@ -127,12 +149,7 @@ export async function renderDeck(
 
       const theme = loadTheme(themeName);
 
-      const cardContent: CardContent = {
-        template: templateName,
-        theme: themeName,
-        size: sizeName,
-        blocks: slide.blocks,
-      };
+      const cardContent = buildSlideCardContent(slide, deck, { sizeOverride, themeOverride });
 
       const meta: Partial<RenderMeta> = {
         slideIndex: originalIndex,

@@ -130,6 +130,8 @@ export interface DeckContent {
     template: string;
     theme: string;
     size: SizeName;
+    width?: number;
+    height?: number;
     showCounter?: boolean;
     counter?: CounterConfig;
   };
