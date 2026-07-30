@@ -17,6 +17,10 @@ function assertNoHardcodedHex(templateName: string): void {
   expect(styleCSS.match(hexPattern)).toBeNull();
 }
 
+function bodyOnly(html: string): string {
+  return html.slice(html.indexOf("<body>"));
+}
+
 describe("split template", () => {
   const theme = ThemeSchema.parse(loadJSON("themes/dark-teal.json"));
 
@@ -98,3 +102,63 @@ describe("split template", () => {
     assertNoHardcodedHex("split");
   });
 });
+
+describe("terminal template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/terminal-green.json"));
+
+  test("renders the window bar chrome and prompt/status sigils", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/terminal-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1200, h: 675 });
+
+    expect(html).toContain("term-bar");
+    expect(html).toContain("term-dot");
+    expect(html).toContain("term-body");
+  });
+
+  test("renders card.eyebrow as the window title when present", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/terminal-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1200, h: 675 });
+
+    expect(card.eyebrow).toBeDefined();
+    expect(html).toContain(`<span class="term-title">${card.eyebrow as string}</span>`);
+  });
+
+  test("renders no window title when eyebrow is absent", () => {
+    const card = CardContentSchema.parse({
+      template: "terminal",
+      theme: "terminal-green",
+      size: "twitter",
+      blocks: [
+        { type: "headline", parts: [{ text: "No title here", style: "normal" }] },
+      ],
+    });
+    const html = renderTemplate(card, theme, { w: 1200, h: 675 });
+
+    expect(bodyOnly(html)).not.toContain("term-title");
+  });
+
+  test("a deck slide's editor label never renders as chrome text (regression guard)", () => {
+    const deck = DeckContentSchema.parse({
+      type: "deck",
+      defaults: { template: "terminal", theme: "terminal-green", size: "twitter" },
+      slides: [
+        {
+          id: "s1",
+          label: "Slide 2",
+          blocks: [{ type: "headline", parts: [{ text: "Body headline", style: "normal" }] }],
+        },
+      ],
+    });
+    const slide = deck.slides[0]!;
+    const card = buildSlideCardContent(slide, deck, {});
+    const html = renderTemplate(card, theme, { w: 1200, h: 675 });
+
+    expect(bodyOnly(html)).not.toContain("term-title");
+    expect(html).not.toContain("Slide 2");
+  });
+
+  test("style.css has no literal hex color outside theme-injected :root vars", () => {
+    assertNoHardcodedHex("terminal");
+  });
+});
+

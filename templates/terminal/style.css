@@ -1,0 +1,68 @@
+/* Terminal — shell session chrome around a monospace body */
+
+.card.term {
+  padding: 0;
+  gap: 0;
+}
+
+.term-bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: clamp(4px, calc(0.4rem * var(--space-scale)), 10px);
+  padding:
+    calc(clamp(12px, calc(0.9rem * var(--space-scale)), 28px) + var(--safe-top))
+    calc(clamp(20px, calc(var(--padding) * var(--space-scale)), 64px) + var(--safe-right))
+    clamp(12px, calc(0.9rem * var(--space-scale)), 28px)
+    calc(clamp(20px, calc(var(--padding) * var(--space-scale)), 64px) + var(--safe-left));
+  border-bottom: 1px solid var(--callout-border);
+}
+
+.term-dot {
+  flex: none;
+  width: clamp(8px, calc(0.7rem * var(--space-scale)), 16px);
+  height: clamp(8px, calc(0.7rem * var(--space-scale)), 16px);
+  border-radius: 50%;
+  background: var(--callout-border);
+}
+
+.term-title {
+  margin-left: clamp(6px, calc(0.6rem * var(--space-scale)), 14px);
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: clamp(12px, calc(0.85rem * var(--type-scale)), 18px);
+  color: var(--body);
+  opacity: 0.75;
+}
+
+.term-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(10px, calc(var(--gap) * var(--space-scale)), 32px);
+  padding:
+    clamp(20px, calc(var(--padding) * var(--space-scale)), 64px)
+    calc(clamp(20px, calc(var(--padding) * var(--space-scale)), 64px) + var(--safe-right))
+    calc(clamp(20px, calc(var(--padding) * var(--space-scale)), 64px) + var(--safe-bottom))
+    calc(clamp(20px, calc(var(--padding) * var(--space-scale)), 64px) + var(--safe-left));
+}
+
+.term-body .block-text p {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  color: var(--body);
+}
+
+.term-body .block-text:first-of-type p::before {
+  content: "$ ";
+  color: var(--accent);
+}
+
+.term-body .block-text:last-of-type p::before {
+  content: "\2713 ";
+  color: var(--accent);
+}
+
+.term-body .headline {
+  font-family: var(--font-headline);
+}
