@@ -42,6 +42,8 @@ import diff_template from "../templates/diff/template.njk" with { type: "text" }
 import diff_style from "../templates/diff/style.css" with { type: "text" };
 import timeline_template from "../templates/timeline/template.njk" with { type: "text" };
 import timeline_style from "../templates/timeline/style.css" with { type: "text" };
+import receipt_template from "../templates/receipt/template.njk" with { type: "text" };
+import receipt_style from "../templates/receipt/style.css" with { type: "text" };
 
 import block_divider from "../templates/_blocks/divider.njk" with { type: "text" };
 import block_blockquote from "../templates/_blocks/blockquote.njk" with { type: "text" };
@@ -111,6 +113,8 @@ const TEMPLATE_ASSETS: AssetMap = {
   "diff/style.css": diff_style,
   "timeline/template.njk": timeline_template,
   "timeline/style.css": timeline_style,
+  "receipt/template.njk": receipt_template,
+  "receipt/style.css": receipt_style,
   "_blocks/divider.njk": block_divider,
   "_blocks/blockquote.njk": block_blockquote,
   "_blocks/spacer.njk": block_spacer,

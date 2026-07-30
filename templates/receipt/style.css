@@ -1,0 +1,80 @@
+/* Receipt — itemized slip. `label` means the amount column; `text` is the
+   row's description. The last item in the list becomes the total row
+   (its label is the total amount, its text the "Total" caption).
+   card.eyebrow, when present, sits under the header as the shop's
+   sub-line (date, order number, etc). */
+
+.card.receipt {
+  font-family: var(--font-body);
+  gap: clamp(10px, calc(0.8rem * var(--space-scale)), 22px);
+}
+
+.rc-head {
+  flex: 0 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, calc(0.35rem * var(--space-scale)), 10px);
+}
+
+.rc-shop {
+  font-size: clamp(14px, calc(1rem * var(--type-scale)), 28px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--headline);
+}
+
+.rc-sub {
+  font-size: clamp(11px, calc(0.7rem * var(--type-scale)), 17px);
+  color: var(--body);
+  letter-spacing: 0.08em;
+}
+
+.rc-sep {
+  flex: 0 0 auto;
+  border-top: 1px dashed var(--callout-border);
+}
+
+.rc-rows {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, calc(0.7rem * var(--space-scale)), 18px);
+}
+
+.rc-row {
+  display: flex;
+  justify-content: space-between;
+  gap: clamp(12px, calc(1rem * var(--space-scale)), 26px);
+  font-size: clamp(var(--body-min), calc(0.85rem * var(--type-scale)), 22px);
+  color: var(--body);
+}
+
+.rc-row .amt {
+  color: var(--headline);
+  font-variant-numeric: tabular-nums;
+}
+
+.rc-total {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-between;
+  font-size: clamp(var(--body-min), calc(1.1rem * var(--type-scale)), 30px);
+  font-weight: 700;
+  color: var(--headline);
+}
+
+.rc-total .amt {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.rc-foot {
+  flex: 0 0 auto;
+  text-align: center;
+  font-size: clamp(10px, calc(0.68rem * var(--type-scale)), 16px);
+  color: var(--body);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}

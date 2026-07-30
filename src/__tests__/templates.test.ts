@@ -613,3 +613,23 @@ describe("timeline template", () => {
     assertNoHardcodedHex("timeline");
   });
 });
+
+describe("receipt template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/paper-cream.json"));
+
+  test("renders the header, rows, and treats the last item as the total", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/receipt-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1080, h: 1350 });
+
+    const body = bodyOnly(html);
+    expect(body.match(/class="rc-row"/g)?.length).toBe(4);
+    expect(html).toContain("rc-total");
+    expect(html).toContain('<span>Total</span><span class="amt">1 command</span>');
+    expect(html).toContain("rc-foot");
+    expect(html).toContain("Thank you — come back soon");
+  });
+
+  test("style.css has no literal hex color outside theme-injected :root vars", () => {
+    assertNoHardcodedHex("receipt");
+  });
+});
