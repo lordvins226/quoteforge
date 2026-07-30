@@ -593,3 +593,23 @@ describe("diff template", () => {
     expect(styleCSS).not.toMatch(/\b(red|green|crimson|darkred|forestgreen)\b/i);
   });
 });
+
+describe("timeline template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/oceanic.json"));
+
+  test("marks trailing-* labels done and strips the marker from the displayed time", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/timeline-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1080, h: 1350 });
+
+    const body = bodyOnly(html);
+    expect(body.match(/tl-row done/g)?.length).toBe(2);
+    expect(body.match(/tl-row pending/g)?.length).toBe(2);
+    expect(html).toContain('<span class="tl-when">Q1</span>');
+    expect(html).not.toContain("Q1*");
+    expect(html).toContain('<span class="tl-when">Q3</span>');
+  });
+
+  test("style.css has no literal hex color outside theme-injected :root vars", () => {
+    assertNoHardcodedHex("timeline");
+  });
+});

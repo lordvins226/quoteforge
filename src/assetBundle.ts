@@ -40,6 +40,8 @@ import chat_template from "../templates/chat/template.njk" with { type: "text" }
 import chat_style from "../templates/chat/style.css" with { type: "text" };
 import diff_template from "../templates/diff/template.njk" with { type: "text" };
 import diff_style from "../templates/diff/style.css" with { type: "text" };
+import timeline_template from "../templates/timeline/template.njk" with { type: "text" };
+import timeline_style from "../templates/timeline/style.css" with { type: "text" };
 
 import block_divider from "../templates/_blocks/divider.njk" with { type: "text" };
 import block_blockquote from "../templates/_blocks/blockquote.njk" with { type: "text" };
@@ -107,6 +109,8 @@ const TEMPLATE_ASSETS: AssetMap = {
   "chat/style.css": chat_style,
   "diff/template.njk": diff_template,
   "diff/style.css": diff_style,
+  "timeline/template.njk": timeline_template,
+  "timeline/style.css": timeline_style,
   "_blocks/divider.njk": block_divider,
   "_blocks/blockquote.njk": block_blockquote,
   "_blocks/spacer.njk": block_spacer,

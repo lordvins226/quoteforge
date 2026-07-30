@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {{ fontImports | safe }}
+  <style>
+    :root {
+      {{ cssVars | safe }}
+    }
+
+    {{ baseCSS | safe }}
+    {{ styleCSS | safe }}
+  </style>
+</head>
+<body>
+  <div class="card align-{{ card.align or 'center' }} timeline">
+    {% for block in card.blocks %}
+      {% if block.type == "headline" or (loop.first and block.type == "text") %}
+        <div class="tl-title">
+          {%- if block.type == "headline" -%}
+            {%- for part in block.parts -%}{{ renderPart(part) | safe }}{%- endfor -%}
+          {%- else -%}
+            {{ block.content }}
+          {%- endif -%}
+        </div>
+      {% elif block.type == "bullet-list" or block.type == "callout" %}
+        <div class="tl-rows">
+          {%- for item in block.items %}
+          {%- set done = item.label.endsWith('*') %}
+          {%- set when = (item.label.slice(0, -1) if done else item.label) %}
+          <div class="tl-row {{ 'done' if done else 'pending' }}">
+            <div class="tl-spine"><div class="tl-node"></div></div>
+            <div class="tl-body">
+              <span class="tl-when">{{ when }}</span>
+              <span class="tl-what">{{ item.text }}</span>
+            </div>
+          </div>
+          {%- endfor %}
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    {% include "_blocks/slide-counter.njk" %}
+  </div>
+</body>
+</html>

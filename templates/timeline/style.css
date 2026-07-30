@@ -1,0 +1,81 @@
+/* Timeline — spine with nodes. `label` means the time marker ("Shipped",
+   "Q3", a date); a trailing "*" marks the node complete. Completed nodes
+   fill with --accent; pending nodes stay --bg with a --callout-border
+   ring, so done vs pending reads at a glance. */
+
+.tl-title {
+  flex: 0 0 auto;
+  font-family: var(--font-body);
+  font-size: clamp(11px, calc(0.85rem * var(--type-scale)), 20px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.tl-rows {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.tl-row {
+  display: grid;
+  grid-template-columns: clamp(16px, calc(1.6rem * var(--space-scale)), 32px) 1fr;
+  gap: clamp(12px, calc(1rem * var(--space-scale)), 28px);
+}
+
+.tl-spine {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.tl-spine::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--callout-border);
+}
+
+.tl-row:last-child .tl-spine::before {
+  bottom: 50%;
+}
+
+.tl-node {
+  width: clamp(12px, calc(1rem * var(--space-scale)), 22px);
+  height: clamp(12px, calc(1rem * var(--space-scale)), 22px);
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--callout-border);
+  margin-top: clamp(4px, calc(0.3rem * var(--space-scale)), 10px);
+  z-index: 1;
+}
+
+.tl-row.done .tl-node {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.tl-body {
+  padding-bottom: clamp(16px, calc(1.4rem * var(--space-scale)), 36px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2px, calc(0.2rem * var(--space-scale)), 6px);
+}
+
+.tl-when {
+  font-family: var(--font-body);
+  font-size: clamp(var(--body-min), calc(0.8rem * var(--type-scale)), 22px);
+  color: var(--accent);
+  letter-spacing: 0.06em;
+}
+
+.tl-what {
+  font-family: var(--font-headline);
+  font-size: clamp(var(--body-min), calc(1.15rem * var(--type-scale)), 32px);
+  color: var(--headline);
+  line-height: 1.3;
+}
