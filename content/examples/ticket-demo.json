@@ -1,0 +1,26 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "ticket",
+  "theme": "noir-crimson",
+  "size": "twitter",
+  "eyebrow": "Live · Online",
+  "blocks": [
+    {
+      "id": "title",
+      "type": "headline",
+      "parts": [
+        { "text": "Rendering text is harder than it looks", "style": "normal" }
+      ]
+    },
+    {
+      "id": "meta",
+      "type": "bullet-list",
+      "items": [
+        { "label": "14 Aug", "text": "Date" },
+        { "label": "18:00 CET", "text": "Time" },
+        { "label": "Free", "text": "Price" },
+        { "label": "042", "text": "Admit one" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+/* Ticket — stub and perforation. In the meta row, `label` means the field
+   value (text is unused there — the value alone is the display). The
+   last item in the list supplies the stub: its label is the stub number,
+   its text is the short stub caption ("Admit one"). card.eyebrow is the
+   kicker above the title ("Live", "Online"). */
+
+.card.ticket {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tk {
+  display: grid;
+  grid-template-columns: 1fr 1px 26%;
+  width: 100%;
+  border: 1px solid var(--callout-border);
+}
+
+.tk-main {
+  padding: clamp(16px, calc(1.4rem * var(--space-scale)), 40px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, calc(0.7rem * var(--space-scale)), 18px);
+  min-width: 0;
+}
+
+.tk-kicker {
+  font-size: clamp(10px, calc(0.7rem * var(--type-scale)), 16px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.tk-title {
+  font-family: var(--font-headline);
+  font-size: clamp(24px, calc(1.9rem * var(--headline-scale)), 64px);
+  line-height: 1.08;
+  font-weight: 700;
+  color: var(--headline);
+}
+
+.tk-meta {
+  display: flex;
+  gap: clamp(12px, calc(1rem * var(--space-scale)), 26px);
+  font-size: clamp(10px, calc(0.75rem * var(--type-scale)), 18px);
+  color: var(--body);
+}
+
+.tk-perf {
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--callout-border) 0,
+    var(--callout-border) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
+
+.tk-stub {
+  padding: clamp(16px, calc(1.4rem * var(--space-scale)), 40px) clamp(8px, calc(0.7rem * var(--space-scale)), 18px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(6px, calc(0.5rem * var(--space-scale)), 14px);
+  text-align: center;
+}
+
+.tk-stub .no {
+  font-size: clamp(16px, calc(1.3rem * var(--type-scale)), 36px);
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.tk-stub .lbl {
+  font-size: clamp(9px, calc(0.6rem * var(--type-scale)), 14px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--body);
+}

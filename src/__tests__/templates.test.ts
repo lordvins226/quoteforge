@@ -633,3 +633,22 @@ describe("receipt template", () => {
     assertNoHardcodedHex("receipt");
   });
 });
+
+describe("ticket template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/noir-crimson.json"));
+
+  test("renders meta values and treats the last item as the stub", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/ticket-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1200, h: 675 });
+
+    expect(html).toContain("tk-perf");
+    expect(html).toContain('<span class="no">042</span>');
+    expect(html).toContain('<span class="lbl">Admit one</span>');
+    expect(html).toContain("<span>14 Aug</span>");
+    expect(html).not.toContain("<span>042</span>");
+  });
+
+  test("style.css has no literal hex color outside theme-injected :root vars", () => {
+    assertNoHardcodedHex("ticket");
+  });
+});
