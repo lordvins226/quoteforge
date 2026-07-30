@@ -1,0 +1,21 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "spotlight",
+  "theme": "noir-crimson",
+  "size": "instagram-sq",
+  "eyebrow": "Rule 01",
+  "blocks": [
+    {
+      "id": "headline",
+      "type": "headline",
+      "parts": [
+        { "text": "Delete more code", "style": "normal" }
+      ]
+    },
+    {
+      "id": "footer",
+      "type": "text",
+      "content": "quoteforge.dev"
+    }
+  ]
+}

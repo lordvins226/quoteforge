@@ -162,3 +162,61 @@ describe("terminal template", () => {
   });
 });
 
+describe("spotlight template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/noir-crimson.json"));
+
+  test("renders the poster-scale headline and kicker", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/spotlight-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    expect(html).toContain("spot-kicker");
+    expect(html).toContain("Delete more code");
+  });
+
+  test("renders card.eyebrow as the kicker when present", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/spotlight-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    expect(card.eyebrow).toBeDefined();
+    expect(html).toContain(`<div class="spot-kicker">${card.eyebrow as string}</div>`);
+  });
+
+  test("renders no kicker when eyebrow is absent", () => {
+    const card = CardContentSchema.parse({
+      template: "spotlight",
+      theme: "noir-crimson",
+      size: "instagram-sq",
+      blocks: [
+        { type: "headline", parts: [{ text: "No kicker here", style: "normal" }] },
+      ],
+    });
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    expect(bodyOnly(html)).not.toContain("spot-kicker");
+  });
+
+  test("a deck slide's editor label never renders as chrome text (regression guard)", () => {
+    const deck = DeckContentSchema.parse({
+      type: "deck",
+      defaults: { template: "spotlight", theme: "noir-crimson", size: "instagram-sq" },
+      slides: [
+        {
+          id: "s1",
+          label: "Slide 2",
+          blocks: [{ type: "headline", parts: [{ text: "Body headline", style: "normal" }] }],
+        },
+      ],
+    });
+    const slide = deck.slides[0]!;
+    const card = buildSlideCardContent(slide, deck, {});
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    expect(bodyOnly(html)).not.toContain("spot-kicker");
+    expect(html).not.toContain("Slide 2");
+  });
+
+  test("style.css has no literal hex color outside theme-injected :root vars", () => {
+    assertNoHardcodedHex("spotlight");
+  });
+});
+

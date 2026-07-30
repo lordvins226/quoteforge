@@ -1,0 +1,27 @@
+/* Spotlight — poster-scale headline pinned between a kicker and a footer */
+
+.card.spotlight {
+  justify-content: space-between;
+}
+
+.spot-kicker {
+  flex: 0 0 auto;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: clamp(11px, calc(0.85rem * var(--type-scale)), 20px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.spotlight .headline {
+  font-size: clamp(40px, calc(var(--headline-size) * var(--headline-scale) * 2), 190px);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+  overflow-wrap: break-word;
+}
+
+.spotlight .block-text p {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: clamp(11px, calc(0.85rem * var(--type-scale)), 18px);
+  color: var(--body);
+}

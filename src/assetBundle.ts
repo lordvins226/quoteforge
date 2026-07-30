@@ -16,6 +16,8 @@ import split_template from "../templates/split/template.njk" with { type: "text"
 import split_style from "../templates/split/style.css" with { type: "text" };
 import terminal_template from "../templates/terminal/template.njk" with { type: "text" };
 import terminal_style from "../templates/terminal/style.css" with { type: "text" };
+import spotlight_template from "../templates/spotlight/template.njk" with { type: "text" };
+import spotlight_style from "../templates/spotlight/style.css" with { type: "text" };
 
 import block_divider from "../templates/_blocks/divider.njk" with { type: "text" };
 import block_blockquote from "../templates/_blocks/blockquote.njk" with { type: "text" };
@@ -59,6 +61,8 @@ const TEMPLATE_ASSETS: AssetMap = {
   "split/style.css": split_style,
   "terminal/template.njk": terminal_template,
   "terminal/style.css": terminal_style,
+  "spotlight/template.njk": spotlight_template,
+  "spotlight/style.css": spotlight_style,
   "_blocks/divider.njk": block_divider,
   "_blocks/blockquote.njk": block_blockquote,
   "_blocks/spacer.njk": block_spacer,
