@@ -652,3 +652,21 @@ describe("ticket template", () => {
     assertNoHardcodedHex("ticket");
   });
 });
+
+describe("calendar template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/noir-crimson.json"));
+
+  test("takes label as month and text as day from the first callout item", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/calendar-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    expect(html).toContain('<div class="cal-month">Aug</div>');
+    expect(html).toContain('<div class="cal-day">14</div>');
+    expect(html).toContain("cal-what");
+    expect(html).toContain("cal-when");
+  });
+
+  test("style.css has no literal hex color outside theme-injected :root vars", () => {
+    assertNoHardcodedHex("calendar");
+  });
+});
