@@ -249,3 +249,90 @@ describe("detectAndValidate", () => {
     expect(() => detectAndValidate(null)).toThrow();
   });
 });
+
+describe("Custom dimensions", () => {
+  const base = {
+    template: "manifesto",
+    theme: "dark-teal",
+    blocks: [{ type: "headline", parts: [{ text: "Test", style: "normal" }] }],
+  };
+
+  test("accepts size 'custom' with width and height", () => {
+    const parsed = CardContentSchema.parse({ ...base, size: "custom", width: 1200, height: 900 });
+    expect(parsed.width).toBe(1200);
+    expect(parsed.height).toBe(900);
+  });
+
+  test("rejects size 'custom' without width", () => {
+    expect(() => CardContentSchema.parse({ ...base, size: "custom", height: 900 }))
+      .toThrow(/width/);
+  });
+
+  test("rejects size 'custom' without height", () => {
+    expect(() => CardContentSchema.parse({ ...base, size: "custom", width: 1200 }))
+      .toThrow(/height/);
+  });
+
+  test("rejects size 'custom' with neither dimension", () => {
+    expect(() => CardContentSchema.parse({ ...base, size: "custom" })).toThrow();
+  });
+
+  test("rejects width/height on a preset size", () => {
+    expect(() => CardContentSchema.parse({ ...base, size: "twitter", width: 1200, height: 900 }))
+      .toThrow(/only allowed when size is \\?"custom\\?"/);
+  });
+
+  test("accepts a preset size with no dimensions", () => {
+    expect(() => CardContentSchema.parse({ ...base, size: "twitter" })).not.toThrow();
+  });
+
+  test.each([0, -100, 1.5, 8001])("rejects invalid dimension %p", (bad) => {
+    expect(() => CardContentSchema.parse({ ...base, size: "custom", width: bad, height: 900 }))
+      .toThrow();
+  });
+
+  test("accepts the maximum dimension", () => {
+    expect(() => CardContentSchema.parse({ ...base, size: "custom", width: 8000, height: 8000 }))
+      .not.toThrow();
+  });
+});
+
+describe("Custom dimensions in decks", () => {
+  const slideBlocks = [{ type: "headline", parts: [{ text: "S", style: "normal" }] }];
+
+  test("accepts custom dimensions in deck defaults", () => {
+    const deck = {
+      type: "deck",
+      defaults: { template: "quote", theme: "dark-teal", size: "custom", width: 1600, height: 1200 },
+      slides: [{ id: "s1", blocks: slideBlocks }],
+    };
+    expect(() => DeckContentSchema.parse(deck)).not.toThrow();
+  });
+
+  test("rejects deck defaults with size 'custom' and no dimensions", () => {
+    const deck = {
+      type: "deck",
+      defaults: { template: "quote", theme: "dark-teal", size: "custom" },
+      slides: [{ id: "s1", blocks: slideBlocks }],
+    };
+    expect(() => DeckContentSchema.parse(deck)).toThrow(/width/);
+  });
+
+  test("accepts a per-slide custom size", () => {
+    const deck = {
+      type: "deck",
+      defaults: { template: "quote", theme: "dark-teal", size: "instagram-sq" },
+      slides: [{ id: "s1", size: "custom", width: 800, height: 600, blocks: slideBlocks }],
+    };
+    expect(() => DeckContentSchema.parse(deck)).not.toThrow();
+  });
+
+  test("rejects slide dimensions without an explicit custom size", () => {
+    const deck = {
+      type: "deck",
+      defaults: { template: "quote", theme: "dark-teal", size: "instagram-sq" },
+      slides: [{ id: "s1", width: 800, height: 600, blocks: slideBlocks }],
+    };
+    expect(() => DeckContentSchema.parse(deck)).toThrow(/only allowed when size is \\?"custom\\?"/);
+  });
+});

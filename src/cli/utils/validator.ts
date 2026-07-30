@@ -160,15 +160,57 @@ const CounterConfigSchema = z.object({
   style: z.enum(["pill", "plain", "dots"]),
 });
 
+const DimensionSchema = z.number().int().min(1).max(8000);
+
+function refineCustomDimensions(
+  data: { size?: string; width?: number; height?: number },
+  ctx: z.RefinementCtx,
+): void {
+  if (data.size === "custom") {
+    if (data.width === undefined) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["width"],
+        message: 'size "custom" requires "width"',
+      });
+    }
+    if (data.height === undefined) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["height"],
+        message: 'size "custom" requires "height"',
+      });
+    }
+    return;
+  }
+
+  if (data.width !== undefined) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["width"],
+      message: '"width" is only allowed when size is "custom"',
+    });
+  }
+  if (data.height !== undefined) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["height"],
+      message: '"height" is only allowed when size is "custom"',
+    });
+  }
+}
+
 export const CardContentSchema = z.object({
   $schema: z.string().optional(),
   type: z.literal("card").optional(),
   template: z.string(),
   theme: z.string(),
   size: SizeNameSchema,
+  width: DimensionSchema.optional(),
+  height: DimensionSchema.optional(),
   meta: MetaSchema.optional(),
   blocks: z.array(BlockSchema).min(1),
-});
+}).superRefine(refineCustomDimensions);
 export type CardContent = z.infer<typeof CardContentSchema>;
 
 const SlideSchema = z.object({
@@ -177,18 +219,22 @@ const SlideSchema = z.object({
   template: z.string().optional(),
   theme: z.string().optional(),
   size: SizeNameSchema.optional(),
+  width: DimensionSchema.optional(),
+  height: DimensionSchema.optional(),
   showCounter: z.boolean().optional(),
   counter: CounterConfigSchema.optional(),
   blocks: z.array(BlockSchema).min(1),
-});
+}).superRefine(refineCustomDimensions);
 
 const DeckDefaultsSchema = z.object({
   template: z.string(),
   theme: z.string(),
   size: SizeNameSchema,
+  width: DimensionSchema.optional(),
+  height: DimensionSchema.optional(),
   showCounter: z.boolean().optional(),
   counter: CounterConfigSchema.optional(),
-});
+}).superRefine(refineCustomDimensions);
 
 export const DeckContentSchema = z.object({
   $schema: z.string().optional(),
