@@ -102,6 +102,34 @@ const ImageBlockSchema = z.object({
   align: z.enum(["left", "center", "right"]).default("center"),
 }).strict();
 
+const StatBlockSchema = z.object({
+  type: z.literal("stat"),
+  id: z.string().optional(),
+  value: z.string().min(1),
+  unit: z.string().optional(),
+  label: z.string().optional(),
+  note: z.string().optional(),
+}).strict();
+
+const CodeBlockSchema = z.object({
+  type: z.literal("code"),
+  id: z.string().optional(),
+  filename: z.string().optional(),
+  lang: z.string().optional(),
+  lines: z.array(z.string()).min(1),
+}).strict();
+
+const ChartBlockSchema = z.object({
+  type: z.literal("chart"),
+  id: z.string().optional(),
+  unit: z.string().optional(),
+  rows: z.array(z.object({
+    label: z.string(),
+    value: z.number().min(0).max(100),
+    muted: z.boolean().optional(),
+  }).strict()).min(1),
+}).strict();
+
 export const BlockSchema = z.discriminatedUnion("type", [
   HeadlineBlockSchema,
   BlockquoteBlockSchema,
@@ -111,6 +139,9 @@ export const BlockSchema = z.discriminatedUnion("type", [
   DividerBlockSchema,
   SpacerBlockSchema,
   ImageBlockSchema,
+  StatBlockSchema,
+  CodeBlockSchema,
+  ChartBlockSchema,
 ]);
 export type Block = z.infer<typeof BlockSchema>;
 

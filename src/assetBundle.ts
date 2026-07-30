@@ -63,6 +63,9 @@ import block_callout from "../templates/_blocks/callout.njk" with { type: "text"
 import block_text from "../templates/_blocks/text.njk" with { type: "text" };
 import block_headline from "../templates/_blocks/headline.njk" with { type: "text" };
 import block_image from "../templates/_blocks/image.njk" with { type: "text" };
+import block_stat from "../templates/_blocks/stat.njk" with { type: "text" };
+import block_code from "../templates/_blocks/code.njk" with { type: "text" };
+import block_chart from "../templates/_blocks/chart.njk" with { type: "text" };
 import block_slide_counter from "../templates/_blocks/slide-counter.njk" with { type: "text" };
 
 import theme_paper_cream from "../themes/paper-cream.json";
@@ -143,6 +146,9 @@ const TEMPLATE_ASSETS: AssetMap = {
   "_blocks/text.njk": block_text,
   "_blocks/headline.njk": block_headline,
   "_blocks/image.njk": block_image,
+  "_blocks/stat.njk": block_stat,
+  "_blocks/code.njk": block_code,
+  "_blocks/chart.njk": block_chart,
   "_blocks/slide-counter.njk": block_slide_counter,
 };
 

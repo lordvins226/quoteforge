@@ -35,6 +35,12 @@
           {% include "_blocks/spacer.njk" %}
         {% elif block.type == "image" %}
           {% include "_blocks/image.njk" %}
+        {% elif block.type == "stat" %}
+          {% include "_blocks/stat.njk" %}
+        {% elif block.type == "code" %}
+          {% include "_blocks/code.njk" %}
+        {% elif block.type == "chart" %}
+          {% include "_blocks/chart.njk" %}
         {% endif %}
       {% endfor %}
       <div class="cover-byline">

@@ -1,0 +1,11 @@
+<div class="block block-chart">
+  {%- for row in block.rows %}
+  <div class="chart-row {{ 'is-muted' if row.muted else '' }}">
+    <div class="chart-meta">
+      <span class="chart-key">{{ row.label }}</span>
+      <span class="chart-val">{{ row.value }}{{ block.unit or '%' }}</span>
+    </div>
+    <div class="chart-track"><div class="chart-fill" style="width: {{ row.value }}%"></div></div>
+  </div>
+  {%- endfor %}
+</div>

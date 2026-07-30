@@ -154,6 +154,78 @@ describe("Image block schema", () => {
   });
 });
 
+describe("Stat block schema", () => {
+  test("accepts a valid stat block", () => {
+    expect(() =>
+      BlockSchema.parse({ type: "stat", value: "37", unit: "kb", label: "Bundle size", note: "Down from 214kb." }),
+    ).not.toThrow();
+  });
+
+  test("accepts a minimal stat block (value only)", () => {
+    expect(() => BlockSchema.parse({ type: "stat", value: "100" })).not.toThrow();
+  });
+
+  test("rejects an empty value", () => {
+    expect(() => BlockSchema.parse({ type: "stat", value: "" })).toThrow();
+  });
+
+  test("rejects an unknown key", () => {
+    expect(() => BlockSchema.parse({ type: "stat", value: "37", bogus: 1 })).toThrow(/bogus/);
+  });
+});
+
+describe("Code block schema", () => {
+  test("accepts a valid code block", () => {
+    expect(() =>
+      BlockSchema.parse({ type: "code", filename: "card.json", lang: "json", lines: ["{", "}"] }),
+    ).not.toThrow();
+  });
+
+  test("accepts a minimal code block (lines only)", () => {
+    expect(() => BlockSchema.parse({ type: "code", lines: ["// hi"] })).not.toThrow();
+  });
+
+  test("rejects an empty lines array", () => {
+    expect(() => BlockSchema.parse({ type: "code", lines: [] })).toThrow();
+  });
+
+  test("rejects an unknown key", () => {
+    expect(() => BlockSchema.parse({ type: "code", lines: ["a"], bogus: 1 })).toThrow(/bogus/);
+  });
+});
+
+describe("Chart block schema", () => {
+  test("accepts a valid chart block", () => {
+    expect(() =>
+      BlockSchema.parse({
+        type: "chart",
+        unit: "%",
+        rows: [{ label: "Chrome launch", value: 61 }, { label: "Nunjucks", value: 11, muted: true }],
+      }),
+    ).not.toThrow();
+  });
+
+  test("rejects an empty rows array", () => {
+    expect(() => BlockSchema.parse({ type: "chart", rows: [] })).toThrow();
+  });
+
+  test("rejects a row value over 100", () => {
+    expect(() => BlockSchema.parse({ type: "chart", rows: [{ label: "x", value: 101 }] })).toThrow();
+  });
+
+  test("rejects a row value under 0", () => {
+    expect(() => BlockSchema.parse({ type: "chart", rows: [{ label: "x", value: -1 }] })).toThrow();
+  });
+
+  test("rejects an unknown key on the chart block", () => {
+    expect(() => BlockSchema.parse({ type: "chart", rows: [{ label: "x", value: 1 }], bogus: 1 })).toThrow(/bogus/);
+  });
+
+  test("rejects an unknown key inside a chart row", () => {
+    expect(() => BlockSchema.parse({ type: "chart", rows: [{ label: "x", value: 1, bogus: 1 }] })).toThrow(/bogus/);
+  });
+});
+
 describe("SizeName enum — all 22 sizes", () => {
   const allSizes = [
     "twitter", "twitter-square",

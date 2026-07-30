@@ -10,7 +10,13 @@ export interface LabeledItem {
   text: string;
 }
 
-export type BlockType = "headline" | "blockquote" | "text" | "bullet-list" | "callout" | "divider" | "spacer" | "image";
+export interface ChartRow {
+  label: string;
+  value: number;
+  muted?: boolean;
+}
+
+export type BlockType = "headline" | "blockquote" | "text" | "bullet-list" | "callout" | "divider" | "spacer" | "image" | "stat" | "code" | "chart";
 
 export type Block =
   | { type: "headline"; id?: string; parts: Part[] }
@@ -20,7 +26,10 @@ export type Block =
   | { type: "callout"; id?: string; items: LabeledItem[] }
   | { type: "divider"; id?: string }
   | { type: "spacer"; id?: string; size: "sm" | "md" | "lg" }
-  | { type: "image"; id?: string; src: string; alt?: string; width: "sm" | "md" | "lg" | "full"; align: "left" | "center" | "right" };
+  | { type: "image"; id?: string; src: string; alt?: string; width: "sm" | "md" | "lg" | "full"; align: "left" | "center" | "right" }
+  | { type: "stat"; id?: string; value: string; unit?: string; label?: string; note?: string }
+  | { type: "code"; id?: string; filename?: string; lang?: string; lines: string[] }
+  | { type: "chart"; id?: string; unit?: string; rows: ChartRow[] };
 
 export type SizeName =
   | "twitter" | "twitter-square"
