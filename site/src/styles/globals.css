@@ -33,7 +33,7 @@ body {
 }
 
 [data-rehype-pretty-code-figure] pre {
-  @apply bg-ink-2 border border-line rounded-lg p-4 overflow-x-auto text-sm font-mono leading-relaxed;
+  @apply bg-ink-3 border border-line rounded-lg p-4 overflow-x-auto text-sm font-mono leading-relaxed;
 }
 
 [data-rehype-pretty-code-figure] code {
