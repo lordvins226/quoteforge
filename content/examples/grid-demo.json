@@ -1,0 +1,18 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "grid",
+  "theme": "brutal-white",
+  "size": "instagram-sq",
+  "blocks": [
+    {
+      "id": "cells",
+      "type": "bullet-list",
+      "items": [
+        { "label": "Own", "text": "Version the source" },
+        { "label": "Script", "text": "Automate the output" },
+        { "label": "Ship", "text": "Deterministic PNGs" },
+        { "label": "Repeat", "text": "No drag-and-drop drift" }
+      ]
+    }
+  ]
+}

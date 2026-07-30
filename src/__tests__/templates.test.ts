@@ -513,3 +513,41 @@ describe("index template", () => {
     assertNoHardcodedHex("index");
   });
 });
+
+describe("grid template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/brutal-white.json"));
+
+  test("renders 4 cells with label as the accent chip", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/grid-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    expect(bodyOnly(html).match(/class="grid-cell"/g)?.length).toBe(4);
+    expect(html).toContain('<span class="grid-chip">Own</span>');
+    expect(html).toContain('<span class="grid-val">Version the source</span>');
+  });
+
+  test("does not fail when given a count other than 4 (CLI is responsible for the warning)", () => {
+    const card = CardContentSchema.parse({
+      template: "grid",
+      theme: "brutal-white",
+      size: "instagram-sq",
+      blocks: [
+        {
+          type: "bullet-list",
+          items: [
+            { label: "A", text: "one" },
+            { label: "B", text: "two" },
+            { label: "C", text: "three" },
+          ],
+        },
+      ],
+    });
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    expect(bodyOnly(html).match(/class="grid-cell"/g)?.length).toBe(3);
+  });
+
+  test("style.css has no literal hex color outside theme-injected :root vars", () => {
+    assertNoHardcodedHex("grid");
+  });
+});
