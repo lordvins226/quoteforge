@@ -1,0 +1,9 @@
+/* Stat — one enormous figure, tightly tracked, with an optional unit and note */
+
+.card.stat-tpl {
+  text-align: left;
+}
+
+.stat-tpl .stat-figure {
+  font-size: clamp(64px, calc(var(--headline-size) * var(--headline-scale) * 3.4), 340px);
+}

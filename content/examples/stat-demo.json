@@ -1,0 +1,16 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "stat",
+  "theme": "terminal-green",
+  "size": "instagram-sq",
+  "blocks": [
+    {
+      "id": "figure",
+      "type": "stat",
+      "value": "37",
+      "unit": "kb",
+      "label": "Bundle size",
+      "note": "Down from 214kb. One dependency removed, zero features lost."
+    }
+  ]
+}

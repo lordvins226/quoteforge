@@ -770,3 +770,36 @@ describe("versus template", () => {
     assertNoHardcodedHex("versus");
   });
 });
+
+describe("stat template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/terminal-green.json"));
+
+  test("renders the figure, unit superscript, label, and note", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/stat-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    expect(html).toContain("stat-figure");
+    expect(html).toContain("<sup>kb</sup>");
+    expect(html).toContain("stat-label");
+    expect(html).toContain("Bundle size");
+    expect(html).toContain("stat-note");
+    expect(html).toContain("Down from 214kb");
+  });
+
+  test("renders without a rule or note when note is absent", () => {
+    const card = CardContentSchema.parse({
+      template: "stat",
+      theme: "terminal-green",
+      size: "instagram-sq",
+      blocks: [{ type: "stat", value: "100" }],
+    });
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    expect(bodyOnly(html)).not.toContain("stat-rule");
+    expect(bodyOnly(html)).not.toContain("stat-note");
+  });
+
+  test("style.css has no literal hex color outside theme-injected :root vars", () => {
+    assertNoHardcodedHex("stat");
+  });
+});

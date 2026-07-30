@@ -54,6 +54,8 @@ import prompt_template from "../templates/prompt/template.njk" with { type: "tex
 import prompt_style from "../templates/prompt/style.css" with { type: "text" };
 import versus_template from "../templates/versus/template.njk" with { type: "text" };
 import versus_style from "../templates/versus/style.css" with { type: "text" };
+import stat_template from "../templates/stat/template.njk" with { type: "text" };
+import stat_style from "../templates/stat/style.css" with { type: "text" };
 
 import block_divider from "../templates/_blocks/divider.njk" with { type: "text" };
 import block_blockquote from "../templates/_blocks/blockquote.njk" with { type: "text" };
@@ -138,6 +140,8 @@ const TEMPLATE_ASSETS: AssetMap = {
   "prompt/style.css": prompt_style,
   "versus/template.njk": versus_template,
   "versus/style.css": versus_style,
+  "stat/template.njk": stat_template,
+  "stat/style.css": stat_style,
   "_blocks/divider.njk": block_divider,
   "_blocks/blockquote.njk": block_blockquote,
   "_blocks/spacer.njk": block_spacer,
