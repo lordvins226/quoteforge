@@ -36,6 +36,8 @@ import index_template from "../templates/index/template.njk" with { type: "text"
 import index_style from "../templates/index/style.css" with { type: "text" };
 import grid_template from "../templates/grid/template.njk" with { type: "text" };
 import grid_style from "../templates/grid/style.css" with { type: "text" };
+import chat_template from "../templates/chat/template.njk" with { type: "text" };
+import chat_style from "../templates/chat/style.css" with { type: "text" };
 
 import block_divider from "../templates/_blocks/divider.njk" with { type: "text" };
 import block_blockquote from "../templates/_blocks/blockquote.njk" with { type: "text" };
@@ -99,6 +101,8 @@ const TEMPLATE_ASSETS: AssetMap = {
   "index/style.css": index_style,
   "grid/template.njk": grid_template,
   "grid/style.css": grid_style,
+  "chat/template.njk": chat_template,
+  "chat/style.css": chat_style,
   "_blocks/divider.njk": block_divider,
   "_blocks/blockquote.njk": block_blockquote,
   "_blocks/spacer.njk": block_spacer,

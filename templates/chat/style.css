@@ -1,0 +1,43 @@
+/* Chat — two voices. `label` means the speaker: "me" renders as the
+   outgoing (right-aligned, accent) bubble, anything else is incoming
+   (left-aligned, callout-border). One squared corner per bubble supplies
+   the tail — no SVG. An optional headline/text block renders as a small
+   centered meta line (e.g. a date or thread title). */
+
+.card.chat {
+  justify-content: center;
+}
+
+.chat-bubble {
+  max-width: 78%;
+  padding: clamp(14px, calc(1rem * var(--space-scale)), 28px) clamp(18px, calc(1.2rem * var(--space-scale)), 32px);
+  border-radius: clamp(14px, calc(1.4rem * var(--space-scale)), 32px);
+  font-family: var(--font-headline);
+  font-size: clamp(var(--body-min), calc(1rem * var(--type-scale)), 30px);
+  line-height: 1.45;
+}
+
+.chat-bubble.them {
+  align-self: flex-start;
+  background: var(--callout-border);
+  color: var(--headline);
+  border-bottom-left-radius: 0.2em;
+}
+
+.chat-bubble.me {
+  align-self: flex-end;
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: 600;
+  border-bottom-right-radius: 0.2em;
+}
+
+.chat-meta {
+  align-self: center;
+  font-family: var(--font-body);
+  font-size: clamp(11px, calc(0.75rem * var(--type-scale)), 18px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--body);
+  opacity: 0.75;
+}

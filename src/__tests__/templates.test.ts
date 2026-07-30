@@ -551,3 +551,22 @@ describe("grid template", () => {
     assertNoHardcodedHex("grid");
   });
 });
+
+describe("chat template", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/dark-orange.json"));
+
+  test("renders me as outgoing and any other label as incoming", () => {
+    const card = CardContentSchema.parse(loadJSON("content/examples/chat-demo.json"));
+    const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
+
+    const body = bodyOnly(html);
+    expect(body.match(/chat-bubble them/g)?.length).toBe(2);
+    expect(body.match(/chat-bubble me/g)?.length).toBe(2);
+    expect(html).toContain("Can this render offline, no cloud?");
+    expect(html).toContain("One deck JSON, one command.");
+  });
+
+  test("style.css has no literal hex color outside theme-injected :root vars", () => {
+    assertNoHardcodedHex("chat");
+  });
+});
