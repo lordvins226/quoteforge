@@ -6,6 +6,7 @@ import type { CardContent, Theme, SizeName } from "../cli/utils/validator.js";
 import { resolveChrome } from "./browser-resolver.js";
 import { resolveDimensions } from "./dimensions.js";
 import { computeContentClip } from "./fit-content.js";
+import type { SafeInset } from "./safe-aspect.js";
 
 async function launch(): Promise<Browser> {
   const { executablePath } = await resolveChrome();
@@ -20,7 +21,7 @@ export async function renderCardOnPage(
   scale = 2,
   meta?: Partial<RenderMeta>,
   fitContent = false,
-  safeInset?: { top: number; right: number; bottom: number; left: number },
+  safeInset?: SafeInset,
 ): Promise<Buffer> {
   const dimensions = resolveDimensions({
     size,
@@ -73,7 +74,7 @@ export async function renderCard(
   meta?: Partial<RenderMeta>,
   browser?: Browser,
   fitContent = false,
-  safeInset?: { top: number; right: number; bottom: number; left: number },
+  safeInset?: SafeInset,
 ): Promise<Buffer> {
   const ownBrowser = !browser;
   const b = browser ?? await launch();

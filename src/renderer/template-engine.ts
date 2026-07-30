@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { buildFontImports } from "./font-loader.js";
 import { templatesDir } from "../assetBundle.js";
 import type { CardContent, Theme, Part, PartStyle } from "../cli/utils/validator.js";
+import type { SafeInset } from "./safe-aspect.js";
 
 const TEMPLATES_DIR = templatesDir();
 const IS_DEV = process.env.NODE_ENV === "development";
@@ -48,7 +49,7 @@ const DEFAULT_META: RenderMeta = {
 function buildCssVars(
   theme: Theme,
   dimensions: { w: number; h: number },
-  safeInset: { top: number; right: number; bottom: number; left: number } = { top: 0, right: 0, bottom: 0, left: 0 },
+  safeInset: SafeInset = { top: 0, right: 0, bottom: 0, left: 0 },
 ): string {
   const shortSide = Math.min(dimensions.w, dimensions.h);
   const longSide = Math.max(dimensions.w, dimensions.h);
@@ -111,7 +112,7 @@ export function renderTemplate(
   theme: Theme,
   dimensions: { w: number; h: number } = { w: 1200, h: 675 },
   meta?: Partial<RenderMeta>,
-  safeInset?: { top: number; right: number; bottom: number; left: number },
+  safeInset?: SafeInset,
 ): string {
   const resolvedMeta = { ...DEFAULT_META, ...meta };
   const fontImports = buildFontImports(theme);
