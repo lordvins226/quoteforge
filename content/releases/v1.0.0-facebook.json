@@ -1,0 +1,27 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "spotlight",
+  "theme": "brand-midnight",
+  "size": "facebook-square",
+  "eyebrow": "QuoteForge v1.0.0",
+  "blocks": [
+    {
+      "id": "headline",
+      "type": "headline",
+      "parts": [
+        { "text": "28 templates.", "style": "normal" },
+        { "text": " One command.", "style": "accent" }
+      ]
+    },
+    {
+      "id": "sub",
+      "type": "text",
+      "content": "Write JSON, pick a theme, get a production-ready PNG. No cloud, no subscription, no drag-and-drop."
+    },
+    {
+      "id": "footer",
+      "type": "text",
+      "content": "quoteforge.dev"
+    }
+  ]
+}

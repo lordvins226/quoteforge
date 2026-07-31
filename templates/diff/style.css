@@ -22,7 +22,7 @@
   flex-direction: column;
   gap: clamp(6px, calc(0.5rem * var(--space-scale)), 14px);
   min-height: 0;
-  justify-content: center;
+  justify-content: var(--content-justify, center);
 }
 
 .diff-row {

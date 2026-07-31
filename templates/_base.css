@@ -34,10 +34,10 @@ body {
   overflow: hidden;
 }
 
-.card.align-top    { justify-content: flex-start; }
-.card.align-center { justify-content: center; }
-.card.align-bottom { justify-content: flex-end; }
-.card.align-spread { justify-content: space-between; }
+.card.align-top    { justify-content: flex-start;   --content-justify: flex-start; }
+.card.align-center { justify-content: center;       --content-justify: center; }
+.card.align-bottom { justify-content: flex-end;     --content-justify: flex-end; }
+.card.align-spread { justify-content: space-between; --content-justify: space-between; }
 
 .block {
   width: 100%;

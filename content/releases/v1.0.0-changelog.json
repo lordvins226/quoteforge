@@ -1,0 +1,31 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "diff",
+  "theme": "dark-orange",
+  "size": "instagram-sq",
+  "align": "top",
+  "blocks": [
+    {
+      "id": "head",
+      "type": "text",
+      "content": "v0.6.0 → v1.0.0 · CHANGELOG.md"
+    },
+    {
+      "id": "rows",
+      "type": "bullet-list",
+      "items": [
+        { "label": "+", "text": "24 new templates — 28 total, in five families" },
+        { "label": "+", "text": "stat, code, and chart block types" },
+        { "label": "+", "text": "eyebrow: template chrome above the content" },
+        { "label": "+", "text": "Studio template picker, grouped by family" },
+        { "label": "-", "text": "Raw ENOENT on an unknown template name" },
+        { "label": "-", "text": "297 typecheck errors — now a release gate" }
+      ]
+    },
+    {
+      "id": "foot",
+      "type": "text",
+      "content": "quoteforge.dev/docs/templates"
+    }
+  ]
+}
