@@ -292,12 +292,61 @@ work.
 
 ## Templates
 
+28 built-in layouts in five families. Run `quoteforge new` for a picker, or see the
+[templates docs](https://quoteforge.dev/docs/templates) for a rendered sample of each.
+
+**Statement** — single idea, headline-led
+
 | Template | Layout | Best for |
 |----------|--------|----------|
 | `manifesto` | Top-down flow, large headline | Statement posts, thought leadership |
-| `quote` | Centered, vertically centered | Quotes, key takeaways |
-| `list` | Compact, tight spacing | Data-heavy, bullet-heavy content |
-| `minimal` | Extra whitespace, restrained | Wide formats (covers), clean CTAs |
+| `quote` | Centered, quotation-mark motif | Quotes, key takeaways |
+| `minimal` | Extra whitespace, restrained | Wide formats, clean CTAs |
+| `spotlight` | Poster headline between kicker and footer | Single-rule posts |
+| `frame` | Bordered plate with corner marks | Announcements |
+| `sticky` | Tilted note with a drop shadow | Reminders, hot takes |
+
+**Structure & data** — the shape carries meaning
+
+| Template | Layout | Best for |
+|----------|--------|----------|
+| `list` | Numbered or bulleted rhythm | "5 lessons", "10 tips" |
+| `ledger` | Key/value rows under a heavy rule | Specs, comparisons |
+| `index` | Table-of-contents rows with leader dots | Chapter/agenda cards |
+| `grid` | 2×2 of peer cells (exactly 4 items) | Four-part frameworks |
+| `timeline` | Vertical spine with dated nodes | Roadmaps, histories |
+| `versus` | Two columns split by a centre marker | Before/after, A vs B |
+| `stat` | One oversized figure with unit and note | Single-metric posts |
+| `chart` | Horizontal bars, pure CSS | Survey results, benchmarks |
+
+**Developer** — terminal and editor vernacular
+
+| Template | Layout | Best for |
+|----------|--------|----------|
+| `terminal` | Shell session with prompt glyphs | CLI demos |
+| `code` | Filename tab over numbered lines | Snippets |
+| `diff` | Added/removed lines with gutter markers | Changelog highlights |
+| `window` | App window chrome with a title bar | Product shots |
+
+**Editorial** — print formats
+
+| Template | Layout | Best for |
+|----------|--------|----------|
+| `cover` | Magazine cover with byline and issue line | Article covers |
+| `split` | Two-panel split with a colour field | Wide headers, OG images |
+| `memo` | Internal memo with an aligned field grid | Announcements |
+| `receipt` | Itemised slip ending in a total | Cost/tally posts |
+| `ticket` | Perforated stub with a tear line | Events |
+| `calendar` | Date block over an event body | Dated posts |
+
+**People & media** — attributed and conversational
+
+| Template | Layout | Best for |
+|----------|--------|----------|
+| `profile` | Avatar initials, name, handle, quote | Testimonials |
+| `chat` | Alternating message bubbles | Conversations |
+| `prompt` | Prompt/response pair | AI-chat screenshots |
+| `polaroid` | Instant photo with a handwritten caption | Photo captions |
 
 ## Content Model
 
@@ -340,6 +389,26 @@ work.
 | `divider` | Full-width horizontal rule | — |
 | `spacer` | Vertical whitespace | `size: sm\|md\|lg` |
 | `image` | Inline image (URL, local path, or data-URI) | `src`, `alt?`, `width: sm\|md\|lg\|full`, `align: left\|center\|right` |
+| `stat` | One oversized figure with unit and note | `value`, `unit?`, `label?`, `note?` |
+| `code` | Filename tab over numbered source lines | `lines[]`, `filename?`, `lang?` |
+| `chart` | Horizontal bars, pure CSS | `rows[]{label, value 0-100, muted?}`, `unit?` |
+
+Several templates **reinterpret** what a `bullet-list`/`callout` item's `label` means —
+in `ledger` it is the row key, in `timeline` the date, in `chart` the bar caption. The
+[templates docs](https://quoteforge.dev/docs/templates) spell this out per template.
+
+### Template chrome
+
+`eyebrow` is an optional string (max 48) on a card, slide, or deck `defaults`, rendered as
+a small kicker above the main content:
+
+```json
+{ "template": "cover", "eyebrow": "Issue 01", "blocks": [] }
+```
+
+Only 8 templates have a slot for it — `cover`, `memo`, `receipt`, `split`, `spotlight`,
+`terminal`, `ticket`, `window`. Set it on another and the CLI warns rather than silently
+dropping it.
 
 ### Inline Part Styles
 
