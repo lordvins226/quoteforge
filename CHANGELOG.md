@@ -23,7 +23,7 @@
 
 ### Fixed
 - Unknown template names now fail with a clear error naming the available templates, instead
-  of rendering a blank card.
+  of a raw `ENOENT` stack trace for the template's missing `style.css`.
 
 ## 0.6.0
 

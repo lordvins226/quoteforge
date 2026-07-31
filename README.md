@@ -147,7 +147,7 @@ quoteforge preview <file> [options]
 quoteforge new [options]
 
   --type <type>        card or deck
-  --template <name>    Template name (manifesto, quote, list, minimal)
+  --template <name>    Template name (28 available — omit for a picker)
   --theme <name>       Theme name
   --slides <n>         Number of blank slides (deck only, default: 5)
   --size <name>        Size name
@@ -350,7 +350,7 @@ work.
 - `src/` — CLI + renderer (Bun + Nunjucks + Puppeteer)
 - `studio/` — bundled WYSIWYG editor (Vite + React + Zustand, launched by `quoteforge studio`)
 - `site/` — standalone landing + MDX docs SPA (separate nginx Dockerfile for deployment)
-- `templates/` — four built-in card layouts sharing a responsive base CSS
+- `templates/` — 28 built-in card layouts sharing a responsive base CSS
 - `themes/` — 12 JSON theme files conforming to `_schema.json`
 
 ## Stack

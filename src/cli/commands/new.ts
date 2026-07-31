@@ -4,12 +4,12 @@ import * as clack from "@clack/prompts";
 import { writeFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { listAllThemes } from "../../assetBundle.js";
+import { listTemplates, assertTemplateExists } from "../../renderer/templates.js";
 
 function getAvailableThemes(): string[] {
   return listAllThemes().map((t) => t.name);
 }
 
-const TEMPLATES = ["manifesto", "quote", "list", "minimal"];
 
 export const newCommand = new Command("new")
   .description("Interactively create a new card or deck JSON file")
@@ -42,9 +42,18 @@ export const newCommand = new Command("new")
       process.exit(0);
     }
 
+    if (opts.template) {
+      try {
+        assertTemplateExists(opts.template);
+      } catch (err: unknown) {
+        clack.cancel(err instanceof Error ? err.message : String(err));
+        process.exit(1);
+      }
+    }
+
     const template = opts.template ?? await clack.select({
       message: "Pick a template:",
-      options: TEMPLATES.map((t) => ({ value: t, label: t })),
+      options: listTemplates().map((t) => ({ value: t, label: t })),
     });
 
     if (clack.isCancel(template)) {
