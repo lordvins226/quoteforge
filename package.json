@@ -13,6 +13,7 @@
     "qf": "bun run src/cli/index.ts",
     "build:binary": "bun run scripts/build-binaries.ts",
     "preversion": "bun run typecheck && bun test",
+    "version": "bun run scripts/sync-site-version.ts && git add site/package.json",
     "postversion": "git push --follow-tags origin HEAD",
     "release:patch": "npm version patch -m \"chore(quoteforge[release]): bump version to %s\"",
     "release:minor": "npm version minor -m \"chore(quoteforge[release]): bump version to %s\"",

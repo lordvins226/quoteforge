@@ -7,13 +7,16 @@ import rehypePrettyCode from "rehype-pretty-code";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
-const rootPkg = JSON.parse(
-  readFileSync(fileURLToPath(new URL("../package.json", import.meta.url)), "utf-8"),
+// Read the site's own manifest, never the root one: the deploy platform builds
+// with site/ as the Docker context, so nothing above this directory exists.
+// The root release script keeps this version in sync, and a test guards the drift.
+const sitePkg = JSON.parse(
+  readFileSync(fileURLToPath(new URL("./package.json", import.meta.url)), "utf-8"),
 ) as { version: string };
 
 export default defineConfig({
   define: {
-    __APP_VERSION__: JSON.stringify(rootPkg.version),
+    __APP_VERSION__: JSON.stringify(sitePkg.version),
   },
   plugins: [
     {
