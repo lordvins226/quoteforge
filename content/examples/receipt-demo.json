@@ -3,6 +3,7 @@
   "template": "receipt",
   "theme": "paper-cream",
   "size": "instagram-port",
+  "align": "top",
   "eyebrow": "quoteforge · 2026",
   "blocks": [
     {
