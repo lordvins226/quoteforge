@@ -232,7 +232,7 @@ body {
 /* ─── Code block ─── */
 
 .block-code {
-  font-family: var(--font-body);
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   display: flex;
   flex-direction: column;
   gap: calc(0.6rem * var(--space-scale));
