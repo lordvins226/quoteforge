@@ -1,10 +1,10 @@
 import { useState } from "react";
 
 const SAMPLES = [
-  { src: "/samples/manifesto-wiki.png", label: "manifesto · terminal-green" },
-  { src: "/samples/quote-twain.png", label: "quote · noir-crimson" },
-  { src: "/samples/list-tips.png", label: "list · paper-cream" },
-  { src: "/samples/minimal-stoic.png", label: "minimal · kyoto" },
+  { src: "/samples/statement-spotlight.png", label: "spotlight · noir-crimson" },
+  { src: "/samples/developer-terminal.png", label: "terminal · terminal-green" },
+  { src: "/samples/editorial-cover.png", label: "cover · mono-slate" },
+  { src: "/samples/data-chart.png", label: "chart · oceanic" },
 ] as const;
 
 function GalleryCard({ src, label }: { src: string; label: string }) {
@@ -44,9 +44,10 @@ export function CardGallery() {
             <span className="text-fog-2">was rendered by the CLI.</span>
           </h2>
           <p className="mt-4 text-fog-2 max-w-[54ch]">
-            These PNGs aren't mockups. Every time this site is built, the Docker image runs
+            These PNGs aren't mockups. Each one comes from
             <code className="mx-1 px-1.5 py-0.5 bg-ink-3 border border-line rounded font-mono text-xs">quoteforge generate</code>
-            against the same JSON source files you'd write.
+            run against a JSON file in <code className="mx-1 px-1.5 py-0.5 bg-ink-3 border border-line rounded font-mono text-xs">site/samples/</code>
+            — the same shape you'd write yourself.
           </p>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

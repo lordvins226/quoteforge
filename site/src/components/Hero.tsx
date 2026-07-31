@@ -47,7 +47,7 @@ export function Hero() {
             </Link>
           </div>
           <p className="mt-6 font-mono text-xs text-fog-3">
-            <span className="text-mint">✓</span> 17 sizes · 12 themes · carousel export · CLI + WYSIWYG studio
+            <span className="text-mint">✓</span> 28 templates · 21 sizes · 12 themes · carousel export · CLI + WYSIWYG studio
           </p>
         </div>
 
