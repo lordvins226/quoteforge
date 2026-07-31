@@ -31,7 +31,7 @@
   font-size: clamp(11px, calc(0.85rem * var(--type-scale)), 18px);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--bg);
+  color: var(--on-accent);
   opacity: 0.85;
 }
 
@@ -40,7 +40,7 @@
 }
 
 .split-rail .headline {
-  color: var(--bg);
+  color: var(--on-accent);
   font-size: clamp(32px, calc(var(--headline-size) * var(--headline-scale) * 1.2), 140px);
   line-height: 0.95;
   letter-spacing: -0.02em;
@@ -50,12 +50,12 @@
 .split-rail .part-normal,
 .split-rail .part-bold,
 .split-rail .part-italic {
-  color: var(--bg);
+  color: var(--on-accent);
 }
 
 .split-rail .part-accent,
 .split-rail .part-accent-italic {
-  color: var(--bg);
+  color: var(--on-accent);
   opacity: 0.65;
 }
 

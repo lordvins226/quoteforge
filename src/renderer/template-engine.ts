@@ -65,6 +65,7 @@ function buildCssVars(
     "--bg": theme.colors.background,
     "--headline": theme.colors.headline,
     "--accent": theme.colors.accent,
+    "--on-accent": theme.colors["on-accent"] ?? theme.colors.background,
     "--body": theme.colors.body,
     "--label": theme.colors.label,
     "--bq-border": theme.colors["blockquote-border"],

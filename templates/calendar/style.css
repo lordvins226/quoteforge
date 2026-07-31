@@ -20,7 +20,7 @@
 
 .cal-month {
   background: var(--accent);
-  color: var(--bg);
+  color: var(--on-accent);
   text-align: center;
   font-size: clamp(11px, calc(0.85rem * var(--type-scale)), 22px);
   letter-spacing: 0.2em;

@@ -155,6 +155,7 @@ export const ThemeColorsSchema = z.object({
   background: z.string(),
   headline: z.string(),
   accent: z.string(),
+  "on-accent": z.string().optional(),
   body: z.string(),
   label: z.string(),
   "blockquote-border": z.string(),

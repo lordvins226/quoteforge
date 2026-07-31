@@ -1,5 +1,24 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- Theme colour token `on-accent`: the text colour used on accent-filled surfaces
+  (sticky note, split rail, chat bubble, calendar date block, window CTA, profile avatar).
+  Optional — defaults to `background`, so existing themes are unaffected.
+
+### Fixed
+- Text on accent-filled surfaces was hardcoded to `background`, which fails whenever a theme's
+  accent and background sit close in luminance. `brutal-white` rendered white-on-yellow at a
+  1.32:1 contrast ratio; it is now 15.93:1. `light-minimal`, `sunset-rose`, and `noir-crimson`
+  were also below the 4.5:1 threshold and now carry an explicit `on-accent`.
+- `align` was inert on templates whose content lives in a full-height inner body — `terminal`,
+  `diff`, and `frame` ignored `top`, `bottom`, and `spread` entirely.
+- Docs images rendered unstyled at full resolution; template samples are now contained and
+  captioned.
+- `spotlight` and `frame` samples did not match their designs — the first lost its accent word,
+  the second rendered at body size because it used a `blockquote` block.
+
 ## 1.0.0
 
 ### Added

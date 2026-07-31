@@ -5,6 +5,7 @@
     "background":         "#FFFFFF",
     "headline":           "#000000",
     "accent":             "#FDE047",
+    "on-accent":          "#000000",
     "body":               "#1A1A1A",
     "label":              "#000000",
     "blockquote-border":  "#000000",
