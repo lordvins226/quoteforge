@@ -24,6 +24,12 @@ function templateSource(template: string): string {
   }
 }
 
+function handledBlockTypes(template: string): Set<string> | undefined {
+  const matches = templateSource(template).matchAll(/block\.type\s*==\s*"([a-z-]+)"/g);
+  const types = new Set([...matches].map((m) => m[1] as string));
+  return types.size > 0 ? types : undefined;
+}
+
 /**
  * Non-fatal layout advice. A card that trips one of these still renders — the
  * result just will not look like the template intends.
@@ -48,6 +54,22 @@ export function templateWarnings(card: WarnableCard): string[] {
     warnings.push(
       `Template "${card.template}" has no eyebrow slot — the "eyebrow" field will not render.`,
     );
+  }
+
+  const handled = handledBlockTypes(card.template);
+  if (handled) {
+    const dropped = [...new Set(card.blocks.map((b) => b.type))].filter(
+      (type) => !handled.has(type),
+    );
+
+    if (dropped.length > 0) {
+      const list = dropped.map((type) => `"${type}"`).join(", ");
+      warnings.push(
+        `Template "${card.template}" does not render ${list} — that content will not appear ` +
+          `in the image. Pick a template that handles it, or move the text into a block the ` +
+          `template renders.`,
+      );
+    }
   }
 
   return warnings;
