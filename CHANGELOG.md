@@ -24,6 +24,14 @@
 ### Fixed
 - Unknown template names now fail with a clear error naming the available templates, instead
   of a raw `ENOENT` stack trace for the template's missing `style.css`.
+- `quoteforge new` offered only four templates from a hardcoded list; it now offers every
+  installed template and rejects an unknown `--template`.
+- Studio: adding a `stat`, `code`, or `chart` block to a deck slide crashed the editor —
+  the deck store's block factory had not been extended for the new types.
+
+### Changed
+- `bun run typecheck` is now green and gates releases (`preversion` runs it before the test
+  suite). `src/` and `studio/` are checked as separate TypeScript projects.
 
 ## 0.6.0
 
