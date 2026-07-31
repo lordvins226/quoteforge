@@ -18,7 +18,8 @@
         { "label": "01", "text": "Install" },
         { "label": "04", "text": "Your first card" },
         { "label": "09", "text": "Themes & forking" },
-        { "label": "14", "text": "Decks and carousels" }
+        { "label": "14", "text": "Decks and carousels" },
+        { "label": "21", "text": "Custom templates" }
       ]
     }
   ]

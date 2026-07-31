@@ -66,3 +66,13 @@
 .term-body .headline {
   font-family: var(--font-headline);
 }
+
+.term-body .headline::after {
+  content: "";
+  display: inline-block;
+  width: 0.42em;
+  height: 0.82em;
+  background: var(--accent);
+  vertical-align: -0.1em;
+  margin-left: 0.16em;
+}

@@ -3,6 +3,7 @@
   "template": "diff",
   "theme": "dark-orange",
   "size": "twitter",
+  "align": "top",
   "blocks": [
     {
       "id": "head",

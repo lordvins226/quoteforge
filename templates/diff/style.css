@@ -58,3 +58,7 @@
   font-size: clamp(11px, calc(0.85rem * var(--type-scale)), 20px);
   color: var(--accent);
 }
+
+.diff-head .part-normal {
+  color: inherit;
+}

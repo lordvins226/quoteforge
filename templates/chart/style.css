@@ -26,3 +26,7 @@
   color: var(--body);
   opacity: 0.75;
 }
+
+.chart-tpl .headline .part-normal {
+  color: inherit;
+}

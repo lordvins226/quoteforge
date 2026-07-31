@@ -66,3 +66,8 @@
   color: var(--bg);
   opacity: 0.72;
 }
+
+.sticky-note .headline {
+  font-size: clamp(24px, calc(var(--headline-size) * var(--headline-scale) * 0.6), 72px);
+  overflow-wrap: break-word;
+}
