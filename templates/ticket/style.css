@@ -34,7 +34,7 @@
 
 .tk-title {
   font-family: var(--font-headline);
-  font-size: clamp(24px, calc(1.9rem * var(--headline-scale)), 64px);
+  font-size: clamp(26px, calc(var(--headline-size) * var(--headline-scale) * 0.72), 88px);
   line-height: 1.08;
   font-weight: 700;
   color: var(--headline);

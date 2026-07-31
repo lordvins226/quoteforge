@@ -31,7 +31,7 @@
 .cal-day {
   text-align: center;
   font-family: var(--font-headline);
-  font-size: clamp(48px, calc(4.4rem * var(--headline-scale)), 148px);
+  font-size: clamp(56px, calc(var(--headline-size) * var(--headline-scale) * 2), 240px);
   line-height: 1.05;
   font-weight: 700;
   color: var(--headline);
@@ -42,7 +42,7 @@
 .cal-what {
   flex: 0 0 auto;
   font-family: var(--font-headline);
-  font-size: clamp(24px, calc(1.6rem * var(--headline-scale)), 52px);
+  font-size: clamp(26px, calc(var(--headline-size) * var(--headline-scale) * 0.75), 96px);
   line-height: 1.2;
   color: var(--headline);
 }
