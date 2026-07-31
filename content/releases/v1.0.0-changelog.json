@@ -2,7 +2,7 @@
   "$schema": "../../content/_schema.json",
   "template": "diff",
   "theme": "dark-orange",
-  "size": "instagram-sq",
+  "size": "facebook-square",
   "align": "top",
   "blocks": [
     {
@@ -18,6 +18,8 @@
         { "label": "+", "text": "stat, code, and chart block types" },
         { "label": "+", "text": "eyebrow: template chrome above the content" },
         { "label": "+", "text": "Studio template picker, grouped by family" },
+        { "label": "+", "text": "A rendered sample in the docs for all 28" },
+        { "label": "+", "text": "Warnings where a card used to misrender in silence" },
         { "label": "-", "text": "Raw ENOENT on an unknown template name" },
         { "label": "-", "text": "297 typecheck errors — now a release gate" }
       ]
