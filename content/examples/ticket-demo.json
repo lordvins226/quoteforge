@@ -16,8 +16,8 @@
       "id": "meta",
       "type": "bullet-list",
       "items": [
-        { "label": "14 Aug", "text": "Date" },
-        { "label": "18:00 CET", "text": "Time" },
+        { "label": "31 Jul", "text": "Date" },
+        { "label": "18:00 UTC", "text": "Time" },
         { "label": "Free", "text": "Price" },
         { "label": "042", "text": "Admit one" }
       ]
