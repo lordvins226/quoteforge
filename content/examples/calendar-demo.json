@@ -8,7 +8,7 @@
       "id": "date",
       "type": "callout",
       "items": [
-        { "label": "Aug", "text": "14" }
+        { "label": "Jul", "text": "31" }
       ]
     },
     {
@@ -21,7 +21,7 @@
     {
       "id": "when",
       "type": "text",
-      "content": "18:00 CET · live on the repo"
+      "content": "18:00 UTC · live on the repo"
     }
   ]
 }

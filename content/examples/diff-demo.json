@@ -8,21 +8,20 @@
     {
       "id": "head",
       "type": "text",
-      "content": "v0.5.0 → v0.6.0 · templates/_base.css"
+      "content": "v1.0.0 → v1.1.0 · src/renderer/template-engine.ts"
     },
     {
       "id": "rows",
       "type": "bullet-list",
       "items": [
-        { "label": "-", "text": ".block { flex: 1 1 0 }" },
-        { "label": "+", "text": ".block { flex: 0 0 auto }" },
-        { "label": "+", "text": ".card.align-center { justify-content: center }" }
+        { "label": "-", "text": "min(areaScale * aspectPenalty * 1.5, 1.25)" },
+        { "label": "+", "text": "min(areaScale * aspectPenalty * 1.85, 1.6)" }
       ]
     },
     {
       "id": "foot",
       "type": "text",
-      "content": "Content groups instead of stranding."
+      "content": "Body text scales with the canvas instead of capping at 20px."
     }
   ]
 }

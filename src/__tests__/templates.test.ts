@@ -579,12 +579,20 @@ describe("diff template", () => {
     const card = CardContentSchema.parse(loadJSON("content/examples/diff-demo.json"));
     const html = renderTemplate(card, theme, { w: 1200, h: 675 });
 
+    const rows = card.blocks.find((b) => b.type === "bullet-list");
+    const items = rows && "items" in rows ? rows.items : [];
+    const minus = items.filter((i) => i.label === "-").length;
+    const plus = items.filter((i) => i.label === "+").length;
+    const foot = card.blocks.filter((b) => b.type === "text").at(-1);
+
     const body = bodyOnly(html);
-    expect(body.match(/diff-row minus/g)?.length).toBe(1);
-    expect(body.match(/diff-row plus/g)?.length).toBe(2);
+    expect(minus).toBeGreaterThan(0);
+    expect(plus).toBeGreaterThan(0);
+    expect(body.match(/diff-row minus/g)?.length).toBe(minus);
+    expect(body.match(/diff-row plus/g)?.length).toBe(plus);
     expect(html).toContain("diff-head");
     expect(html).toContain("diff-foot");
-    expect(html).toContain("Content groups instead of stranding.");
+    expect(html).toContain(foot && "content" in foot ? foot.content : "");
   });
 
   test("style.css uses only opacity and line-through to distinguish removals — no hex, no color-name literals", () => {
@@ -645,7 +653,9 @@ describe("ticket template", () => {
     expect(html).toContain("tk-perf");
     expect(html).toContain('<span class="no">042</span>');
     expect(html).toContain('<span class="lbl">Admit one</span>');
-    expect(html).toContain("<span>14 Aug</span>");
+    const meta = card.blocks.find((b) => b.type === "bullet-list");
+    const firstMeta = meta && "items" in meta ? meta.items[0] : undefined;
+    expect(html).toContain(`<span>${firstMeta?.label}</span>`);
     expect(html).not.toContain("<span>042</span>");
   });
 
@@ -661,8 +671,11 @@ describe("calendar template", () => {
     const card = CardContentSchema.parse(loadJSON("content/examples/calendar-demo.json"));
     const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
 
-    expect(html).toContain('<div class="cal-month">Aug</div>');
-    expect(html).toContain('<div class="cal-day">14</div>');
+    const first = card.blocks.find((b) => b.type === "callout");
+    const item = first && "items" in first ? first.items[0] : undefined;
+
+    expect(html).toContain(`<div class="cal-month">${item?.label}</div>`);
+    expect(html).toContain(`<div class="cal-day">${item?.text}</div>`);
     expect(html).toContain("cal-what");
     expect(html).toContain("cal-when");
   });
