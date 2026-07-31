@@ -1,6 +1,18 @@
 # Changelog
 
-## Unreleased
+## 1.1.0
+
+### Changed
+- **Body text now scales with the canvas.** `headline-size` was viewport-relative while
+  `body-size` was a fixed `1rem` capped by a `--type-scale` ceiling of 1.25, so body text
+  rendered at 20px on every canvas — the same on a 400×400 card as on a 1920×1080 slide, and
+  the templates' own 28–32px `clamp()` maxima never engaged. The scale multiplier is now 1.85
+  (was 1.5) and its ceiling 1.6 (was 1.25). Square, portrait, and story cards go from 20px to
+  26px; 16:9 from 14px to 17px; Open Graph from 13px to 16px.
+
+  **This changes existing output.** Regenerating a card authored against 1.0.0 produces larger
+  type. Nothing overflows in the built-in templates — the densest were re-rendered and checked
+  — but a custom template with tight vertical budgets should be re-rendered before upgrading.
 
 ### Added
 - Theme colour token `on-accent`: the text colour used on accent-filled surfaces
@@ -8,6 +20,9 @@
   Optional — defaults to `background`, so existing themes are unaffected.
 
 ### Fixed
+- `code` blocks rendered in the theme's body font, which is proportional in most themes
+  (IBM Plex Sans on `terminal-green`), breaking indentation alignment. They now use a
+  monospace stack.
 - Text on accent-filled surfaces was hardcoded to `background`, which fails whenever a theme's
   accent and background sit close in luminance. `brutal-white` rendered white-on-yellow at a
   1.32:1 contrast ratio; it is now 15.93:1. `light-minimal`, `sunset-rose`, and `noir-crimson`
