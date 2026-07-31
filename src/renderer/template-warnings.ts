@@ -24,6 +24,17 @@ function templateSource(template: string): string {
   }
 }
 
+/**
+ * The block types a template actually renders, read from its own `block.type ==`
+ * guards so the answer cannot drift from the markup. Every shipped template
+ * dispatches this way and none has a catch-all `{% else %}`, so a type absent
+ * here is genuinely dropped. Scanning the whole file rather than a single loop
+ * keeps the set over-permissive on purpose: a missed warning costs less than one
+ * that cries about a card which renders fine.
+ *
+ * Returns undefined when the template is unknown or dispatches some other way —
+ * callers stay quiet rather than guess.
+ */
 function handledBlockTypes(template: string): Set<string> | undefined {
   const matches = templateSource(template).matchAll(/block\.type\s*==\s*"([a-z-]+)"/g);
   const types = new Set([...matches].map((m) => m[1] as string));
