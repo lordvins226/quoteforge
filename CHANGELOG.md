@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- **`generate` and `slides` now warn when a template drops a block.** 15 of the 28 templates
+  render only a subset of block types and silently discard the rest — a `headline` on `memo`,
+  a `text` block on `ticket`, anything but `bullet-list`/`callout` on `grid`, `versus`, and
+  `prompt`. The card validated, rendered, exited 0, and was missing content the author had
+  written. The warning names the template and the dropped types. It reads each template's own
+  `block.type` guards at runtime, so it cannot drift from the markup.
+
 ## 1.1.0
 
 ### Changed
