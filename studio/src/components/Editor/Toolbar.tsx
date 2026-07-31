@@ -1,4 +1,5 @@
 import type { ContentMode, SizeName, Align } from "../../types";
+import { TemplatePicker } from "./TemplatePicker";
 import { ThemePicker } from "./ThemePicker";
 import { SizePicker } from "./SizePicker";
 import { AlignPicker } from "./AlignPicker";
@@ -7,12 +8,14 @@ import { Download, FolderArchive, Undo2, Redo2 } from "lucide-react";
 
 interface ToolbarProps {
   mode: ContentMode;
+  template: string;
   theme: string;
   size: SizeName;
   width?: number;
   height?: number;
   align: Align | undefined;
   fitContent: boolean;
+  onTemplateChange: (name: string) => void;
   onThemeChange: (name: string) => void;
   onSizeChange: (size: SizeName) => void;
   onDimensionsChange: (width: number, height: number) => void;
@@ -28,8 +31,8 @@ interface ToolbarProps {
 }
 
 export function Toolbar({
-  mode, theme, size, width, height, align, fitContent,
-  onThemeChange, onSizeChange, onDimensionsChange, onAlignChange, onFitContentChange,
+  mode, template, theme, size, width, height, align, fitContent,
+  onTemplateChange, onThemeChange, onSizeChange, onDimensionsChange, onAlignChange, onFitContentChange,
   onExportPng, onExportDeck,
   onUndo, onRedo, canUndo, canRedo,
   isDirty,
@@ -41,6 +44,7 @@ export function Toolbar({
 
       <div className="flex-1" />
 
+      <TemplatePicker current={template} onChange={onTemplateChange} />
       <ThemePicker current={theme} onChange={onThemeChange} />
       <SizePicker current={size} onChange={onSizeChange} mode={mode} />
       {size === "custom" && (

@@ -26,6 +26,7 @@ interface DeckStore {
   removeBlock: (slideIndex: number, blockId: string) => void;
   reorderBlocks: (slideIndex: number, from: number, to: number) => void;
   selectBlock: (id: string | null) => void;
+  setDeckTemplate: (name: string) => void;
   setDeckTheme: (name: string) => void;
   setDeckSize: (size: SizeName) => void;
   setDeckDimensions: (width: number, height: number) => void;
@@ -233,6 +234,14 @@ export const useDeckStore = create<DeckStore>((set) => ({
     }),
 
   selectBlock: (id) => set({ selectedBlockId: id }),
+
+  setDeckTemplate: (name) =>
+    set((s) => ({
+      deck: { ...s.deck, defaults: { ...s.deck.defaults, template: name } },
+      isDirty: true,
+      past: snapshot(s.past, s.deck),
+      future: [],
+    })),
 
   setDeckTheme: (name) =>
     set((s) => ({

@@ -153,6 +153,7 @@ function StudioApp() {
         blocks: activeSlide?.blocks ?? [],
       };
 
+  const currentTemplate = mode === "card" ? cardStore.card.template : deckStore.deck.defaults.template;
   const currentTheme = mode === "card" ? cardStore.card.theme : deckStore.deck.defaults.theme;
   const currentSize = mode === "card" ? cardStore.card.size : deckStore.deck.defaults.size;
   const currentAlign = mode === "card" ? cardStore.card.align : deckStore.deck.defaults.align;
@@ -161,10 +162,12 @@ function StudioApp() {
     <div className="h-screen flex flex-col">
       <Toolbar
         mode={mode}
+        template={currentTemplate}
         theme={currentTheme}
         size={currentSize}
         align={currentAlign}
         fitContent={fitContent}
+        onTemplateChange={mode === "card" ? cardStore.setTemplate : deckStore.setDeckTemplate}
         onThemeChange={mode === "card" ? cardStore.setTheme : deckStore.setDeckTheme}
         onSizeChange={mode === "card" ? cardStore.setSize : deckStore.setDeckSize}
         width={mode === "card" ? cardStore.card.width : deckStore.deck.defaults.width}

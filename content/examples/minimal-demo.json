@@ -1,0 +1,22 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "minimal",
+  "theme": "light-minimal",
+  "size": "instagram-sq",
+  "align": "center",
+  "blocks": [
+    {
+      "id": "headline",
+      "type": "headline",
+      "parts": [
+        { "text": "Do less.", "style": "normal" },
+        { "text": " Then less.", "style": "accent" }
+      ]
+    },
+    {
+      "id": "body",
+      "type": "text",
+      "content": "Every feature you do not build is a bug you will never fix."
+    }
+  ]
+}

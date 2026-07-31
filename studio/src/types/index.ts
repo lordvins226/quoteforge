@@ -83,6 +83,72 @@ export const SIZE_GROUPS: { label: string; sizes: SizeName[] }[] = [
   { label: "Custom",     sizes: ["custom"] },
 ];
 
+export interface TemplateInfo {
+  name: string;
+  label: string;
+  blurb: string;
+}
+
+export const TEMPLATE_FAMILIES: { label: string; templates: TemplateInfo[] }[] = [
+  {
+    label: "Statement",
+    templates: [
+      { name: "manifesto",  label: "Manifesto",  blurb: "Left-aligned declaration, tight headline tracking" },
+      { name: "quote",      label: "Quote",      blurb: "Centered blockquote with a quotation motif" },
+      { name: "minimal",    label: "Minimal",    blurb: "Generous whitespace, understated type" },
+      { name: "spotlight",  label: "Spotlight",  blurb: "Single idea centred in a radial pool of light" },
+      { name: "frame",      label: "Frame",      blurb: "Thin double rule framing the content" },
+      { name: "sticky",     label: "Sticky",     blurb: "Tilted sticky-note with a soft drop shadow" },
+    ],
+  },
+  {
+    label: "Structure & data",
+    templates: [
+      { name: "list",       label: "List",       blurb: "Numbered or bulleted rhythm, evenly distributed" },
+      { name: "ledger",     label: "Ledger",     blurb: "Key/value rows under a heavy header rule" },
+      { name: "index",      label: "Index",      blurb: "Table-of-contents rows with leader dots" },
+      { name: "grid",       label: "Grid",       blurb: "2×2 peer cells — best with exactly 4 items" },
+      { name: "timeline",   label: "Timeline",   blurb: "Vertical spine with dated nodes" },
+      { name: "versus",     label: "Versus",     blurb: "Two columns split by a centre marker" },
+      { name: "stat",       label: "Stat",       blurb: "One oversized figure with unit and note" },
+      { name: "chart",      label: "Chart",      blurb: "Horizontal bars — pure CSS, no chart library" },
+    ],
+  },
+  {
+    label: "Developer",
+    templates: [
+      { name: "terminal",   label: "Terminal",   blurb: "Shell session with prompt glyphs" },
+      { name: "code",       label: "Code",       blurb: "Filename tab over numbered source lines" },
+      { name: "diff",       label: "Diff",       blurb: "Added/removed lines with gutter markers" },
+      { name: "window",     label: "Window",     blurb: "App window chrome with a title bar" },
+    ],
+  },
+  {
+    label: "Editorial",
+    templates: [
+      { name: "cover",      label: "Cover",      blurb: "Magazine cover — title, byline, issue line" },
+      { name: "split",      label: "Split",      blurb: "Two-panel split with a colour field" },
+      { name: "memo",       label: "Memo",       blurb: "Internal memo with an aligned field grid" },
+      { name: "receipt",    label: "Receipt",    blurb: "Itemised slip ending in a total" },
+      { name: "ticket",     label: "Ticket",     blurb: "Perforated stub with a tear line" },
+      { name: "calendar",   label: "Calendar",   blurb: "Date block over an event body" },
+    ],
+  },
+  {
+    label: "People & media",
+    templates: [
+      { name: "profile",    label: "Profile",    blurb: "Avatar initials, name, handle, then quote" },
+      { name: "chat",       label: "Chat",       blurb: "Alternating message bubbles" },
+      { name: "prompt",     label: "Prompt",     blurb: "Prompt/response pair, AI-chat styling" },
+      { name: "polaroid",   label: "Polaroid",   blurb: "Instant photo with a handwritten caption" },
+    ],
+  },
+];
+
+export const TEMPLATES: Record<string, TemplateInfo> = Object.fromEntries(
+  TEMPLATE_FAMILIES.flatMap((f) => f.templates).map((t) => [t.name, t]),
+);
+
 export interface CounterConfig {
   format: string;
   position: "bottom-right" | "bottom-left" | "bottom-center" | "top-right";
