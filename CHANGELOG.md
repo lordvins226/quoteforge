@@ -1,5 +1,30 @@
 # Changelog
 
+## 1.0.0
+
+### Added
+- 24 new templates, bringing the total to 28, grouped into five families:
+  - **Statement:** `spotlight`, `frame`, `sticky` (alongside existing `manifesto`, `quote`,
+    `minimal`).
+  - **Structure & data:** `ledger`, `index`, `grid`, `timeline`, `versus`, `stat`, `chart`
+    (alongside existing `list`).
+  - **Developer:** `terminal`, `code`, `diff`, `window`.
+  - **Editorial:** `cover`, `split`, `memo`, `receipt`, `ticket`, `calendar`.
+  - **People & media:** `profile`, `chat`, `prompt`, `polaroid`.
+- Three new block types: `stat` (one figure with unit/note), `code` (filename tab over
+  numbered lines), and `chart` (horizontal bars, pure CSS).
+- `eyebrow`: an optional string (max 48 chars) on a card, deck `defaults`, or slide, rendering
+  as small chrome above the main content on the 8 templates with an eyebrow slot (`cover`,
+  `memo`, `receipt`, `split`, `spotlight`, `terminal`, `ticket`, `window`).
+- Studio: a grouped template picker organized by the same five families, with catalog drift
+  tests keeping it in sync with the template set.
+- Non-fatal warnings for layout mismatches that used to render silently wrong: `grid` cards
+  without exactly 4 items, and `eyebrow` set on a template with no eyebrow slot.
+
+### Fixed
+- Unknown template names now fail with a clear error naming the available templates, instead
+  of rendering a blank card.
+
 ## 0.6.0
 
 ### Added
