@@ -10,6 +10,7 @@ import { resolveThemeRead } from "../../assetBundle.js";
 import { resolveImageBlocks } from "../../renderer/image-resolver.js";
 import { resolveDimensions } from "../../renderer/dimensions.js";
 import { parseAspectRatio, computeSafeInset } from "../../renderer/safe-aspect.js";
+import { templateWarnings } from "../../renderer/template-warnings.js";
 import type { SafeInset } from "../../renderer/safe-aspect.js";
 
 export const generateCommand = new Command("generate")
@@ -73,6 +74,10 @@ export const generateCommand = new Command("generate")
     const themeRaw = readFileSync(themePath, "utf-8");
 
     const theme = ThemeSchema.parse(JSON.parse(themeRaw));
+
+    for (const warning of templateWarnings(card)) {
+      console.warn(chalk.yellow(`⚠ ${warning}`));
+    }
 
     console.log(chalk.dim(`Rendering ${basename(filePath)} with theme "${themeName}" at size "${sizeName}"…`));
 
