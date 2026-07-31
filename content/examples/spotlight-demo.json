@@ -9,7 +9,9 @@
       "id": "headline",
       "type": "headline",
       "parts": [
-        { "text": "Delete more code", "style": "normal" }
+        { "text": "Delete ", "style": "normal" },
+        { "text": "more", "style": "accent-italic" },
+        { "text": " code", "style": "normal" }
       ]
     },
     {
