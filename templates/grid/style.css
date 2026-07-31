@@ -37,7 +37,7 @@
   font-size: clamp(11px, calc(0.8rem * var(--type-scale)), 20px);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--headline);
+  color: var(--on-accent);
   background: var(--accent);
   padding: 0.3em 0.7em;
 }

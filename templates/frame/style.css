@@ -11,7 +11,7 @@
   border: 1px solid var(--callout-border);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: var(--content-justify, center);
   align-items: center;
   text-align: center;
   gap: clamp(8px, calc(var(--gap) * var(--space-scale)), 40px);

@@ -22,19 +22,19 @@
 }
 
 .sticky-note .headline {
-  color: var(--bg);
+  color: var(--on-accent);
 }
 
 .sticky-note .part-normal,
 .sticky-note .part-bold,
 .sticky-note .part-italic,
 .sticky-note .part-mono {
-  color: var(--bg);
+  color: var(--on-accent);
 }
 
 .sticky-note .part-accent,
 .sticky-note .part-accent-italic {
-  color: var(--bg);
+  color: var(--on-accent);
   opacity: 0.75;
 }
 
@@ -48,11 +48,11 @@
 .sticky-note .callout-text,
 .sticky-note .bullet-label,
 .sticky-note .bullet-text {
-  color: var(--bg);
+  color: var(--on-accent);
 }
 
 .sticky-note .block-blockquote blockquote {
-  border-left-color: var(--bg);
+  border-left-color: var(--on-accent);
 }
 
 .sticky-sign {
@@ -63,6 +63,11 @@
   font-family: var(--font-body);
   font-size: clamp(11px, calc(0.85rem * var(--type-scale)), 20px);
   letter-spacing: 0.04em;
-  color: var(--bg);
+  color: var(--on-accent);
   opacity: 0.72;
+}
+
+.sticky-note .headline {
+  font-size: clamp(24px, calc(var(--headline-size) * var(--headline-scale) * 0.6), 72px);
+  overflow-wrap: break-word;
 }

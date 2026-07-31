@@ -13,6 +13,11 @@
         { "label": "them", "text": "And carousels?" },
         { "label": "me", "text": "One deck JSON, one command." }
       ]
+    },
+    {
+      "id": "meta",
+      "type": "text",
+      "content": "quoteforge slides deck.json"
     }
   ]
 }

@@ -43,4 +43,19 @@ export const mdxComponents: MDXComponents = {
     <td className="px-4 py-2 border-b border-line text-fog-2" {...props} />
   ),
   hr: () => <hr className="border-line my-8" />,
+  img: ({ alt, ...props }: ComponentProps<"img">) => (
+    <figure className="my-6">
+      <img
+        alt={alt}
+        loading="lazy"
+        className="w-full max-w-md mx-auto block rounded-lg border border-line bg-ink-2"
+        {...props}
+      />
+      {alt && (
+        <figcaption className="mt-2 text-center font-mono text-xs text-fog-3">
+          {alt}
+        </figcaption>
+      )}
+    </figure>
+  ),
 };

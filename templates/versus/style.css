@@ -47,7 +47,7 @@
 
 .vs-value {
   font-family: var(--font-headline);
-  font-size: clamp(30px, calc(2.4rem * var(--headline-scale)), 76px);
+  font-size: clamp(36px, calc(var(--headline-size) * var(--headline-scale) * 0.9), 132px);
   line-height: 1.1;
   color: var(--headline);
   font-weight: 700;

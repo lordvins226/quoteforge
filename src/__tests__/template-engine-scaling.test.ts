@@ -23,10 +23,10 @@ interface ScaleExpectation {
 }
 
 const GOLDEN: readonly ScaleExpectation[] = [
-  { size: "instagram-sq",   typeScale: "1.25",  headlineScale: "1.15",  spaceScale: "1.18" },
-  { size: "twitter",        typeScale: "0.86",  headlineScale: "0.912", spaceScale: "0.9"  },
-  { size: "story",          typeScale: "1.25",  headlineScale: "1.15",  spaceScale: "1.18" },
-  { size: "facebook-cover", typeScale: "0.843", headlineScale: "0.894", spaceScale: "0.9"  },
+  { size: "instagram-sq",   typeScale: "1.6",   headlineScale: "1.15",  spaceScale: "1.18"  },
+  { size: "twitter",        typeScale: "1.061", headlineScale: "1.125", spaceScale: "1.061" },
+  { size: "story",          typeScale: "1.6",   headlineScale: "1.15",  spaceScale: "1.18"  },
+  { size: "facebook-cover", typeScale: "1.04",  headlineScale: "1.102", spaceScale: "1.04"  },
 ];
 
 describe("template-engine: dimension-aware scaling", () => {
@@ -44,9 +44,9 @@ describe("template-engine: dimension-aware scaling", () => {
     });
   }
 
-  test("type-scale is capped at 1.25 for oversized dimensions", () => {
+  test("type-scale is capped at 1.6 for oversized dimensions", () => {
     const html = renderTemplate(card, theme, { w: 3000, h: 3000 });
-    expect(extractVar(html, "--type-scale")).toBe("1.25");
+    expect(extractVar(html, "--type-scale")).toBe("1.6");
   });
 
   test("space-scale floor is 0.9 for tiny/stretched dimensions", () => {
@@ -63,7 +63,7 @@ describe("template-engine: dimension-aware scaling", () => {
     // facebook-cover (1640×624, ~2.63:1) is wide enough to trigger the penalty floor.
     // Ratio 0.38^0.65 ≈ 0.53, so max(0.6, 0.53) = 0.6 locks in.
     const html = renderTemplate(card, theme, { w: 1640, h: 624 });
-    // With aspectPenalty=0.6, typeScale = min(sqrt(1640*624)/1080 * 0.6 * 1.5, 1.25) = 0.843
-    expect(extractVar(html, "--type-scale")).toBe("0.843");
+    // With aspectPenalty=0.6, typeScale = min(sqrt(1640*624)/1080 * 0.6 * 1.85, 1.6) = 1.04
+    expect(extractVar(html, "--type-scale")).toBe("1.04");
   });
 });

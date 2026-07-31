@@ -170,7 +170,8 @@ describe("spotlight template", () => {
     const html = renderTemplate(card, theme, { w: 1080, h: 1080 });
 
     expect(html).toContain("spot-kicker");
-    expect(html).toContain("Delete more code");
+    expect(html).toContain("headline");
+    expect(html).toContain('class="part-accent-italic"');
   });
 
   test("renders card.eyebrow as the kicker when present", () => {

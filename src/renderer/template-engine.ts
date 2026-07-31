@@ -57,7 +57,7 @@ function buildCssVars(
   const aspectRatio = shortSide / longSide;
   const areaScale = Math.sqrt(dimensions.w * dimensions.h) / 1080;
   const aspectPenalty = Math.max(0.6, Math.pow(aspectRatio, 0.65));
-  const typeScale = +Math.min(areaScale * aspectPenalty * 1.5, 1.25).toFixed(3);
+  const typeScale = +Math.min(areaScale * aspectPenalty * 1.85, 1.6).toFixed(3);
   const headlineScale = +Math.min(typeScale * 1.06, 1.15).toFixed(3);
   const spaceScale = +Math.max(0.9, Math.min(typeScale, 1.18)).toFixed(3);
 
@@ -65,6 +65,7 @@ function buildCssVars(
     "--bg": theme.colors.background,
     "--headline": theme.colors.headline,
     "--accent": theme.colors.accent,
+    "--on-accent": theme.colors["on-accent"] ?? theme.colors.background,
     "--body": theme.colors.body,
     "--label": theme.colors.label,
     "--bq-border": theme.colors["blockquote-border"],

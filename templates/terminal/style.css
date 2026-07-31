@@ -39,7 +39,7 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: var(--content-justify, center);
   gap: clamp(10px, calc(var(--gap) * var(--space-scale)), 32px);
   padding:
     clamp(20px, calc(var(--padding) * var(--space-scale)), 64px)
@@ -65,4 +65,14 @@
 
 .term-body .headline {
   font-family: var(--font-headline);
+}
+
+.term-body .headline::after {
+  content: "";
+  display: inline-block;
+  width: 0.42em;
+  height: 0.82em;
+  background: var(--accent);
+  vertical-align: -0.1em;
+  margin-left: 0.16em;
 }

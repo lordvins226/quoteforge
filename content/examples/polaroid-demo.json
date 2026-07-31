@@ -7,7 +7,7 @@
     {
       "id": "photo",
       "type": "image",
-      "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' fill='%230B0F14'/><rect x='40' y='58' width='232' height='26' rx='5' fill='%2322C55E'/><rect x='40' y='118' width='320' height='20' rx='5' fill='%23E5EAF0'/><rect x='40' y='156' width='274' height='20' rx='5' fill='%23E5EAF0'/><rect x='40' y='194' width='196' height='20' rx='5' fill='%236B7280'/><rect x='40' y='306' width='148' height='16' rx='5' fill='%2322C55E'/></svg>",
       "alt": "first render, 3am"
     },
     {

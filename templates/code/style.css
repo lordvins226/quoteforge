@@ -12,3 +12,14 @@
 .code-tpl .code-tab {
   font-size: clamp(13px, calc(0.95rem * var(--type-scale)), 18px);
 }
+
+.code-tpl .block-text {
+  margin-top: auto;
+}
+
+.code-tpl .block-text p {
+  font-family: var(--font-body);
+  font-size: clamp(11px, calc(0.8rem * var(--type-scale)), 20px);
+  color: var(--body);
+  opacity: 0.8;
+}

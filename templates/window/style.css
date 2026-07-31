@@ -77,7 +77,7 @@
 
 .window-body .callout-label,
 .window-body .callout-text {
-  color: var(--bg);
+  color: var(--on-accent);
   font-family: var(--font-body);
   font-weight: 600;
 }

@@ -6,7 +6,7 @@
   "blocks": [
     {
       "id": "quote",
-      "type": "blockquote",
+      "type": "headline",
       "parts": [
         { "text": "The best interface is the one you don't have to think about.", "style": "normal" }
       ]
