@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.2.0
 
 ### Added
 - **`generate` and `slides` now warn when a template drops a block.** 15 of the 28 templates
