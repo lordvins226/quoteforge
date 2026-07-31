@@ -435,6 +435,12 @@ built binary until the template is registered there too.
   happens rather than failing silently.
 - **`grid` requires exactly 4 items.** Any other count still renders — the CLI warns instead of
   blocking — but the layout comes out uneven.
+- **15 of the 28 templates render only a subset of block types** and drop the rest. A
+  `headline` on `memo`, a `text` block on `ticket`, anything but `bullet-list`/`callout` on
+  `grid`, `versus`, and `prompt` — the card validates, renders, and exits 0 with your content
+  missing from the image. The **Blocks** line on each template above is authoritative. Since
+  1.2.0 the CLI warns when a card carries a block its template will drop; treat that warning
+  as an error, because it means content you wrote is not in the output.
 
 The shared `_base.css` already handles color/font-scale/flex-distribution correctly; only add
 overrides when truly needed.
