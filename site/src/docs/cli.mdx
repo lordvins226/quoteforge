@@ -159,3 +159,19 @@ quoteforge doctor
 ## Exit codes
 
 All validation errors exit with code **1**. Render failures exit **2**. File-not-found exits **1**.
+
+## Warnings
+
+`generate` and `slides` print `⚠` lines for problems the schema cannot catch, then render
+anyway and exit **0**. They are not cosmetic — the first one means content is missing from
+your image:
+
+- **A block the template drops.** 15 of the 28 templates render only a subset of block types.
+  The warning names the template and the dropped types. See
+  [Templates](/docs/templates) for what each one handles.
+- **An `eyebrow` on a template with no eyebrow slot** — only 8 templates have one.
+- **A `grid` card without exactly 4 items** — the 2×2 comes out uneven.
+- **A non-square size on a deck** — carousel slides end up inconsistent.
+
+Because these exit 0, CI will not catch them. Run `quoteforge validate` for schema errors and
+read the render output for these.
