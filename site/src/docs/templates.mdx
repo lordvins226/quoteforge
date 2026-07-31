@@ -1,18 +1,342 @@
-A template defines the layout — the spatial grammar of a card. QuoteForge ships four templates, all built on a shared responsive base. Pick one per card via the `template` field.
+A template defines the layout — the spatial grammar of a card. QuoteForge ships **28
+templates**, grouped into five families, all built on a shared responsive base. Pick one per
+card via the `template` field, or from the grouped picker in the studio's toolbar.
 
-## Built-in templates
+Every block type uses one of three shapes: `parts: Part[]` (`headline`, `blockquote`),
+`content: string` (`text`), or `items: LabeledItem[]` (`bullet-list`, `callout`) — plus three
+type-specific shapes for `stat`, `code`, and `chart`. See [Content Schema](/docs/content-schema)
+for the full block reference. Many templates below **reinterpret** what a `LabeledItem`'s
+`label` and `text` mean — that's the single most useful thing to know before writing content
+for a given template, and it's called out per template.
+
+## Statement
+
+Single-idea, declaration-style cards. Headline- and blockquote-led.
 
 ### `manifesto`
-Left-aligned, authoritative top-down flow. Tightened headline letter-spacing. Best for bold declarations and thesis statements.
+Left-aligned, authoritative top-down flow with tightened headline letter-spacing. Best for
+bold declarations and thesis statements.
+
+- **Blocks:** all types (`headline`, `blockquote`, `text`, `bullet-list`, `callout`, `divider`,
+  `spacer`, `image`, `stat`, `code`, `chart`).
+- **`label`:** default `LabeledItem` meaning — the bullet/callout marker text.
+- **Sizes:** demoed at `instagram-sq` (1080×1080, 1:1).
+
+![manifesto](/samples/templates/manifesto.png)
 
 ### `quote`
-Centered blockquote emphasis. Large quotation mark motif. Best for single-quote cards.
+Centered blockquote emphasis with a large quotation-mark motif. Best for single-quote cards.
 
-### `list`
-Numbered or bulleted rhythm. Even vertical distribution. Best for "5 lessons", "10 tips" decks.
+- **Blocks:** all types.
+- **`label`:** default meaning.
+- **Sizes:** demoed at `instagram-sq` (1080×1080, 1:1).
+
+![quote](/samples/templates/quote.png)
 
 ### `minimal`
-Generous whitespace. Understated typography. Best for contemplative content where restraint wins.
+Generous whitespace, understated typography. Best for contemplative content where restraint
+wins. Its own style sheet notes it as "wide-format friendly."
+
+- **Blocks:** all types.
+- **`label`:** default meaning.
+- **Sizes:** demoed at `instagram-sq` (1080×1080, 1:1); also suits wide/landscape sizes.
+
+![minimal](/samples/templates/minimal.png)
+
+### `spotlight`
+Poster-scale headline pinned between an optional kicker and a footer.
+
+- **Blocks:** all types.
+- **`label`:** default meaning.
+- **`eyebrow`:** renders as the kicker line above the headline. One of the 8 templates with an
+  eyebrow slot.
+- **Sizes:** demoed at `instagram-sq` (1080×1080, 1:1).
+
+![spotlight](/samples/templates/spotlight.png)
+
+### `frame`
+Bordered plate with corner marks, inherently centered content.
+
+- **Blocks:** all types.
+- **`label`:** default meaning.
+- **Sizes:** demoed at `instagram-sq` (1080×1080, 1:1).
+
+![frame](/samples/templates/frame.png)
+
+### `sticky`
+A note rendered on the accent color, tilted, dropped like it's on a desk. If the last block is
+`text`, it's pulled out as a signature line under the note instead of stacked with the rest.
+
+- **Blocks:** all types; the trailing `text` block (if present) becomes the signature.
+- **`label`:** default meaning.
+- **Sizes:** demoed at `instagram-sq` (1080×1080, 1:1).
+
+![sticky](/samples/templates/sticky.png)
+
+## Structure & data
+
+Rows, grids, and figures — for content that's naturally tabular or sequential.
+
+### `list`
+Numbered or bulleted rhythm with even vertical distribution and tighter, data-dense spacing.
+Best for "5 lessons", "10 tips" decks.
+
+- **Blocks:** all types.
+- **`label`:** default meaning.
+- **Sizes:** demoed at `instagram-port` (1080×1350, 4:5).
+
+![list](/samples/templates/list.png)
+
+### `ledger`
+Ruled key/value rows under a heavy header rule, with hairlines separating rows.
+
+- **Blocks:** `headline` (header), `bullet-list`/`callout` (rows), `text` (trailing block
+  becomes a muted mono footer).
+- **`label`:** the row's key (left column); `text` is the value.
+- **Sizes:** demoed at `instagram-port` (1080×1350, 4:5).
+
+![ledger](/samples/templates/ledger.png)
+
+### `index`
+Table-of-contents rows connected by dot leaders.
+
+- **Blocks:** `headline` (title), `bullet-list`/`callout` (rows).
+- **`label`:** the figure at the right edge (a page number, a count); `text` is the entry it
+  points at.
+- **Sizes:** demoed at `instagram-sq` (1080×1080, 1:1).
+
+![index](/samples/templates/index.png)
+
+### `grid`
+A 2×2 grid of exactly 4 cells, drawn from `bullet-list`/`callout` items.
+
+- **Blocks:** `bullet-list`/`callout` only.
+- **`label`:** the cell's accent chip; `text` is the cell's body.
+- **Constraint:** requires exactly 4 items across the qualifying blocks. Any other count still
+  renders, but unevenly — the CLI now warns (`templateWarnings` in
+  `src/renderer/template-warnings.ts`), it does not fail.
+- **Sizes:** demoed at `instagram-sq` (1080×1080, 1:1).
+
+![grid](/samples/templates/grid.png)
+
+### `timeline`
+A vertical spine with dated nodes.
+
+- **Blocks:** `headline` or a first `text` block (title), `bullet-list`/`callout` (nodes).
+- **`label`:** the time marker (e.g. "Shipped", "Q3", a date); a trailing `*` marks the node
+  complete — completed nodes fill with the accent color, pending nodes stay outlined. `text`
+  is the event description.
+- **Sizes:** demoed at `instagram-port` (1080×1350, 4:5).
+
+![timeline](/samples/templates/timeline.png)
+
+### `versus`
+A symmetric two-column comparison split by a center rule.
+
+- **Blocks:** `bullet-list`/`callout` only — the first qualifying block's first two items
+  supply both sides; extra items are ignored, and a single item drops the divider for one
+  centered column.
+- **`label`:** the side's caption (e.g. "Before"/"After"); `text` is the large value shown.
+- **Sizes:** demoed at `twitter` (1200×675, 16:9).
+
+![versus](/samples/templates/versus.png)
+
+### `stat`
+One oversized figure with an optional unit and note — built around the `stat` block type.
+
+- **Blocks:** all types, including `stat` (its primary content).
+- **`label`:** n/a for `stat` blocks — see `label`/`value`/`unit`/`note` on the block itself in
+  [Content Schema](/docs/content-schema). Default `LabeledItem` meaning for any `bullet-list`/
+  `callout` blocks also present.
+- **Sizes:** demoed at `instagram-sq` (1080×1080, 1:1).
+
+![stat](/samples/templates/stat.png)
+
+### `chart`
+Horizontal bars rendered with pure CSS — no chart library — built around the `chart` block
+type.
+
+- **Blocks:** all types, including `chart` (its primary content). An optional `headline`
+  supplies the title, a trailing `text` block becomes the footer.
+- **`label`:** on each `chart` row, `label` is the bar's caption and `value` (0–100) sets the
+  fill width; `unit` (default `%`) is appended after the number.
+- **Sizes:** demoed at `instagram-port` (1080×1350, 4:5).
+
+![chart](/samples/templates/chart.png)
+
+## Developer
+
+Code- and terminal-flavored chrome.
+
+### `terminal`
+A shell session: three dots, an optional title bar, monospace body.
+
+- **Blocks:** all types.
+- **`label`:** default meaning.
+- **`eyebrow`:** renders as the title-bar text next to the three dots. One of the 8 templates
+  with an eyebrow slot.
+- **Sizes:** demoed at `twitter` (1200×675, 16:9).
+
+![terminal](/samples/templates/terminal.png)
+
+### `code`
+A filename tab over numbered source lines — built around the `code` block type.
+
+- **Blocks:** all types, including `code` (its primary content).
+- **`label`:** default meaning for any `bullet-list`/`callout` blocks; `code` blocks use
+  `filename`, `lang`, and `lines` — see [Content Schema](/docs/content-schema).
+- **Sizes:** demoed at `twitter` (1200×675, 16:9).
+
+![code](/samples/templates/code.png)
+
+### `diff`
+Added/removed lines with gutter markers.
+
+- **Blocks:** `bullet-list`/`callout` (diff rows); the first block, if `headline` or `text`,
+  becomes the head; a trailing `text` block becomes the foot.
+- **`label`:** the marker — `"+"` renders as an addition (headline color, accent sigil);
+  anything else (conventionally `"-"`) renders as a removal (body color, reduced opacity,
+  line-through). `text` is the line content.
+- **Sizes:** demoed at `twitter` (1200×675, 16:9).
+
+![diff](/samples/templates/diff.png)
+
+### `window`
+Browser chrome: dot outlines, a pill URL field, then headline / supporting line / CTA button.
+
+- **Blocks:** all types.
+- **`label`:** default meaning.
+- **`eyebrow`:** renders as the URL in the pill field. One of the 8 templates with an eyebrow
+  slot.
+- **Sizes:** demoed at `twitter` (1200×675, 16:9).
+
+![window](/samples/templates/window.png)
+
+## Editorial
+
+Cover pages, letterheads, and slips — content shaped like a printed artifact.
+
+### `cover`
+A bottom-weighted title pinned between a top meta line and a byline row. Magazine-cover
+composition.
+
+- **Blocks:** `headline`, `blockquote`, `bullet-list`, `callout`, `divider`, `spacer`, `image`,
+  `stat`, `code`, `chart` render in the main title zone; `text` blocks render in a separate
+  byline row at the bottom.
+- **`label`:** default meaning.
+- **`eyebrow`:** renders as the top meta line. One of the 8 templates with an eyebrow slot.
+- **Sizes:** demoed at `instagram-port` (1080×1350, 4:5).
+
+![cover](/samples/templates/cover.png)
+
+### `split`
+A 38%-width accent rail beside a content panel — for wide formats.
+
+- **Blocks:** the first block, if `headline`, renders in the rail; every other block type
+  renders in the main panel.
+- **`label`:** default meaning (main panel).
+- **`eyebrow`:** renders as the rail's label above the headline. One of the 8 templates with an
+  eyebrow slot.
+- **Sizes:** demoed at `og` (1200×630, 1.91:1).
+
+![split](/samples/templates/split.png)
+
+### `memo`
+An internal memo with an aligned field grid under a letterhead. A `max-content 1fr` grid keeps
+the colons aligned regardless of field-name length.
+
+- **Blocks:** `bullet-list`/`callout` (fields), `text` (body). No `headline` slot.
+- **`label`:** the field name (e.g. `To`, `From`, `Re`); `text` is the value.
+- **`eyebrow`:** renders as the org name in the letterhead, next to a static "Memorandum"
+  marker. One of the 8 templates with an eyebrow slot.
+- **Sizes:** demoed at `instagram-port` (1080×1350, 4:5).
+
+![memo](/samples/templates/memo.png)
+
+### `receipt`
+An itemized slip ending in a total, with rule lines between sections.
+
+- **Blocks:** `headline` (shop name), `bullet-list`/`callout` (line items — the last item
+  becomes the total row), `text` (footer).
+- **`label`:** the amount column; `text` is the row's description. On the last item, `label`
+  is the total amount and `text` is its caption (e.g. "Total").
+- **`eyebrow`:** renders under the header as the shop's sub-line (date, order number, etc).
+  One of the 8 templates with an eyebrow slot.
+- **Sizes:** demoed at `instagram-port` (1080×1350, 4:5).
+
+![receipt](/samples/templates/receipt.png)
+
+### `ticket`
+A perforated stub with a tear line.
+
+- **Blocks:** `headline` (title), `bullet-list`/`callout` (meta chips — the last item becomes
+  the stub).
+- **`label`:** in the meta row, `label` is the displayed value (`text` is unused there). On the
+  last item, `label` is the stub number and `text` is the short stub caption (e.g.
+  "Admit one").
+- **`eyebrow`:** renders as the kicker above the title (e.g. "Live", "Online"). One of the 8
+  templates with an eyebrow slot.
+- **Sizes:** demoed at `twitter` (1200×675, 16:9).
+
+![ticket](/samples/templates/ticket.png)
+
+### `calendar`
+A date block leading a sentence, like a torn calendar page.
+
+- **Blocks:** the first `callout`/`bullet-list` item found (further items in that block are
+  ignored — the date block shows one date), `headline` (the sentence beside/below it), a
+  trailing `text` block (small detail line).
+- **`label`:** on that one item, the month; `text` is the day numeral.
+- **Sizes:** demoed at `instagram-sq` (1080×1080, 1:1).
+
+![calendar](/samples/templates/calendar.png)
+
+## People & media
+
+Avatars, bubbles, and photos — content attributed to a person or exchanged between two.
+
+### `profile`
+A single-voice testimonial: a large quote above an attribution row. Falls back to initials on
+an accent-colored disc when no image block is present.
+
+- **Blocks:** `blockquote` (the quote), `callout` (first item only — the attribution), `image`
+  (avatar). No `bullet-list`, `headline`, or `text` slot.
+- **`label`:** on that first `callout` item, the person's name; `text` is their role/handle.
+- **Sizes:** demoed at `instagram-sq` (1080×1080, 1:1).
+
+![profile](/samples/templates/profile.png)
+
+### `chat`
+Alternating message bubbles, two voices.
+
+- **Blocks:** `headline`/`text` (an optional small centered meta line, e.g. a date or thread
+  title), `bullet-list`/`callout` (bubbles).
+- **`label`:** the speaker — `"me"` renders as the outgoing (right-aligned, accent) bubble;
+  anything else renders as incoming (left-aligned). `text` is the message.
+- **Sizes:** demoed at `instagram-sq` (1080×1080, 1:1).
+
+![chat](/samples/templates/chat.png)
+
+### `prompt`
+A prompt/response pair, AI-chat styling with a blinking cursor on the answer.
+
+- **Blocks:** `bullet-list`/`callout` only — the first qualifying block's first two items
+  supply the two turns. Fewer than 2 items degrades gracefully: 1 item renders only the
+  prompt turn, 0 renders nothing.
+- **`label`:** the role shown above each turn (e.g. "You" / "AI"); `text` is the turn's
+  message. The first item is the plain prompt turn, the second is the accented answer turn.
+- **Sizes:** demoed at `instagram-sq` (1080×1080, 1:1).
+
+![prompt](/samples/templates/prompt.png)
+
+### `polaroid`
+An instant-photo plate, image in a square well, caption inverted so it reads on every theme.
+
+- **Blocks:** `image` (photo), `text` (caption). No other block types render.
+- **`label`:** n/a — this template doesn't use `LabeledItem` blocks.
+- **Sizes:** demoed at `instagram-sq` (1080×1080, 1:1).
+
+![polaroid](/samples/templates/polaroid.png)
 
 ## How templates work
 
@@ -44,7 +368,8 @@ aspectPenalty = max(0.6, aspectRatio^0.65)
 typeScale = min(areaScale * aspectPenalty * 1.5, 1.25)
 ```
 
-So a 1080×1080 Instagram card and a 1080×1920 Story render with proportionally tuned type — the same JSON looks right at every size.
+So a 1080×1080 Instagram card and a 1080×1920 Story render with proportionally tuned type — the
+same JSON looks right at every size.
 
 ## Adding a custom template
 
@@ -74,12 +399,42 @@ Reference by name in your card JSON:
 { "template": "editorial", ... }
 ```
 
-No registration step — the renderer auto-discovers template folders at startup.
+In a repo checkout this works immediately — templates are auto-discovered by reading the
+`templates/` directory at startup, and an unknown name now fails fast with a clear error
+(`Unknown template "<name>". Available: ...`) instead of a silent blank render.
+
+**A released binary is different.** Binaries embed template and theme assets at build time
+(`src/assetBundle.ts`), so a folder that only exists in the repo won't be picked up by an
+installed binary. Shipping a new template in a release requires registering both its files in
+`TEMPLATE_ASSETS`:
+
+```ts
+import editorial_template from "../templates/editorial/template.njk" with { type: "text" };
+import editorial_style from "../templates/editorial/style.css" with { type: "text" };
+// …
+const TEMPLATE_ASSETS: AssetMap = {
+  // …
+  "editorial/template.njk": editorial_template,
+  "editorial/style.css": editorial_style,
+};
+```
+
+Auto-discovery, in other words, is only half true — true for a repo checkout, false for a
+built binary until the template is registered there too.
 
 ## Constraints
 
 - **Never hardcode colors** in template CSS. Use `var(--color-*)` exclusively.
-- **Never set fixed pixel font sizes** without `calc(var * --type-scale)` — cards render at multiple dimensions.
-- **Always flex-distribute blocks vertically** so content fills the card top-to-bottom instead of bunching mid-card.
+- **Never set fixed pixel font sizes** without `calc(var * --type-scale)` — cards render at
+  multiple dimensions.
+- **Always flex-distribute blocks vertically** so content fills the card top-to-bottom instead
+  of bunching mid-card.
+- **`eyebrow` only renders on 8 of the 28 templates** — `cover`, `memo`, `receipt`, `split`,
+  `spotlight`, `terminal`, `ticket`, `window`. Setting it on any other template validates (it's
+  a plain optional string on the schema) but renders nothing; the CLI now warns when this
+  happens rather than failing silently.
+- **`grid` requires exactly 4 items.** Any other count still renders — the CLI warns instead of
+  blocking — but the layout comes out uneven.
 
-The shared `_base.css` already handles these correctly; only add overrides when truly needed.
+The shared `_base.css` already handles color/font-scale/flex-distribution correctly; only add
+overrides when truly needed.
