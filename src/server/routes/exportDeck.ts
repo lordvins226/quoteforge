@@ -20,7 +20,7 @@ export async function exportDeckRoute(req: Request): Promise<Response> {
 
   const zipBuf = await buildZip(buffers, names);
 
-  return new Response(zipBuf, {
+  return new Response(new Uint8Array(zipBuf), {
     headers: {
       "Content-Type": "application/zip",
       "Content-Disposition": "attachment; filename=quoteforge-deck.zip",

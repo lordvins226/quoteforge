@@ -22,6 +22,9 @@ export async function themesRoute(req: Request, url: URL): Promise<Response> {
   const nameMatch = url.pathname.match(/^\/api\/themes\/([^/]+)$/);
   if (req.method === "PUT" && nameMatch) {
     const name = nameMatch[1];
+    if (!name) {
+      return new Response("Not found", { status: 404 });
+    }
     const body = await req.json();
     const theme = ThemeSchema.parse(body);
     const filePath = resolveThemeWrite(name);

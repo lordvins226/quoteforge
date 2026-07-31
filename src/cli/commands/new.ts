@@ -85,7 +85,7 @@ export const newCommand = new Command("new")
       message: "Filename (without .json):",
       placeholder: type === "deck" ? "my-deck" : "my-card",
       validate: (val) => {
-        if (!val.trim()) return "Name is required";
+        if (!val || !val.trim()) return "Name is required";
         if (!/^[a-z0-9-]+$/.test(val)) return "Use kebab-case (lowercase, hyphens only)";
         return undefined;
       },

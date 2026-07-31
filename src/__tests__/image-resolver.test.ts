@@ -71,8 +71,9 @@ describe("resolveImageBlocks", () => {
       ],
     };
     const out = resolveImageBlocks(deck, dir);
-    expect(out.slides[0].blocks[0]).toEqual({ type: "text", content: "unchanged" });
-    expect((out.slides[0].blocks[1] as { src: string }).src.startsWith("data:image/png;base64,")).toBe(true);
+    const slide = out.slides[0]!;
+    expect(slide.blocks[0]).toEqual({ type: "text", content: "unchanged" });
+    expect((slide.blocks[1] as { src: string }).src.startsWith("data:image/png;base64,")).toBe(true);
   });
 });
 

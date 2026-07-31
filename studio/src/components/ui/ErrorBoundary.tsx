@@ -12,19 +12,19 @@ interface State {
 }
 
 export class ErrorBoundary extends Component<Props, State> {
-  state: State = { hasError: false, error: null };
+  override state: State = { hasError: false, error: null };
 
   static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error: error.message };
   }
 
-  componentDidCatch(error: Error, info: ErrorInfo) {
+  override componentDidCatch(error: Error, info: ErrorInfo) {
     if (import.meta.env.DEV) {
       console.error(`[ErrorBoundary] ${this.props.fallback}:`, error, info);
     }
   }
 
-  render() {
+  override render() {
     if (this.state.hasError) {
       return (
         <div className="flex items-center justify-center h-full p-6">

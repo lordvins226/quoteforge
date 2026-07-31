@@ -8,7 +8,7 @@
     "qf": "./src/cli/index.ts"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p studio",
     "quoteforge": "bun run src/cli/index.ts",
     "qf": "bun run src/cli/index.ts",
     "build:binary": "bun run scripts/build-binaries.ts",

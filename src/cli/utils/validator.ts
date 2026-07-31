@@ -25,7 +25,7 @@ export const SIZES = {
   "custom":                { w: 0,    h: 0,    ratio: "free",   label: "Custom dimensions" },
 } as const;
 
-const sizeNames = Object.keys(SIZES) as [string, ...string[]];
+const sizeNames = Object.keys(SIZES) as [keyof typeof SIZES, ...(keyof typeof SIZES)[]];
 export const SizeNameSchema = z.enum(sizeNames);
 export type SizeName = z.infer<typeof SizeNameSchema>;
 

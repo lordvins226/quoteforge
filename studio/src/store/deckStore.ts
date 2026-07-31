@@ -63,6 +63,12 @@ function defaultBlock(type: BlockType): Block {
       return { type, id: makeId(), size: "md" };
     case "image":
       return { type, id: makeId(), src: "", width: "full", align: "center" };
+    case "stat":
+      return { type, id: makeId(), value: "100", unit: "%", label: "Label" };
+    case "code":
+      return { type, id: makeId(), lines: ["// New snippet"] };
+    case "chart":
+      return { type, id: makeId(), rows: [{ label: "Row", value: 50 }] };
   }
 }
 

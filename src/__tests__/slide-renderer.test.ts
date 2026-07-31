@@ -3,6 +3,8 @@ import { buildSlideCardContent } from "../renderer/slide-renderer.js";
 import { resolveDimensions } from "../renderer/dimensions.js";
 import type { DeckContent } from "../cli/utils/validator.js";
 
+type DeckSlide = DeckContent["slides"][number];
+
 function makeDeck(overrides: Partial<DeckContent["defaults"]>): DeckContent {
   return {
     type: "deck",
@@ -36,9 +38,9 @@ describe("buildSlideCardContent", () => {
 
   test("uses per-slide custom width/height when defaults are a preset", () => {
     const deck = makeDeck({ size: "instagram-sq" });
-    const slide = {
+    const slide: DeckSlide = {
       id: "slide-1",
-      size: "custom" as const,
+      size: "custom",
       width: 500,
       height: 700,
       blocks: [{ type: "text", content: "hello" }],
@@ -54,9 +56,9 @@ describe("buildSlideCardContent", () => {
 
   test("slide preset override with custom defaults uses preset dimensions", () => {
     const deck = makeDeck({ size: "custom", width: 1200, height: 900 });
-    const slide = {
+    const slide: DeckSlide = {
       id: "slide-1",
-      size: "instagram-sq" as const,
+      size: "instagram-sq",
       blocks: [{ type: "text", content: "hello" }],
     };
 
