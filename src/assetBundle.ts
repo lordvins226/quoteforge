@@ -12,6 +12,54 @@ import list_template from "../templates/list/template.njk" with { type: "text" }
 import list_style from "../templates/list/style.css" with { type: "text" };
 import manifesto_template from "../templates/manifesto/template.njk" with { type: "text" };
 import manifesto_style from "../templates/manifesto/style.css" with { type: "text" };
+import split_template from "../templates/split/template.njk" with { type: "text" };
+import split_style from "../templates/split/style.css" with { type: "text" };
+import terminal_template from "../templates/terminal/template.njk" with { type: "text" };
+import terminal_style from "../templates/terminal/style.css" with { type: "text" };
+import spotlight_template from "../templates/spotlight/template.njk" with { type: "text" };
+import spotlight_style from "../templates/spotlight/style.css" with { type: "text" };
+import frame_template from "../templates/frame/template.njk" with { type: "text" };
+import frame_style from "../templates/frame/style.css" with { type: "text" };
+import cover_template from "../templates/cover/template.njk" with { type: "text" };
+import cover_style from "../templates/cover/style.css" with { type: "text" };
+import sticky_template from "../templates/sticky/template.njk" with { type: "text" };
+import sticky_style from "../templates/sticky/style.css" with { type: "text" };
+import polaroid_template from "../templates/polaroid/template.njk" with { type: "text" };
+import polaroid_style from "../templates/polaroid/style.css" with { type: "text" };
+import window_template from "../templates/window/template.njk" with { type: "text" };
+import window_style from "../templates/window/style.css" with { type: "text" };
+import profile_template from "../templates/profile/template.njk" with { type: "text" };
+import profile_style from "../templates/profile/style.css" with { type: "text" };
+import ledger_template from "../templates/ledger/template.njk" with { type: "text" };
+import ledger_style from "../templates/ledger/style.css" with { type: "text" };
+import index_template from "../templates/index/template.njk" with { type: "text" };
+import index_style from "../templates/index/style.css" with { type: "text" };
+import grid_template from "../templates/grid/template.njk" with { type: "text" };
+import grid_style from "../templates/grid/style.css" with { type: "text" };
+import chat_template from "../templates/chat/template.njk" with { type: "text" };
+import chat_style from "../templates/chat/style.css" with { type: "text" };
+import diff_template from "../templates/diff/template.njk" with { type: "text" };
+import diff_style from "../templates/diff/style.css" with { type: "text" };
+import timeline_template from "../templates/timeline/template.njk" with { type: "text" };
+import timeline_style from "../templates/timeline/style.css" with { type: "text" };
+import receipt_template from "../templates/receipt/template.njk" with { type: "text" };
+import receipt_style from "../templates/receipt/style.css" with { type: "text" };
+import ticket_template from "../templates/ticket/template.njk" with { type: "text" };
+import ticket_style from "../templates/ticket/style.css" with { type: "text" };
+import calendar_template from "../templates/calendar/template.njk" with { type: "text" };
+import calendar_style from "../templates/calendar/style.css" with { type: "text" };
+import memo_template from "../templates/memo/template.njk" with { type: "text" };
+import memo_style from "../templates/memo/style.css" with { type: "text" };
+import prompt_template from "../templates/prompt/template.njk" with { type: "text" };
+import prompt_style from "../templates/prompt/style.css" with { type: "text" };
+import versus_template from "../templates/versus/template.njk" with { type: "text" };
+import versus_style from "../templates/versus/style.css" with { type: "text" };
+import stat_template from "../templates/stat/template.njk" with { type: "text" };
+import stat_style from "../templates/stat/style.css" with { type: "text" };
+import code_template from "../templates/code/template.njk" with { type: "text" };
+import code_style from "../templates/code/style.css" with { type: "text" };
+import chart_template from "../templates/chart/template.njk" with { type: "text" };
+import chart_style from "../templates/chart/style.css" with { type: "text" };
 
 import block_divider from "../templates/_blocks/divider.njk" with { type: "text" };
 import block_blockquote from "../templates/_blocks/blockquote.njk" with { type: "text" };
@@ -21,6 +69,9 @@ import block_callout from "../templates/_blocks/callout.njk" with { type: "text"
 import block_text from "../templates/_blocks/text.njk" with { type: "text" };
 import block_headline from "../templates/_blocks/headline.njk" with { type: "text" };
 import block_image from "../templates/_blocks/image.njk" with { type: "text" };
+import block_stat from "../templates/_blocks/stat.njk" with { type: "text" };
+import block_code from "../templates/_blocks/code.njk" with { type: "text" };
+import block_chart from "../templates/_blocks/chart.njk" with { type: "text" };
 import block_slide_counter from "../templates/_blocks/slide-counter.njk" with { type: "text" };
 
 import theme_paper_cream from "../themes/paper-cream.json";
@@ -51,6 +102,54 @@ const TEMPLATE_ASSETS: AssetMap = {
   "list/style.css": list_style,
   "manifesto/template.njk": manifesto_template,
   "manifesto/style.css": manifesto_style,
+  "split/template.njk": split_template,
+  "split/style.css": split_style,
+  "terminal/template.njk": terminal_template,
+  "terminal/style.css": terminal_style,
+  "spotlight/template.njk": spotlight_template,
+  "spotlight/style.css": spotlight_style,
+  "frame/template.njk": frame_template,
+  "frame/style.css": frame_style,
+  "cover/template.njk": cover_template,
+  "cover/style.css": cover_style,
+  "sticky/template.njk": sticky_template,
+  "sticky/style.css": sticky_style,
+  "polaroid/template.njk": polaroid_template,
+  "polaroid/style.css": polaroid_style,
+  "window/template.njk": window_template,
+  "window/style.css": window_style,
+  "profile/template.njk": profile_template,
+  "profile/style.css": profile_style,
+  "ledger/template.njk": ledger_template,
+  "ledger/style.css": ledger_style,
+  "index/template.njk": index_template,
+  "index/style.css": index_style,
+  "grid/template.njk": grid_template,
+  "grid/style.css": grid_style,
+  "chat/template.njk": chat_template,
+  "chat/style.css": chat_style,
+  "diff/template.njk": diff_template,
+  "diff/style.css": diff_style,
+  "timeline/template.njk": timeline_template,
+  "timeline/style.css": timeline_style,
+  "receipt/template.njk": receipt_template,
+  "receipt/style.css": receipt_style,
+  "ticket/template.njk": ticket_template,
+  "ticket/style.css": ticket_style,
+  "calendar/template.njk": calendar_template,
+  "calendar/style.css": calendar_style,
+  "memo/template.njk": memo_template,
+  "memo/style.css": memo_style,
+  "prompt/template.njk": prompt_template,
+  "prompt/style.css": prompt_style,
+  "versus/template.njk": versus_template,
+  "versus/style.css": versus_style,
+  "stat/template.njk": stat_template,
+  "stat/style.css": stat_style,
+  "code/template.njk": code_template,
+  "code/style.css": code_style,
+  "chart/template.njk": chart_template,
+  "chart/style.css": chart_style,
   "_blocks/divider.njk": block_divider,
   "_blocks/blockquote.njk": block_blockquote,
   "_blocks/spacer.njk": block_spacer,
@@ -59,6 +158,9 @@ const TEMPLATE_ASSETS: AssetMap = {
   "_blocks/text.njk": block_text,
   "_blocks/headline.njk": block_headline,
   "_blocks/image.njk": block_image,
+  "_blocks/stat.njk": block_stat,
+  "_blocks/code.njk": block_code,
+  "_blocks/chart.njk": block_chart,
   "_blocks/slide-counter.njk": block_slide_counter,
 };
 

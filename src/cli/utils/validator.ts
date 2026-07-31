@@ -25,7 +25,7 @@ export const SIZES = {
   "custom":                { w: 0,    h: 0,    ratio: "free",   label: "Custom dimensions" },
 } as const;
 
-const sizeNames = Object.keys(SIZES) as [string, ...string[]];
+const sizeNames = Object.keys(SIZES) as [keyof typeof SIZES, ...(keyof typeof SIZES)[]];
 export const SizeNameSchema = z.enum(sizeNames);
 export type SizeName = z.infer<typeof SizeNameSchema>;
 
@@ -102,6 +102,34 @@ const ImageBlockSchema = z.object({
   align: z.enum(["left", "center", "right"]).default("center"),
 }).strict();
 
+const StatBlockSchema = z.object({
+  type: z.literal("stat"),
+  id: z.string().optional(),
+  value: z.string().min(1),
+  unit: z.string().optional(),
+  label: z.string().optional(),
+  note: z.string().optional(),
+}).strict();
+
+const CodeBlockSchema = z.object({
+  type: z.literal("code"),
+  id: z.string().optional(),
+  filename: z.string().optional(),
+  lang: z.string().optional(),
+  lines: z.array(z.string()).min(1),
+}).strict();
+
+const ChartBlockSchema = z.object({
+  type: z.literal("chart"),
+  id: z.string().optional(),
+  unit: z.string().optional(),
+  rows: z.array(z.object({
+    label: z.string(),
+    value: z.number().min(0).max(100),
+    muted: z.boolean().optional(),
+  }).strict()).min(1),
+}).strict();
+
 export const BlockSchema = z.discriminatedUnion("type", [
   HeadlineBlockSchema,
   BlockquoteBlockSchema,
@@ -111,6 +139,9 @@ export const BlockSchema = z.discriminatedUnion("type", [
   DividerBlockSchema,
   SpacerBlockSchema,
   ImageBlockSchema,
+  StatBlockSchema,
+  CodeBlockSchema,
+  ChartBlockSchema,
 ]);
 export type Block = z.infer<typeof BlockSchema>;
 
@@ -217,6 +248,7 @@ export const CardContentSchema = z.object({
   width: DimensionSchema.optional(),
   height: DimensionSchema.optional(),
   align: AlignSchema.optional(),
+  eyebrow: z.string().max(48).optional(),
   meta: MetaSchema.optional(),
   blocks: z.array(BlockSchema).min(1),
 }).strict().superRefine(refineCustomDimensions);
@@ -231,6 +263,7 @@ const SlideSchema = z.object({
   width: DimensionSchema.optional(),
   height: DimensionSchema.optional(),
   align: AlignSchema.optional(),
+  eyebrow: z.string().max(48).optional(),
   showCounter: z.boolean().optional(),
   counter: CounterConfigSchema.optional(),
   blocks: z.array(BlockSchema).min(1),
@@ -243,6 +276,7 @@ const DeckDefaultsSchema = z.object({
   width: DimensionSchema.optional(),
   height: DimensionSchema.optional(),
   align: AlignSchema.optional(),
+  eyebrow: z.string().max(48).optional(),
   showCounter: z.boolean().optional(),
   counter: CounterConfigSchema.optional(),
 }).strict().superRefine(refineCustomDimensions);

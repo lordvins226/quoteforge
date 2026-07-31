@@ -1,0 +1,25 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "timeline",
+  "theme": "oceanic",
+  "size": "instagram-port",
+  "blocks": [
+    {
+      "id": "title",
+      "type": "headline",
+      "parts": [
+        { "text": "Roadmap", "style": "normal" }
+      ]
+    },
+    {
+      "id": "rows",
+      "type": "bullet-list",
+      "items": [
+        { "label": "Q1*", "text": "CLI + Nunjucks renderer" },
+        { "label": "Q2*", "text": "Studio WYSIWYG editor" },
+        { "label": "Q3", "text": "Deck carousels for every platform" },
+        { "label": "Q4", "text": "Custom sizes and stricter schemas" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+/* Grid — 2x2 peers. `label` means the cell's accent chip; `text` is the
+   cell's body. Requires exactly 4 items — the CLI should warn (not fail)
+   at other counts; Nunjucks has no way to emit that warning itself. */
+
+.card.grid-tpl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  padding: 0;
+  gap: 0;
+}
+
+.grid-cell {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(10px, calc(0.8rem * var(--space-scale)), 24px);
+  padding: clamp(24px, calc(var(--padding) * var(--space-scale)), 72px);
+  border-right: 2px solid var(--callout-border);
+  border-bottom: 2px solid var(--callout-border);
+}
+
+.grid-cell:nth-child(2n) {
+  border-right: none;
+}
+
+.grid-cell:nth-child(n+3) {
+  border-bottom: none;
+}
+
+.grid-chip {
+  align-self: flex-start;
+  font-family: var(--font-body);
+  font-size: clamp(11px, calc(0.8rem * var(--type-scale)), 20px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--headline);
+  background: var(--accent);
+  padding: 0.3em 0.7em;
+}
+
+.grid-val {
+  font-family: var(--font-headline);
+  font-size: clamp(var(--body-min), calc(1.3rem * var(--type-scale)), 36px);
+  line-height: 1.25;
+  font-weight: 700;
+  color: var(--headline);
+}

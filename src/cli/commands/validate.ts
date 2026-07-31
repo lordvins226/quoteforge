@@ -3,6 +3,7 @@ import chalk from "chalk";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { detectAndValidate } from "../utils/validator.js";
+import { assertTemplateExists } from "../../renderer/templates.js";
 
 export const validateCommand = new Command("validate")
   .description("Validate a card or deck JSON file against QuoteForge schemas")
@@ -28,6 +29,16 @@ export const validateCommand = new Command("validate")
 
     try {
       const result = detectAndValidate(json);
+
+      if (result.kind === "card") {
+        assertTemplateExists(result.data.template);
+      } else {
+        assertTemplateExists(result.data.defaults.template);
+        for (const slide of result.data.slides) {
+          if (slide.template) assertTemplateExists(slide.template);
+        }
+      }
+
       console.log(
         chalk.green(`✓ Valid ${result.kind} file:`),
         chalk.dim(filePath),

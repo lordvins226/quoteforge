@@ -1,0 +1,22 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "quote",
+  "theme": "paper-cream",
+  "size": "instagram-sq",
+  "blocks": [
+    {
+      "id": "quote",
+      "type": "headline",
+      "parts": [
+        { "text": "Simplicity is a ", "style": "normal" },
+        { "text": "prerequisite", "style": "accent" },
+        { "text": " for reliability.", "style": "normal" }
+      ]
+    },
+    {
+      "id": "attribution",
+      "type": "text",
+      "content": "Edsger W. Dijkstra"
+    }
+  ]
+}

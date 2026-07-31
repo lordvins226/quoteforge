@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { buildFontImports } from "./font-loader.js";
 import { templatesDir } from "../assetBundle.js";
+import { assertTemplateExists } from "./templates.js";
 import type { CardContent, Theme, Part, PartStyle } from "../cli/utils/validator.js";
 import type { SafeInset } from "./safe-aspect.js";
 
@@ -107,6 +108,15 @@ export function renderPart(part: Part): string {
 
 env.addGlobal("renderPart", renderPart);
 
+export function initials(name: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "";
+  if (parts.length === 1) return parts[0]!.slice(0, 2).toUpperCase();
+  return (parts[0]![0]! + parts[parts.length - 1]![0]!).toUpperCase();
+}
+
+env.addGlobal("initials", initials);
+
 export function renderTemplate(
   content: CardContent,
   theme: Theme,
@@ -114,6 +124,8 @@ export function renderTemplate(
   meta?: Partial<RenderMeta>,
   safeInset?: SafeInset,
 ): string {
+  assertTemplateExists(content.template);
+
   const resolvedMeta = { ...DEFAULT_META, ...meta };
   const fontImports = buildFontImports(theme);
   const cssVars = buildCssVars(theme, dimensions, safeInset);

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {{ fontImports | safe }}
+  <style>
+    :root {
+      {{ cssVars | safe }}
+    }
+
+    {{ baseCSS | safe }}
+    {{ styleCSS | safe }}
+  </style>
+</head>
+<body>
+  <div class="card align-{{ card.align or 'center' }} calendar">
+    {% set dateRendered = false %}
+    {% for block in card.blocks %}
+      {% if (block.type == "callout" or block.type == "bullet-list") and not dateRendered and block.items.length > 0 %}
+        {%- set first = block.items[0] %}
+        <div class="cal-block">
+          <div class="cal-month">{{ first.label }}</div>
+          <div class="cal-day">{{ first.text }}</div>
+        </div>
+        {% set dateRendered = true %}
+      {% elif block.type == "headline" %}
+        <div class="cal-what">
+          {%- for part in block.parts -%}{{ renderPart(part) | safe }}{%- endfor -%}
+        </div>
+      {% elif block.type == "text" %}
+        <div class="cal-when">{{ block.content }}</div>
+      {% endif %}
+    {% endfor %}
+
+    {% include "_blocks/slide-counter.njk" %}
+  </div>
+</body>
+</html>

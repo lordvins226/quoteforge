@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {{ fontImports | safe }}
+  <style>
+    :root {
+      {{ cssVars | safe }}
+    }
+
+    {{ baseCSS | safe }}
+    {{ styleCSS | safe }}
+  </style>
+</head>
+<body>
+  <div class="card align-{{ card.align or 'center' }} prompt">
+    {% set turnsRendered = false %}
+    {% for block in card.blocks %}
+      {% if (block.type == "bullet-list" or block.type == "callout") and not turnsRendered %}
+        {%- set items = block.items %}
+        {% if items.length > 0 %}
+        <div class="pr-turn you">
+          <span class="pr-role">{{ items[0].label }}</span>
+          <span class="pr-text">{{ items[0].text }}</span>
+        </div>
+        {% endif %}
+        {% if items.length > 1 %}
+        <div class="pr-turn ai">
+          <span class="pr-role">{{ items[1].label }}</span>
+          <span class="pr-text">{{ items[1].text }}<span class="pr-cursor"></span></span>
+        </div>
+        {% endif %}
+        {% set turnsRendered = true %}
+      {% endif %}
+    {% endfor %}
+
+    {% include "_blocks/slide-counter.njk" %}
+  </div>
+</body>
+</html>

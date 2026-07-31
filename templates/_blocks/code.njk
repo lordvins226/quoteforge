@@ -1,0 +1,10 @@
+<div class="block block-code">
+  {%- if block.filename %}
+  <div class="code-tab">{{ block.filename }}</div>
+  {%- endif %}
+  <div class="code-body">
+    {%- for line in block.lines %}
+    <div class="code-line"><span class="code-n">{{ loop.index }}</span><span class="code-src">{{ line }}</span></div>
+    {%- endfor %}
+  </div>
+</div>

@@ -1,0 +1,76 @@
+/* Split — 38% accent rail beside a content panel, for wide formats */
+
+.card.split {
+  display: grid;
+  grid-template-columns: 38% 1fr;
+  padding: 0;
+  gap: 0;
+}
+
+.split-rail,
+.split-main {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.split-rail {
+  background: var(--accent);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding:
+    calc(clamp(24px, calc(var(--padding) * var(--space-scale)), 72px) + var(--safe-top))
+    clamp(24px, calc(var(--padding) * var(--space-scale)), 72px)
+    calc(clamp(24px, calc(var(--padding) * var(--space-scale)), 72px) + var(--safe-bottom))
+    calc(clamp(24px, calc(var(--padding) * var(--space-scale)), 72px) + var(--safe-left));
+}
+
+.split-rail-label {
+  font-family: var(--font-body);
+  font-size: clamp(11px, calc(0.85rem * var(--type-scale)), 18px);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--bg);
+  opacity: 0.85;
+}
+
+.split-rail .block-headline {
+  flex: 0 0 auto;
+}
+
+.split-rail .headline {
+  color: var(--bg);
+  font-size: clamp(32px, calc(var(--headline-size) * var(--headline-scale) * 1.2), 140px);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  overflow-wrap: break-word;
+}
+
+.split-rail .part-normal,
+.split-rail .part-bold,
+.split-rail .part-italic {
+  color: var(--bg);
+}
+
+.split-rail .part-accent,
+.split-rail .part-accent-italic {
+  color: var(--bg);
+  opacity: 0.65;
+}
+
+.split-rail .part-muted {
+  opacity: 0.5;
+}
+
+.split-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(8px, calc(var(--gap) * var(--space-scale)), 48px);
+  padding:
+    calc(clamp(24px, calc(var(--padding) * var(--space-scale)), 72px) + var(--safe-top))
+    calc(clamp(24px, calc(var(--padding) * var(--space-scale)), 72px) + var(--safe-right))
+    calc(clamp(24px, calc(var(--padding) * var(--space-scale)), 72px) + var(--safe-bottom))
+    clamp(24px, calc(var(--padding) * var(--space-scale)), 72px);
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {{ fontImports | safe }}
+  <style>
+    :root {
+      {{ cssVars | safe }}
+    }
+
+    {{ baseCSS | safe }}
+    {{ styleCSS | safe }}
+  </style>
+</head>
+<body>
+  <div class="card align-{{ card.align or 'center' }} ledger">
+    {% for block in card.blocks %}
+      {% if block.type == "headline" %}
+        <div class="ledger-head">
+          {%- for part in block.parts -%}
+            {{ renderPart(part) | safe }}
+          {%- endfor -%}
+        </div>
+      {% elif block.type == "bullet-list" or block.type == "callout" %}
+        <div class="ledger-rows">
+          {%- for item in block.items %}
+          <div class="ledger-row">
+            <span class="ledger-key">{{ item.label }}</span>
+            <span class="ledger-val">{{ item.text }}</span>
+          </div>
+          {%- endfor %}
+        </div>
+      {% elif block.type == "text" %}
+        <div class="ledger-foot">{{ block.content }}</div>
+      {% endif %}
+    {% endfor %}
+
+    {% include "_blocks/slide-counter.njk" %}
+  </div>
+</body>
+</html>

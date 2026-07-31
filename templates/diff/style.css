@@ -1,0 +1,60 @@
+/* Diff — removals and additions. `label` means the marker: "+" renders as
+   an addition (--headline text, --accent sigil); "-" (or anything else)
+   renders as a removal (--body, reduced opacity, line-through). No
+   hardcoded status colors — the theme decides. */
+
+.card.diff {
+  font-family: var(--font-body);
+}
+
+.diff-head {
+  flex: 0 0 auto;
+  font-size: clamp(11px, calc(0.8rem * var(--type-scale)), 20px);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--body);
+  opacity: 0.7;
+}
+
+.diff-rows {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, calc(0.5rem * var(--space-scale)), 14px);
+  min-height: 0;
+  justify-content: center;
+}
+
+.diff-row {
+  display: flex;
+  gap: clamp(10px, calc(0.8rem * var(--space-scale)), 22px);
+  font-size: clamp(var(--body-min), calc(1rem * var(--type-scale)), 28px);
+  line-height: 1.5;
+}
+
+.diff-row .mark {
+  flex: none;
+  width: 1em;
+}
+
+.diff-row.minus {
+  color: var(--body);
+  opacity: 0.55;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.diff-row.plus {
+  color: var(--headline);
+}
+
+.diff-row.plus .mark {
+  color: var(--accent);
+}
+
+.diff-foot {
+  flex: 0 0 auto;
+  margin-top: auto;
+  font-size: clamp(11px, calc(0.85rem * var(--type-scale)), 20px);
+  color: var(--accent);
+}

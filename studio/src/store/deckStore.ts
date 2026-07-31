@@ -26,6 +26,7 @@ interface DeckStore {
   removeBlock: (slideIndex: number, blockId: string) => void;
   reorderBlocks: (slideIndex: number, from: number, to: number) => void;
   selectBlock: (id: string | null) => void;
+  setDeckTemplate: (name: string) => void;
   setDeckTheme: (name: string) => void;
   setDeckSize: (size: SizeName) => void;
   setDeckDimensions: (width: number, height: number) => void;
@@ -62,6 +63,12 @@ function defaultBlock(type: BlockType): Block {
       return { type, id: makeId(), size: "md" };
     case "image":
       return { type, id: makeId(), src: "", width: "full", align: "center" };
+    case "stat":
+      return { type, id: makeId(), value: "100", unit: "%", label: "Label" };
+    case "code":
+      return { type, id: makeId(), lines: ["// New snippet"] };
+    case "chart":
+      return { type, id: makeId(), rows: [{ label: "Row", value: 50 }] };
   }
 }
 
@@ -233,6 +240,14 @@ export const useDeckStore = create<DeckStore>((set) => ({
     }),
 
   selectBlock: (id) => set({ selectedBlockId: id }),
+
+  setDeckTemplate: (name) =>
+    set((s) => ({
+      deck: { ...s.deck, defaults: { ...s.deck.defaults, template: name } },
+      isDirty: true,
+      past: snapshot(s.past, s.deck),
+      future: [],
+    })),
 
   setDeckTheme: (name) =>
     set((s) => ({

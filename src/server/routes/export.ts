@@ -31,7 +31,7 @@ export async function exportRoute(req: Request): Promise<Response> {
 
   const buf = await renderCard(body.card, theme, body.size, body.scale ?? 2, undefined, undefined, body.fitContent ?? false);
 
-  return new Response(buf, {
+  return new Response(new Uint8Array(buf), {
     headers: {
       "Content-Type": "image/png",
       "Content-Disposition": "attachment; filename=quoteforge-export.png",

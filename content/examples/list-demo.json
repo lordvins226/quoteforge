@@ -1,0 +1,28 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "list",
+  "theme": "dark-teal",
+  "size": "instagram-port",
+  "blocks": [
+    {
+      "id": "headline",
+      "type": "headline",
+      "parts": [
+        { "text": "Five habits of ", "style": "normal" },
+        { "text": "calm", "style": "accent" },
+        { "text": " teams", "style": "normal" }
+      ]
+    },
+    {
+      "id": "items",
+      "type": "bullet-list",
+      "items": [
+        { "label": "Small diffs", "text": "Review time grows faster than diff size." },
+        { "label": "Green main", "text": "A red default branch blocks everyone, not one person." },
+        { "label": "One owner", "text": "Shared ownership of an incident means nobody owns it." },
+        { "label": "Written decisions", "text": "A decision nobody can find gets relitigated monthly." },
+        { "label": "Boring releases", "text": "If shipping is an event, you are not shipping enough." }
+      ]
+    }
+  ]
+}

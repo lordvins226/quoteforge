@@ -1,0 +1,16 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "versus",
+  "theme": "oceanic",
+  "size": "twitter",
+  "blocks": [
+    {
+      "id": "sides",
+      "type": "callout",
+      "items": [
+        { "label": "Before", "text": "2.4s" },
+        { "label": "After", "text": "0.4s" }
+      ]
+    }
+  ]
+}

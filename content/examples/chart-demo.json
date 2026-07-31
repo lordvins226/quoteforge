@@ -1,0 +1,28 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "chart",
+  "theme": "oceanic",
+  "size": "instagram-port",
+  "blocks": [
+    {
+      "id": "title",
+      "type": "headline",
+      "parts": [{ "text": "Where the render time goes", "style": "normal" }]
+    },
+    {
+      "id": "bars",
+      "type": "chart",
+      "rows": [
+        { "label": "Chrome launch", "value": 61 },
+        { "label": "Font settling", "value": 22 },
+        { "label": "Nunjucks", "value": 11, "muted": true },
+        { "label": "Screenshot", "value": 6, "muted": true }
+      ]
+    },
+    {
+      "id": "footer",
+      "type": "text",
+      "content": "n = 500 renders · 1080²"
+    }
+  ]
+}

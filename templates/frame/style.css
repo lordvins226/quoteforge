@@ -1,0 +1,49 @@
+/* Frame — bordered plate with corner marks, inherently centered */
+
+.card.frame {
+  display: flex;
+}
+
+.frame-inner {
+  flex: 1 1 auto;
+  min-height: 0;
+  position: relative;
+  border: 1px solid var(--callout-border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: clamp(8px, calc(var(--gap) * var(--space-scale)), 40px);
+  padding: clamp(24px, calc(var(--padding) * var(--space-scale)), 96px) clamp(20px, calc(var(--padding) * 0.8 * var(--space-scale)), 80px);
+}
+
+.frame-inner .block {
+  max-width: 82%;
+}
+
+.frame-mark {
+  position: absolute;
+  width: clamp(14px, calc(1.4rem * var(--space-scale)), 40px);
+  height: clamp(14px, calc(1.4rem * var(--space-scale)), 40px);
+  border: 1px solid var(--accent);
+}
+
+.frame-mark.tl { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.frame-mark.tr { top: -1px; right: -1px; border-left: 0; border-bottom: 0; }
+.frame-mark.bl { bottom: -1px; left: -1px; border-right: 0; border-top: 0; }
+.frame-mark.br { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+
+.frame-inner .block-blockquote blockquote {
+  border-left: none;
+  padding-left: 0;
+  font-style: italic;
+}
+
+.frame-inner .block-text p {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: clamp(11px, calc(0.85rem * var(--type-scale)), 18px);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}

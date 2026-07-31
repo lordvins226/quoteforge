@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {{ fontImports | safe }}
+  <style>
+    :root {
+      {{ cssVars | safe }}
+    }
+
+    {{ baseCSS | safe }}
+    {{ styleCSS | safe }}
+  </style>
+</head>
+<body>
+  <div class="card align-{{ card.align or 'center' }} ticket">
+    <div class="tk">
+      <div class="tk-main">
+        {% if card.eyebrow %}<div class="tk-kicker">{{ card.eyebrow }}</div>{% endif %}
+        {% for block in card.blocks %}
+          {% if block.type == "headline" %}
+            <div class="tk-title">
+              {%- for part in block.parts -%}{{ renderPart(part) | safe }}{%- endfor -%}
+            </div>
+          {% elif block.type == "bullet-list" or block.type == "callout" %}
+            <div class="tk-meta">
+              {%- for item in block.items %}
+                {%- if not loop.last %}<span>{{ item.label }}</span>{%- endif %}
+              {%- endfor %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="tk-perf"></div>
+      <div class="tk-stub">
+        {% for block in card.blocks %}
+          {% if block.type == "bullet-list" or block.type == "callout" %}
+            {%- set stub = block.items[block.items.length - 1] %}
+            <span class="no">{{ stub.label }}</span>
+            <span class="lbl">{{ stub.text }}</span>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    {% include "_blocks/slide-counter.njk" %}
+  </div>
+</body>
+</html>

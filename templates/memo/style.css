@@ -1,0 +1,62 @@
+/* Memo — letterhead. `label` means the field name (`To`, `From`, `Re`);
+   `text` is the value. card.eyebrow is the org name in the letterhead;
+   the "Memorandum" kind marker is static chrome, not content-driven.
+   A `max-content 1fr` field grid keeps the colons aligned regardless of
+   how long the field name is. */
+
+.card.memo {
+  gap: clamp(14px, calc(1.2rem * var(--space-scale)), 32px);
+}
+
+.mm-head {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: clamp(12px, calc(1rem * var(--space-scale)), 26px);
+  padding-bottom: clamp(10px, calc(0.9rem * var(--space-scale)), 22px);
+  border-bottom: 2px solid var(--headline);
+}
+
+.mm-org {
+  font-size: clamp(13px, calc(0.95rem * var(--type-scale)), 24px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--headline);
+}
+
+.mm-kind {
+  font-size: clamp(10px, calc(0.7rem * var(--type-scale)), 16px);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.mm-fields {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: clamp(6px, calc(0.5rem * var(--space-scale)), 12px) clamp(12px, calc(1rem * var(--space-scale)), 26px);
+  font-size: clamp(var(--body-min), calc(0.85rem * var(--type-scale)), 20px);
+  margin: 0;
+}
+
+.mm-fields dt {
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.mm-fields dd {
+  margin: 0;
+  color: var(--body);
+}
+
+.mm-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  font-family: var(--font-headline);
+  font-size: clamp(var(--body-min), calc(1.3rem * var(--type-scale)), 34px);
+  line-height: 1.42;
+  color: var(--headline);
+}

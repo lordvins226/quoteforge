@@ -1,0 +1,10 @@
+<div class="block block-stat">
+  {%- if block.label %}
+  <div class="stat-label">{{ block.label }}</div>
+  {%- endif %}
+  <div class="stat-figure">{{ block.value }}{% if block.unit %}<sup>{{ block.unit }}</sup>{% endif %}</div>
+  {%- if block.note %}
+  <div class="stat-rule"></div>
+  <div class="stat-note">{{ block.note }}</div>
+  {%- endif %}
+</div>

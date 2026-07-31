@@ -1,0 +1,32 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "receipt",
+  "theme": "paper-cream",
+  "size": "instagram-port",
+  "eyebrow": "quoteforge · 2026",
+  "blocks": [
+    {
+      "id": "head",
+      "type": "headline",
+      "parts": [
+        { "text": "Cost of a card", "style": "normal" }
+      ]
+    },
+    {
+      "id": "rows",
+      "type": "bullet-list",
+      "items": [
+        { "label": "$0.00", "text": "Design tool subscription" },
+        { "label": "$0.00", "text": "Stock template" },
+        { "label": "$0.00", "text": "Export wrangling" },
+        { "label": "0.42s", "text": "Render time" },
+        { "label": "1 command", "text": "Total" }
+      ]
+    },
+    {
+      "id": "foot",
+      "type": "text",
+      "content": "Thank you — come back soon"
+    }
+  ]
+}

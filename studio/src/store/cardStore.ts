@@ -18,6 +18,7 @@ interface CardStore {
   removeBlock: (blockId: string) => void;
   reorderBlocks: (from: number, to: number) => void;
   selectBlock: (id: string | null) => void;
+  setTemplate: (name: string) => void;
   setTheme: (name: string) => void;
   setSize: (size: SizeName) => void;
   setDimensions: (width: number, height: number) => void;
@@ -49,6 +50,12 @@ function defaultBlock(type: BlockType): Block {
       return { type, id: makeId(), size: "md" };
     case "image":
       return { type, id: makeId(), src: "", width: "full", align: "center" };
+    case "stat":
+      return { type, id: makeId(), value: "100", unit: "%", label: "Label" };
+    case "code":
+      return { type, id: makeId(), lines: ["// New snippet"] };
+    case "chart":
+      return { type, id: makeId(), rows: [{ label: "Row", value: 50 }] };
   }
 }
 
@@ -117,6 +124,14 @@ export const useCardStore = create<CardStore>((set) => ({
     }),
 
   selectBlock: (id) => set({ selectedBlockId: id }),
+
+  setTemplate: (name) =>
+    set((s) => ({
+      card: { ...s.card, template: name },
+      isDirty: true,
+      past: [...s.past.slice(-49), s.card],
+      future: [],
+    })),
 
   setTheme: (name) =>
     set((s) => ({

@@ -3,7 +3,8 @@ import chalk from "chalk";
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { resolve, basename, join, dirname } from "node:path";
 import { detectAndValidate } from "../utils/validator.js";
-import { renderDeck } from "../../renderer/slide-renderer.js";
+import { renderDeck, buildSlideCardContent } from "../../renderer/slide-renderer.js";
+import { templateWarnings } from "../../renderer/template-warnings.js";
 import { resolveImageBlocks } from "../../renderer/image-resolver.js";
 import { buildZip } from "../utils/zip.js";
 import { parseAspectRatio } from "../../renderer/safe-aspect.js";
@@ -81,6 +82,13 @@ export const slidesCommand = new Command("slides")
         console.warn(chalk.yellow(`⚠ Facebook carousels render best with facebook-square (1080×1080). Current size: ${resolvedSize}`));
       }
     }
+
+    deck.slides.forEach((slide, i) => {
+      const card = buildSlideCardContent(slide, deck, {});
+      for (const warning of templateWarnings(card)) {
+        console.warn(chalk.yellow(`⚠ Slide ${i + 1}: ${warning}`));
+      }
+    });
 
     const slideIndex = opts.slide ? parseInt(opts.slide, 10) - 1 : undefined;
     const concurrency = parseInt(opts.concurrency, 10);

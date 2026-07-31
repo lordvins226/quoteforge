@@ -1,0 +1,20 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "code",
+  "theme": "terminal-green",
+  "size": "twitter",
+  "blocks": [
+    {
+      "id": "snippet",
+      "type": "code",
+      "filename": "renderer.ts",
+      "lang": "ts",
+      "lines": [
+        "export function render(card: Card): Buffer {",
+        "  const html = compile(card);",
+        "  return screenshot(html);",
+        "}"
+      ]
+    }
+  ]
+}

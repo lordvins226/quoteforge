@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {{ fontImports | safe }}
+  <style>
+    :root {
+      {{ cssVars | safe }}
+    }
+
+    {{ baseCSS | safe }}
+    {{ styleCSS | safe }}
+  </style>
+</head>
+<body>
+  <div class="card align-{{ card.align or 'center' }} memo">
+    <div class="mm-head">
+      {% if card.eyebrow %}<span class="mm-org">{{ card.eyebrow }}</span>{% endif %}
+      <span class="mm-kind">Memorandum</span>
+    </div>
+    {% for block in card.blocks %}
+      {% if block.type == "bullet-list" or block.type == "callout" %}
+        <dl class="mm-fields">
+          {%- for item in block.items %}
+          <dt>{{ item.label }}</dt><dd>{{ item.text }}</dd>
+          {%- endfor %}
+        </dl>
+      {% elif block.type == "text" %}
+        <div class="mm-body">{{ block.content }}</div>
+      {% endif %}
+    {% endfor %}
+
+    {% include "_blocks/slide-counter.njk" %}
+  </div>
+</body>
+</html>

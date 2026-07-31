@@ -1,0 +1,26 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "cover",
+  "theme": "mono-slate",
+  "size": "instagram-port",
+  "eyebrow": "Field notes — 07",
+  "blocks": [
+    {
+      "id": "title",
+      "type": "headline",
+      "parts": [
+        { "text": "Rendering text is harder than it looks", "style": "normal" }
+      ]
+    },
+    {
+      "id": "author",
+      "type": "text",
+      "content": "Kevin W."
+    },
+    {
+      "id": "read-time",
+      "type": "text",
+      "content": "12 min"
+    }
+  ]
+}

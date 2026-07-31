@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {{ fontImports | safe }}
+  <style>
+    :root {
+      {{ cssVars | safe }}
+    }
+
+    {{ baseCSS | safe }}
+    {{ styleCSS | safe }}
+  </style>
+</head>
+<body>
+  <div class="card align-{{ card.align or 'center' }} grid-tpl">
+    {% for block in card.blocks %}
+      {% if block.type == "bullet-list" or block.type == "callout" %}
+        {%- for item in block.items %}
+        <div class="grid-cell">
+          <span class="grid-chip">{{ item.label }}</span>
+          <span class="grid-val">{{ item.text }}</span>
+        </div>
+        {%- endfor %}
+      {% endif %}
+    {% endfor %}
+
+    {% include "_blocks/slide-counter.njk" %}
+  </div>
+</body>
+</html>

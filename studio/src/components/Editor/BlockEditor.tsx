@@ -1,4 +1,4 @@
-import type { Block, Part, LabeledItem, PartStyle } from "../../types";
+import type { Block, Part, LabeledItem, PartStyle, ChartRow } from "../../types";
 import { Input } from "../ui/Input";
 import { Select } from "../ui/Select";
 import { Button } from "../ui/Button";
@@ -92,6 +92,73 @@ function ItemsEditor({ items, onChange }: { items: LabeledItem[]; onChange: (ite
       ))}
       <Button variant="ghost" size="sm" onClick={() => onChange([...items, { label: "", text: "" }])}>
         <Plus size={12} className="mr-1" /> Add Item
+      </Button>
+    </div>
+  );
+}
+
+function LinesEditor({ lines, onChange }: { lines: string[]; onChange: (lines: string[]) => void }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <span className="text-xs text-neutral-400">Lines</span>
+      {lines.map((line, i) => (
+        <div key={i} className="flex gap-2 items-start">
+          <input
+            value={line}
+            onChange={(e) => {
+              const updated = [...lines];
+              updated[i] = e.target.value;
+              onChange(updated);
+            }}
+            className="flex-1 bg-neutral-900 border border-neutral-700 rounded px-2 py-1.5 text-sm font-mono text-neutral-100 focus:outline-none focus:border-teal-500"
+          />
+          <Button variant="ghost" size="sm" onClick={() => onChange(lines.filter((_, j) => j !== i))}>
+            <Trash2 size={12} />
+          </Button>
+        </div>
+      ))}
+      <Button variant="ghost" size="sm" onClick={() => onChange([...lines, ""])}>
+        <Plus size={12} className="mr-1" /> Add Line
+      </Button>
+    </div>
+  );
+}
+
+function ChartRowsEditor({ rows, onChange }: { rows: ChartRow[]; onChange: (rows: ChartRow[]) => void }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <span className="text-xs text-neutral-400">Rows</span>
+      {rows.map((row, i) => (
+        <div key={i} className="flex gap-2 items-start">
+          <input
+            value={row.label}
+            onChange={(e) => {
+              const updated = [...rows];
+              updated[i] = { ...row, label: e.target.value };
+              onChange(updated);
+            }}
+            placeholder="Label"
+            className="flex-1 bg-neutral-900 border border-neutral-700 rounded px-2 py-1.5 text-sm text-neutral-100 focus:outline-none focus:border-teal-500"
+          />
+          <input
+            type="number"
+            min={0}
+            max={100}
+            value={row.value}
+            onChange={(e) => {
+              const updated = [...rows];
+              updated[i] = { ...row, value: Number(e.target.value) };
+              onChange(updated);
+            }}
+            className="w-20 bg-neutral-900 border border-neutral-700 rounded px-2 py-1.5 text-sm text-neutral-100 focus:outline-none focus:border-teal-500"
+          />
+          <Button variant="ghost" size="sm" onClick={() => onChange(rows.filter((_, j) => j !== i))}>
+            <Trash2 size={12} />
+          </Button>
+        </div>
+      ))}
+      <Button variant="ghost" size="sm" onClick={() => onChange([...rows, { label: "", value: 0 }])}>
+        <Plus size={12} className="mr-1" /> Add Row
       </Button>
     </div>
   );
@@ -195,6 +262,81 @@ export function BlockEditor({ block, onChange }: BlockEditorProps) {
               className="w-full mt-1 bg-neutral-900 border border-neutral-700 rounded px-2 py-1.5 text-sm text-neutral-100 focus:outline-none focus:border-teal-500"
             />
           </div>
+        </div>
+      );
+
+    case "stat":
+      return (
+        <div className="flex flex-col gap-2">
+          <div>
+            <label className="text-xs text-neutral-400">Value</label>
+            <input
+              type="text"
+              value={block.value}
+              onChange={(e) => onChange({ ...block, value: e.target.value })}
+              className="w-full mt-1 bg-neutral-900 border border-neutral-700 rounded px-2 py-1.5 text-sm text-neutral-100 focus:outline-none focus:border-teal-500"
+            />
+          </div>
+          <div>
+            <label className="text-xs text-neutral-400">Unit</label>
+            <input
+              type="text"
+              value={block.unit ?? ""}
+              onChange={(e) => onChange({ ...block, unit: e.target.value })}
+              className="w-full mt-1 bg-neutral-900 border border-neutral-700 rounded px-2 py-1.5 text-sm text-neutral-100 focus:outline-none focus:border-teal-500"
+            />
+          </div>
+          <div>
+            <label className="text-xs text-neutral-400">Label</label>
+            <input
+              type="text"
+              value={block.label ?? ""}
+              onChange={(e) => onChange({ ...block, label: e.target.value })}
+              className="w-full mt-1 bg-neutral-900 border border-neutral-700 rounded px-2 py-1.5 text-sm text-neutral-100 focus:outline-none focus:border-teal-500"
+            />
+          </div>
+          <div>
+            <label className="text-xs text-neutral-400">Note</label>
+            <textarea
+              value={block.note ?? ""}
+              onChange={(e) => onChange({ ...block, note: e.target.value })}
+              rows={2}
+              className="w-full mt-1 bg-neutral-900 border border-neutral-700 rounded px-2 py-1.5 text-sm text-neutral-100 resize-y focus:outline-none focus:border-teal-500"
+            />
+          </div>
+        </div>
+      );
+
+    case "code":
+      return (
+        <div className="flex flex-col gap-2">
+          <div>
+            <label className="text-xs text-neutral-400">Filename</label>
+            <input
+              type="text"
+              value={block.filename ?? ""}
+              onChange={(e) => onChange({ ...block, filename: e.target.value })}
+              className="w-full mt-1 bg-neutral-900 border border-neutral-700 rounded px-2 py-1.5 text-sm text-neutral-100 focus:outline-none focus:border-teal-500"
+            />
+          </div>
+          <LinesEditor lines={block.lines} onChange={(lines) => onChange({ ...block, lines })} />
+        </div>
+      );
+
+    case "chart":
+      return (
+        <div className="flex flex-col gap-2">
+          <div>
+            <label className="text-xs text-neutral-400">Unit</label>
+            <input
+              type="text"
+              value={block.unit ?? ""}
+              onChange={(e) => onChange({ ...block, unit: e.target.value })}
+              placeholder="%"
+              className="w-full mt-1 bg-neutral-900 border border-neutral-700 rounded px-2 py-1.5 text-sm text-neutral-100 focus:outline-none focus:border-teal-500"
+            />
+          </div>
+          <ChartRowsEditor rows={block.rows} onChange={(rows) => onChange({ ...block, rows })} />
         </div>
       );
   }

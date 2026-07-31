@@ -11,7 +11,7 @@ export const DOCS: readonly DocMeta[] = [
   { slug: "cli", title: "CLI Reference", description: "Every command, every flag.", section: "Reference" },
   { slug: "content-schema", title: "Content Schema", description: "Cards, decks, and the 7 block types.", section: "Reference" },
   { slug: "themes", title: "Themes", description: "20 CSS variables, BYO theme JSON.", section: "Reference" },
-  { slug: "templates", title: "Templates", description: "The 4 built-in layouts and how to add more.", section: "Advanced" },
+  { slug: "templates", title: "Templates", description: "The 28 built-in layouts, five families, and how to add more.", section: "Advanced" },
 ] as const;
 
 export const DOC_SECTIONS = ["Introduction", "Reference", "Advanced"] as const;

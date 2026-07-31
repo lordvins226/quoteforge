@@ -1,0 +1,29 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "manifesto",
+  "theme": "brand-midnight",
+  "size": "instagram-sq",
+  "align": "spread",
+  "blocks": [
+    {
+      "id": "headline",
+      "type": "headline",
+      "parts": [
+        { "text": "Ship the ", "style": "normal" },
+        { "text": "boring", "style": "accent" },
+        { "text": " version first.", "style": "normal" }
+      ]
+    },
+    {
+      "id": "body",
+      "type": "text",
+      "content": "The clever version is a rewrite you have not scheduled yet. The boring version is in production tonight, and production is the only place you learn anything."
+    },
+    { "id": "rule", "type": "divider" },
+    {
+      "id": "footer",
+      "type": "text",
+      "content": "quoteforge.dev"
+    }
+  ]
+}

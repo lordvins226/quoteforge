@@ -1,0 +1,68 @@
+/* Profile — single-voice testimonial: a large quote above an attribution row.
+   Falls back to initials on an --accent disc when no image block is present. */
+
+.card.profile {
+  gap: clamp(20px, calc(var(--gap) * 1.4 * var(--space-scale)), 56px);
+}
+
+.block-blockquote blockquote {
+  border-left: none;
+  padding-left: 0;
+  font-style: normal;
+  color: var(--headline);
+  font-size: clamp(22px, calc(var(--headline-size) * var(--headline-scale) * 0.52), 68px);
+  line-height: 1.35;
+}
+
+.profile-who {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, calc(var(--gap) * var(--space-scale)), 32px);
+}
+
+.profile-avatar {
+  flex: none;
+  width: clamp(44px, calc(4rem * var(--space-scale)), 120px);
+  height: clamp(44px, calc(4rem * var(--space-scale)), 120px);
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.profile-avatar--image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-avatar--initials {
+  background: var(--accent);
+  color: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-size: clamp(15px, calc(1.3rem * var(--space-scale)), 40px);
+}
+
+.profile-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
+.profile-name {
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: var(--headline);
+  font-size: clamp(13px, calc(0.95rem * var(--type-scale)), 22px);
+}
+
+.profile-role {
+  font-family: var(--font-body);
+  color: var(--body);
+  font-size: clamp(11px, calc(0.85rem * var(--type-scale)), 18px);
+}

@@ -1,0 +1,60 @@
+/* Prompt — question and answer. `label` means the role shown above each
+   turn. Exactly 2 items are expected: the first `bullet-list`/`callout`
+   block found supplies both turns, using its first two items — the
+   first item renders as the plain prompt turn, the second as the
+   accented answer turn with a caret. Fewer than 2 items degrades
+   gracefully: 1 item renders only the prompt turn, 0 renders nothing.
+   Extra items beyond the first two are ignored. */
+
+.card.prompt {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(16px, calc(1.4rem * var(--space-scale)), 34px);
+}
+
+.pr-turn {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, calc(0.5rem * var(--space-scale)), 14px);
+}
+
+.pr-role {
+  font-size: clamp(10px, calc(0.7rem * var(--type-scale)), 16px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.pr-turn.you .pr-role {
+  color: var(--body);
+}
+
+.pr-turn.ai .pr-role {
+  color: var(--accent);
+}
+
+.pr-text {
+  font-family: var(--font-headline);
+  font-size: clamp(var(--body-min), calc(1.15rem * var(--type-scale)), 32px);
+  line-height: 1.45;
+  color: var(--headline);
+}
+
+.pr-turn.you .pr-text {
+  color: var(--body);
+}
+
+.pr-turn.ai {
+  border-left: 2px solid var(--accent);
+  padding-left: clamp(14px, calc(1.2rem * var(--space-scale)), 30px);
+}
+
+.pr-cursor {
+  display: inline-block;
+  width: clamp(3px, calc(0.25rem * var(--space-scale)), 8px);
+  height: clamp(14px, calc(1rem * var(--space-scale)), 26px);
+  background: var(--accent);
+  vertical-align: -0.15em;
+  margin-left: clamp(3px, calc(0.25rem * var(--space-scale)), 8px);
+}

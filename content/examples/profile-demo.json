@@ -1,0 +1,22 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "profile",
+  "theme": "dark-teal",
+  "size": "instagram-sq",
+  "blocks": [
+    {
+      "id": "quote",
+      "type": "blockquote",
+      "parts": [
+        { "text": "I stopped opening a design tool to ship a changelog image.", "style": "normal" }
+      ]
+    },
+    {
+      "id": "attribution",
+      "type": "callout",
+      "items": [
+        { "label": "Kevin W.", "text": "Maintainer, QuoteForge" }
+      ]
+    }
+  ]
+}

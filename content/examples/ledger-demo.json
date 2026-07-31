@@ -1,0 +1,32 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "ledger",
+  "theme": "paper-cream",
+  "size": "instagram-port",
+  "blocks": [
+    {
+      "id": "head",
+      "type": "headline",
+      "parts": [
+        { "text": "Block reference", "style": "normal" }
+      ]
+    },
+    {
+      "id": "rows",
+      "type": "bullet-list",
+      "items": [
+        { "label": "01", "text": "headline — parts, styled inline" },
+        { "label": "02", "text": "blockquote — bordered, italicized" },
+        { "label": "03", "text": "bullet-list — labeled rows" },
+        { "label": "04", "text": "callout — boxed emphasis" },
+        { "label": "05", "text": "divider — hairline rule" },
+        { "label": "06", "text": "image — inline or full width" }
+      ]
+    },
+    {
+      "id": "foot",
+      "type": "text",
+      "content": "quoteforge validate card.json"
+    }
+  ]
+}
