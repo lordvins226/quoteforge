@@ -1,0 +1,32 @@
+{
+  "$schema": "../../content/_schema.json",
+  "template": "chart",
+  "theme": "oceanic",
+  "size": "instagram-sq",
+  "align": "spread",
+  "blocks": [
+    {
+      "id": "title",
+      "type": "headline",
+      "parts": [
+        { "text": "Where the time goes", "style": "normal" }
+      ]
+    },
+    {
+      "id": "bars",
+      "type": "chart",
+      "unit": "%",
+      "rows": [
+        { "label": "Waiting on a design tool", "value": 62 },
+        { "label": "Resizing for each platform", "value": 24 },
+        { "label": "Actually writing", "value": 11, "muted": true },
+        { "label": "quoteforge generate", "value": 3, "muted": true }
+      ]
+    },
+    {
+      "id": "foot",
+      "type": "text",
+      "content": "quoteforge.dev"
+    }
+  ]
+}

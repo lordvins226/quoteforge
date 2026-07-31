@@ -1,4 +1,4 @@
-import { FileJson, Layers, Palette, Package, MonitorPlay, Gauge } from "lucide-react";
+import { FileJson, LayoutTemplate, Layers, Palette, Package, MonitorPlay, Gauge } from "lucide-react";
 import type { ComponentType } from "react";
 
 interface Feature {
@@ -19,6 +19,11 @@ const FEATURES: Feature[] = [
     span: "md:col-span-2",
   },
   {
+    icon: LayoutTemplate,
+    title: "28 templates, five families",
+    description: "Statements, structured data, terminal and editor chrome, print formats, and conversations.",
+  },
+  {
     icon: Layers,
     title: "Carousels, batched",
     description: "Build multi-slide decks with shared defaults. One command gives you numbered PNGs and a ZIP.",
@@ -36,8 +41,8 @@ const FEATURES: Feature[] = [
   },
   {
     icon: Package,
-    title: "17 platform sizes",
-    description: "Twitter, Instagram, Facebook, Threads, LinkedIn, Story — each size pre-tuned for its platform.",
+    title: "21 sizes, plus custom",
+    description: "Twitter, Instagram, Facebook, Threads, LinkedIn, Story, slides and Open Graph — or set your own width and height.",
   },
   {
     icon: Gauge,
@@ -54,7 +59,7 @@ export function BentoFeatures() {
           <p className="font-mono text-xs text-mint uppercase tracking-wider mb-3">Features</p>
           <h2 className="font-mono text-3xl md:text-4xl font-semibold tracking-tight text-fog leading-tight">
             Everything you need to ship<br />
-            <span className="text-fog-2">quote cards at scale.</span>
+            <span className="text-fog-2">cards and carousels at scale.</span>
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
