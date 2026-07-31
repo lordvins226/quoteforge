@@ -2,8 +2,7 @@
   "$schema": "../../content/_schema.json",
   "template": "terminal",
   "theme": "terminal-green",
-  "size": "threads-port",
-  "align": "top",
+  "size": "facebook-square",
   "eyebrow": "~/quoteforge",
   "blocks": [
     {
@@ -15,10 +14,22 @@
       "id": "output",
       "type": "headline",
       "parts": [
-        { "text": "v1.0.0", "style": "normal" },
-        { "text": " — 28 templates,", "style": "normal" },
-        { "text": " 12 themes,", "style": "normal" },
-        { "text": " zero cloud.", "style": "accent" }
+        {
+          "text": "v1.0.0",
+          "style": "normal"
+        },
+        {
+          "text": " — 28 templates,",
+          "style": "normal"
+        },
+        {
+          "text": " 12 themes,",
+          "style": "normal"
+        },
+        {
+          "text": " zero cloud.",
+          "style": "accent"
+        }
       ]
     },
     {
