@@ -113,7 +113,7 @@ export const slidesCommand = new Command("slides")
     const totalSlides = slideIndex !== undefined ? 1 : deck.slides.length;
     console.log(chalk.dim(`Rendering ${totalSlides} slide${totalSlides > 1 ? "s" : ""} from ${basename(filePath)}…`));
 
-    const { buffers, names } = await renderDeck(deck, {
+    const { buffers, names, overflows } = await renderDeck(deck, {
       sizeOverride: opts.size as typeof deck.defaults.size | undefined,
       themeOverride: opts.theme,
       slideIndex,
@@ -122,6 +122,13 @@ export const slidesCommand = new Command("slides")
       scale,
       fitContent,
       safeAspectRatio,
+    });
+
+    overflows.forEach((overflowed, i) => {
+      if (overflowed) {
+        const slideNumber = slideIndex !== undefined ? slideIndex + 1 : i + 1;
+        console.warn(chalk.yellow(`⚠ Slide ${slideNumber}: content overflows the canvas — some text or blocks may be cut off.`));
+      }
     });
 
     const deckName = basename(filePath, ".json");
