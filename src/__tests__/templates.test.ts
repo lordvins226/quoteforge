@@ -879,3 +879,31 @@ describe("chart template", () => {
     assertNoHardcodedHex("chart");
   });
 });
+
+describe("callout block", () => {
+  const theme = ThemeSchema.parse(loadJSON("themes/dark-teal.json"));
+
+  function renderCallout(style?: "filled" | "outline" | "subtle"): string {
+    const card = CardContentSchema.parse({
+      template: "manifesto",
+      theme: "dark-teal",
+      size: "twitter",
+      blocks: [
+        {
+          type: "callout",
+          items: [{ label: "Note", text: "important" }],
+          ...(style ? { style } : {}),
+        },
+      ],
+    });
+    return bodyOnly(renderTemplate(card, theme, { w: 1200, h: 675 }));
+  }
+
+  test("defaults to the 'filled' modifier class when style is omitted", () => {
+    expect(renderCallout()).toContain("block-callout--filled");
+  });
+
+  test.each(["filled", "outline", "subtle"] as const)("emits the '%s' modifier class", (style) => {
+    expect(renderCallout(style)).toContain(`block-callout--${style}`);
+  });
+});

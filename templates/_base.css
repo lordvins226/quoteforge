@@ -121,12 +121,25 @@ body {
 }
 
 .block-callout .callout-item {
-  background: var(--callout-bg);
-  border: 1px solid var(--callout-border);
   border-radius: 8px;
   padding: calc(0.8rem * var(--space-scale)) calc(1rem * var(--space-scale));
   margin-bottom: calc(0.5rem * var(--space-scale));
   font-size: clamp(var(--body-min), calc(var(--body-size) * var(--type-scale)), 28px);
+}
+
+.block-callout--filled .callout-item {
+  background: var(--callout-bg);
+  border: 1px solid var(--callout-border);
+}
+
+.block-callout--outline .callout-item {
+  background: transparent;
+  border: 1px solid var(--callout-border);
+}
+
+.block-callout--subtle .callout-item {
+  background: color-mix(in srgb, var(--callout-border) 15%, transparent);
+  border: none;
 }
 
 .callout-label {
