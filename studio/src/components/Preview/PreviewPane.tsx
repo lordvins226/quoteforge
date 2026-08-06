@@ -17,6 +17,7 @@ export function PreviewPane({ card, theme, size, slideIndex = 0, slideTotal = 1,
   const [html, setHtml] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [overflows, setOverflows] = useState(false);
   const [scale, setScale] = useState(0.5);
 
   const sizeInfo = SIZES[size];
@@ -66,11 +67,16 @@ export function PreviewPane({ card, theme, size, slideIndex = 0, slideTotal = 1,
   useEffect(() => {
     const iframe = iframeRef.current;
     if (!iframe || !html) return;
+    setOverflows(false);
     const doc = iframe.contentDocument;
     if (doc) {
       doc.open();
       doc.write(html);
       doc.close();
+      const el = doc.querySelector(".card");
+      if (el) {
+        setOverflows(el.scrollWidth > el.clientWidth || el.scrollHeight > el.clientHeight);
+      }
     }
   }, [html]);
 
@@ -84,23 +90,30 @@ export function PreviewPane({ card, theme, size, slideIndex = 0, slideTotal = 1,
       ) : loading && !html ? (
         <div className="text-neutral-600 text-xs animate-pulse">Loading preview…</div>
       ) : (
-        <div style={{ width: scaledW, height: scaledH, position: "relative" }}>
-          <iframe
-            ref={iframeRef}
-            className="shadow-2xl rounded"
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: cardW,
-              height: cardH,
-              border: "none",
-              transform: `scale(${scale})`,
-              transformOrigin: "top left",
-              pointerEvents: "none",
-            }}
-            title="Preview"
-          />
+        <div className="flex flex-col items-center gap-2">
+          {overflows && (
+            <div className="text-neutral-500 text-sm">
+              ⚠ Content overflows the canvas — some text or blocks may be cut off.
+            </div>
+          )}
+          <div style={{ width: scaledW, height: scaledH, position: "relative" }}>
+            <iframe
+              ref={iframeRef}
+              className="shadow-2xl rounded"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: cardW,
+                height: cardH,
+                border: "none",
+                transform: `scale(${scale})`,
+                transformOrigin: "top left",
+                pointerEvents: "none",
+              }}
+              title="Preview"
+            />
+          </div>
         </div>
       )}
     </div>

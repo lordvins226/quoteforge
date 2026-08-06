@@ -7,6 +7,7 @@ import { resolveChrome } from "./browser-resolver.js";
 import { resolveDimensions } from "./dimensions.js";
 import { computeContentClip } from "./fit-content.js";
 import type { SafeInset } from "./safe-aspect.js";
+import { contentOverflows } from "./overflow.js";
 
 async function launch(): Promise<Browser> {
   const { executablePath } = await resolveChrome();
@@ -22,7 +23,7 @@ export async function renderCardOnPage(
   meta?: Partial<RenderMeta>,
   fitContent = false,
   safeInset?: SafeInset,
-): Promise<Buffer> {
+): Promise<{ buffer: Buffer; overflows: boolean }> {
   const dimensions = resolveDimensions({
     size,
     width: content.width,
@@ -37,6 +38,18 @@ export async function renderCardOnPage(
   });
   await page.setContent(html, { waitUntil: "load", timeout: 30_000 });
   await page.waitForFunction(() => document.fonts.ready.then(() => true), { timeout: 15_000 });
+
+  const overflowBox = await page.evaluate(() => {
+    const el = document.querySelector(".card");
+    if (!el) return null;
+    return {
+      scrollW: el.scrollWidth,
+      scrollH: el.scrollHeight,
+      clientW: el.clientWidth,
+      clientH: el.clientHeight,
+    };
+  });
+  const overflows = overflowBox ? contentOverflows(overflowBox) : false;
 
   if (fitContent) {
     const box = await page.evaluate(() => {
@@ -58,12 +71,12 @@ export async function renderCardOnPage(
         dimensions,
       );
       const shot = await page.screenshot({ type: "png", clip });
-      return Buffer.from(shot);
+      return { buffer: Buffer.from(shot), overflows };
     }
   }
 
   const screenshot = await page.screenshot({ type: "png" });
-  return Buffer.from(screenshot);
+  return { buffer: Buffer.from(screenshot), overflows };
 }
 
 export async function renderCard(
@@ -75,7 +88,7 @@ export async function renderCard(
   browser?: Browser,
   fitContent = false,
   safeInset?: SafeInset,
-): Promise<Buffer> {
+): Promise<{ buffer: Buffer; overflows: boolean }> {
   const ownBrowser = !browser;
   const b = browser ?? await launch();
   try {

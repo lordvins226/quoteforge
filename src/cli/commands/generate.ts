@@ -99,7 +99,11 @@ export const generateCommand = new Command("generate")
 
     let buf: Buffer;
     try {
-      buf = await renderCard(card, theme, sizeName, scale, undefined, undefined, fitContent, safeInset);
+      const rendered = await renderCard(card, theme, sizeName, scale, undefined, undefined, fitContent, safeInset);
+      buf = rendered.buffer;
+      if (rendered.overflows) {
+        console.warn(chalk.yellow("⚠ Content overflows the canvas — some text or blocks may be cut off."));
+      }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       console.error(chalk.red(`✗ ${msg}`));

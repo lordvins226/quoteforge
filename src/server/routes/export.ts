@@ -29,7 +29,7 @@ export async function exportRoute(req: Request): Promise<Response> {
     throw err;
   }
 
-  const buf = await renderCard(body.card, theme, body.size, body.scale ?? 2, undefined, undefined, body.fitContent ?? false);
+  const { buffer: buf } = await renderCard(body.card, theme, body.size, body.scale ?? 2, undefined, undefined, body.fitContent ?? false);
 
   return new Response(new Uint8Array(buf), {
     headers: {

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.0
+
+### Added
+- **`generate`, `slides`, `batch`, and the studio preview now warn when content overflows the
+  canvas.** `.card` clips overflow silently — text or blocks that don't fit were cut off with no
+  signal. The CLI commands print a warning after rendering; the studio preview shows the same
+  warning as a banner above the live preview, live-updating as the card is edited.
+
 ## 1.2.0
 
 ### Added

@@ -119,7 +119,7 @@ async function semaphore<T>(
 export async function renderDeck(
   deck: DeckContent,
   opts: SlideRenderOptions = {},
-): Promise<{ buffers: Buffer[]; names: string[] }> {
+): Promise<{ buffers: Buffer[]; names: string[]; overflows: boolean[] }> {
   const {
     sizeOverride,
     themeOverride,
@@ -177,15 +177,16 @@ export async function renderDeck(
 
       const page = await pool.acquire();
       let buffer: Buffer;
+      let overflows: boolean;
       try {
-        buffer = await renderCardOnPage(page, cardContent, theme, sizeName, scale, meta, fitContent, safeInset);
+        ({ buffer, overflows } = await renderCardOnPage(page, cardContent, theme, sizeName, scale, meta, fitContent, safeInset));
       } finally {
         pool.release(page);
       }
       const paddedIndex = String(originalIndex + 1).padStart(padWidth, "0");
       const name = `${deckName}-${paddedIndex}.png`;
 
-      return { buffer, name };
+      return { buffer, name, overflows };
     });
 
     const results = await semaphore(tasks, concurrency);
@@ -193,6 +194,7 @@ export async function renderDeck(
     return {
       buffers: results.map((r) => r.buffer),
       names: results.map((r) => r.name),
+      overflows: results.map((r) => r.overflows),
     };
   } finally {
     await pool.drain();

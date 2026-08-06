@@ -97,9 +97,12 @@ export const batchCommand = new Command("batch")
             safeInset = computeSafeInset(dimensions, safeAspectRatio);
           }
 
-          const buf = await renderCard(card, theme, sizeName, 2, undefined, undefined, fitContent, safeInset);
+          const rendered = await renderCard(card, theme, sizeName, 2, undefined, undefined, fitContent, safeInset);
+          if (rendered.overflows) {
+            console.warn(chalk.yellow(`  ⚠ ${file}: content overflows the canvas — some text or blocks may be cut off.`));
+          }
           const outPath = join(outputDir, `${basename(file, ".json")}.png`);
-          writeFileSync(outPath, buf);
+          writeFileSync(outPath, rendered.buffer);
           console.log(chalk.green("  ✓"), chalk.dim(outPath));
           processed++;
         } else if (result.kind === "deck") {
