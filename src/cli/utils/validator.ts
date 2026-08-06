@@ -80,6 +80,7 @@ const CalloutBlockSchema = z.object({
   type: z.literal("callout"),
   id: z.string().optional(),
   items: z.array(LabeledItemSchema).min(1),
+  style: z.enum(["filled", "outline", "subtle"]).default("filled"),
 }).strict();
 
 const DividerBlockSchema = z.object({

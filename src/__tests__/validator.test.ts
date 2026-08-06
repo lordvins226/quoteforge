@@ -98,6 +98,34 @@ describe("Block schema — all 7 types", () => {
     ).not.toThrow();
   });
 
+  test("callout defaults style to 'filled' when omitted", () => {
+    const block = BlockSchema.parse({
+      type: "callout",
+      items: [{ label: "Note", text: "important" }],
+    });
+    expect(block).toMatchObject({ style: "filled" });
+  });
+
+  test.each(["filled", "outline", "subtle"])("callout accepts style '%s'", (style) => {
+    expect(() =>
+      BlockSchema.parse({
+        type: "callout",
+        items: [{ label: "Note", text: "important" }],
+        style,
+      })
+    ).not.toThrow();
+  });
+
+  test("callout rejects an invalid style", () => {
+    expect(() =>
+      BlockSchema.parse({
+        type: "callout",
+        items: [{ label: "Note", text: "important" }],
+        style: "bogus",
+      })
+    ).toThrow();
+  });
+
   test("divider (no extra fields)", () => {
     expect(() => BlockSchema.parse({ type: "divider" })).not.toThrow();
   });

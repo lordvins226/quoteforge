@@ -23,7 +23,7 @@ export type Block =
   | { type: "blockquote"; id?: string; parts: Part[] }
   | { type: "text"; id?: string; content: string }
   | { type: "bullet-list"; id?: string; items: LabeledItem[] }
-  | { type: "callout"; id?: string; items: LabeledItem[] }
+  | { type: "callout"; id?: string; items: LabeledItem[]; style?: "filled" | "outline" | "subtle" }
   | { type: "divider"; id?: string }
   | { type: "spacer"; id?: string; size: "sm" | "md" | "lg" }
   | { type: "image"; id?: string; src: string; alt?: string; width: "sm" | "md" | "lg" | "full"; align: "left" | "center" | "right" }
