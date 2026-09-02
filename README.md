@@ -4,7 +4,7 @@ Developer-native typographic card, carousel, and banner generator. Define conten
 
 No cloud. No subscriptions. No drag-and-drop. Just code.
 
-Full documentation: **[quoteforge.dev/docs](https://quoteforge.dev/docs)**
+Full documentation: **[quoteforge.kevwilfried.dev/docs](https://quoteforge.kevwilfried.dev/docs)**
 
 ## Install
 
@@ -22,7 +22,7 @@ Pre-built binaries for macOS, Linux, and Windows are on the [releases page](http
 
 Rendering needs Chrome or Chromium. QuoteForge uses your system install if it finds one, otherwise it downloads a pinned Chrome for Testing (~170MB) on first run. `quoteforge doctor` reports what it resolved.
 
-PATH setup, version pinning, and the macOS Gatekeeper note are in [getting started](https://quoteforge.dev/docs/getting-started).
+PATH setup, version pinning, and the macOS Gatekeeper note are in [getting started](https://quoteforge.kevwilfried.dev/docs/getting-started).
 
 ## Quick start
 
@@ -48,7 +48,7 @@ A card is JSON:
 }
 ```
 
-A deck is the same shape with `"type": "deck"`, shared `defaults`, and a `slides` array. Both, along with all 11 block types and the inline part styles, are in the [content schema](https://quoteforge.dev/docs/content-schema).
+A deck is the same shape with `"type": "deck"`, shared `defaults`, and a `slides` array. Both, along with all 11 block types and the inline part styles, are in the [content schema](https://quoteforge.kevwilfried.dev/docs/content-schema).
 
 ## Commands
 
@@ -64,7 +64,7 @@ A deck is the same shape with `"type": "deck"`, shared `defaults`, and a `slides
 | `validate <file>` | Zod-validate a card, deck, or theme. Exits non-zero on failure, so it wires into CI |
 | `doctor` | Report bundled assets, resolved Chrome, and runtime versions |
 
-Every flag is in the [CLI reference](https://quoteforge.dev/docs/cli).
+Every flag is in the [CLI reference](https://quoteforge.kevwilfried.dev/docs/cli).
 
 ## What ships
 
@@ -78,7 +78,7 @@ quoteforge themes duplicate terminal-green my-brand
 
 That writes hand-editable JSON to `~/.config/quoteforge/themes/`, where changing one accent colour is usually enough to match a brand.
 
-Browse every layout and palette: [templates](https://quoteforge.dev/docs/templates), [themes](https://quoteforge.dev/docs/themes).
+Browse every layout and palette: [templates](https://quoteforge.kevwilfried.dev/docs/templates), [themes](https://quoteforge.kevwilfried.dev/docs/themes).
 
 ## Repo layout
 
