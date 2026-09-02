@@ -1,0 +1,27 @@
+{
+  "template": "cover",
+  "theme": "terminal-green",
+  "size": "og",
+  "eyebrow": "quoteforge.kevwilfried.dev",
+  "blocks": [
+    {
+      "id": "h",
+      "type": "headline",
+      "parts": [
+        {
+          "text": "Cards, carousels and banners, ",
+          "style": "normal"
+        },
+        {
+          "text": "straight from JSON.",
+          "style": "accent-italic"
+        }
+      ]
+    },
+    {
+      "id": "b",
+      "type": "text",
+      "content": "A developer-native CLI and studio. 28 templates, 12 themes, 22 sizes."
+    }
+  ]
+}

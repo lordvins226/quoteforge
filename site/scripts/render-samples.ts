@@ -16,7 +16,8 @@ if (!existsSync(samplesSrc)) {
 mkdirSync(publicOut, { recursive: true });
 mkdirSync(tmpOut, { recursive: true });
 
-const jsonFiles = readdirSync(samplesSrc).filter((f) => f.endsWith(".json"));
+// Files prefixed with "_" stay out of the landing gallery: _og.json becomes public/og.png.
+const jsonFiles = readdirSync(samplesSrc).filter((f) => f.endsWith(".json") && !f.startsWith("_"));
 if (jsonFiles.length === 0) {
   console.error("✗ no sample JSON files to render");
   process.exit(1);
@@ -24,18 +25,15 @@ if (jsonFiles.length === 0) {
 
 console.log(`▸ rendering ${jsonFiles.length} landing samples...`);
 
-for (const file of jsonFiles) {
-  const filePath = join(samplesSrc, file);
-  const name = basename(file, ".json");
-
-  const pngOut = join(tmpOut, `${name}.png`);
+function render(sourcePath: string, destPath: string): void {
+  const pngOut = join(tmpOut, basename(destPath));
 
   const result = spawnSync(
     "bun",
     [
       "quoteforge",
       "generate",
-      filePath,
+      sourcePath,
       "--output",
       pngOut,
       "--no-timestamp",
@@ -44,7 +42,7 @@ for (const file of jsonFiles) {
   );
 
   if (result.status !== 0) {
-    console.error(`✗ failed to render ${file}`);
+    console.error(`✗ failed to render ${basename(sourcePath)}`);
     process.exit(result.status ?? 1);
   }
 
@@ -53,8 +51,19 @@ for (const file of jsonFiles) {
     process.exit(1);
   }
 
-  copyFileSync(pngOut, join(publicOut, `${name}.png`));
+  copyFileSync(pngOut, destPath);
+}
+
+for (const file of jsonFiles) {
+  const name = basename(file, ".json");
+  render(join(samplesSrc, file), join(publicOut, `${name}.png`));
   console.log(`  ✓ public/samples/${name}.png`);
+}
+
+const ogSrc = join(samplesSrc, "_og.json");
+if (existsSync(ogSrc)) {
+  render(ogSrc, join(siteDir, "public", "og.png"));
+  console.log("  ✓ public/og.png");
 }
 
 const manifest = jsonFiles.map((f) => basename(f, ".json"));
