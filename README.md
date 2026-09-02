@@ -1,356 +1,40 @@
 # QuoteForge
 
-Developer-native typographic card, carousel, and banner generator. Define content in JSON, pick a theme, run one command — get production-ready PNGs. Great for social posts and carousels, but equally slides, blog/Open Graph headers, article covers, and announcement graphics.
+Developer-native typographic card, carousel, and banner generator. Define content in JSON, pick a theme, run one command, get production-ready PNGs. Great for social posts and carousels, but equally slides, blog/Open Graph headers, article covers, and announcement graphics.
 
 No cloud. No subscriptions. No drag-and-drop. Just code.
 
-## Install
+Full documentation: **[quoteforge.dev/docs](https://quoteforge.dev/docs)**
 
-### Homebrew (macOS / Linux)
+## Install
 
 ```bash
 brew install lordvins226/quoteforge/quoteforge
 ```
 
-### Quick Install (Linux/macOS)
+Without Homebrew:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/lordvins226/quoteforge/main/install.sh | sh
 ```
 
-Installs to `~/.local/bin`. Add to `PATH` if needed:
+Pre-built binaries for macOS, Linux, and Windows are on the [releases page](https://github.com/lordvins226/quoteforge/releases), each with a `.sha256` sibling. From source: clone the repo, then `bun install`.
+
+Rendering needs Chrome or Chromium. QuoteForge uses your system install if it finds one, otherwise it downloads a pinned Chrome for Testing (~170MB) on first run. `quoteforge doctor` reports what it resolved.
+
+PATH setup, version pinning, and the macOS Gatekeeper note are in [getting started](https://quoteforge.dev/docs/getting-started).
+
+## Quick start
 
 ```bash
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc  # or ~/.bashrc
+quoteforge generate content/examples/manifesto-wiki.json   # one card
+quoteforge slides decks/examples/intro-deck.json           # deck plus ZIP
+quoteforge new                                             # interactive creator
+quoteforge preview content/examples/manifesto-wiki.json    # hot-reloading preview
+quoteforge studio                                          # WYSIWYG editor
 ```
 
-Override with `QUOTEFORGE_INSTALL_DIR=/usr/local/bin` or `QUOTEFORGE_VERSION=vX.Y.Z` (any tag from [releases](https://github.com/lordvins226/quoteforge/releases)).
-
-### Pre-built Binaries
-
-Download from [releases](https://github.com/lordvins226/quoteforge/releases):
-
-- macOS: `quoteforge-aarch64-apple-darwin.tar.gz` / `quoteforge-x86_64-apple-darwin.tar.gz`
-- Linux: `quoteforge-x86_64-unknown-linux-gnu.tar.gz` / `quoteforge-aarch64-unknown-linux-gnu.tar.gz`
-- Windows: `quoteforge-x86_64-pc-windows-msvc.zip`
-
-Each asset has a sibling `.sha256` for verification.
-
-> macOS users: on first launch Gatekeeper may block the unsigned binary. Clear with:
-> `xattr -d com.apple.quarantine ~/.local/bin/quoteforge`
-
-### From Source (Bun)
-
-```bash
-git clone https://github.com/lordvins226/quoteforge
-cd quoteforge
-bun install
-```
-
-### Verify
-
-```bash
-quoteforge --version          # prints the installed version
-quoteforge doctor             # reports assets, Chrome, runtime
-```
-
-QuoteForge needs Chrome or Chromium for rendering. On first run it will use your system install if one exists (Chrome, Chromium, Edge), or download a pinned Chrome for Testing (~170MB) to `~/.cache/quoteforge/chrome/`. Override with `QUOTEFORGE_CHROME=/path/to/chrome`.
-
-## Quick Start
-
-```bash
-# Generate a card
-quoteforge generate content/examples/manifesto-wiki.json
-
-# Generate a slide deck + ZIP
-quoteforge slides decks/examples/intro-deck.json
-
-# Create a new card interactively
-quoteforge new
-
-# Preview in browser with hot-reload
-quoteforge preview content/examples/manifesto-wiki.json
-```
-
-## Commands
-
-### `generate` — Single card → PNG
-
-```
-quoteforge generate <file> [options]
-
-  -t, --theme <name>      Override theme
-  -s, --size <name>       Override size (see Size Reference below)
-  -o, --output <path>     Output file path
-  --scale <n>             Pixel ratio (default: 2)
-  --safe-aspect <ratio>   Constrain content for center-crop (e.g. 16:9)
-  --fit-content           Crop to content bounding box + theme padding
-  --open                  Open output file after generation
-  --no-timestamp          Omit timestamp from filename
-```
-
-**Examples:**
-
-```bash
-quoteforge generate content/my-card.json
-quoteforge generate content/my-card.json --size facebook-post --theme dark-orange
-quoteforge generate content/my-card.json --no-timestamp --open
-quoteforge generate content/my-card.json --safe-aspect 16:9
-quoteforge generate content/my-card.json --fit-content
-```
-
-### `slides` — Deck → numbered PNGs + ZIP
-
-```
-quoteforge slides <file> [options]
-
-  -t, --theme <name>      Override theme for all slides
-  -s, --size <name>       Override size for all slides
-  -o, --output <dir>      Output directory
-  --slide <n>             Render only slide N (1-indexed), no ZIP
-  --no-zip                Skip ZIP creation
-  --no-counter            Disable counter overlay for all slides
-  --safe-aspect <ratio>   Constrain content for center-crop (e.g. 16:9)
-  --fit-content           Crop each slide to content bounding box + theme padding
-  --concurrency <n>       Parallel render workers (default: 4)
-  --zip-level <n>         ZIP compression level 0-9 (default: 6)
-  --scale <n>             Pixel ratio (default: 2)
-  --open                  Open output folder after generation
-```
-
-**Examples:**
-
-```bash
-quoteforge slides decks/intro-deck.json
-quoteforge slides decks/intro-deck.json --size facebook-square
-quoteforge slides decks/intro-deck.json --slide 3
-quoteforge slides decks/intro-deck.json --safe-aspect 16:9
-quoteforge slides decks/intro-deck.json --no-counter --theme light-minimal
-```
-
-### `preview` — Live browser preview
-
-```
-quoteforge preview <file> [options]
-
-  -p, --port <n>       Port (default: 4242)
-  --no-open            Don't auto-open browser
-  --slide <n>          Start on slide N for deck files (default: 1)
-```
-
-- Watches content + theme files for changes and hot-reloads via SSE
-- Deck files show ◀ ▶ navigation with keyboard arrow key support
-
-### `new` — Interactive content creator
-
-```
-quoteforge new [options]
-
-  --type <type>        card or deck
-  --template <name>    Template name (28 available — omit for a picker)
-  --theme <name>       Theme name
-  --slides <n>         Number of blank slides (deck only, default: 5)
-  --size <name>        Size name
-  --name <filename>    Output filename (without .json)
-```
-
-All options are interactive when omitted.
-
-### `studio` — WYSIWYG editor
-
-```
-quoteforge studio [file] [options]
-
-  -p, --port <n>       Port (default: 4242)
-  --no-open            Don't auto-open browser
-```
-
-- Launches the bundled Vite + React studio at `http://localhost:<port>` with the Bun API server on `<port>+1`.
-- Live SSE preview, drag-and-drop blocks, undo/redo, 12-theme picker, theme builder, PNG/ZIP export.
-
-### `themes` — Theme management
-
-```
-quoteforge themes list                           # List all themes with color swatches
-quoteforge themes show <name>                    # Show theme details
-quoteforge themes create <name>                  # Create a new theme from template
-quoteforge themes duplicate <source> <new-name>  # Duplicate an existing theme
-quoteforge themes validate <file>                # Validate a theme file
-```
-
-### `batch` — Folder → multiple PNGs
-
-```
-quoteforge batch <directory> [options]
-
-  -t, --theme <name>      Override theme for all files
-  -s, --size <name>       Override size for all files
-  -o, --output <dir>      Output directory
-  --safe-aspect <ratio>   Constrain content for center-crop (e.g. 16:9)
-  --fit-content           Crop each output to content bounding box + theme padding
-  --concurrency <n>       Parallel workers (default: 2)
-  --decks                 Also process deck files into individual ZIPs
-```
-
-### `validate` — Validate content files
-
-```
-quoteforge validate <file>
-
-# Auto-detects card vs deck from the "type" field
-# Exits 0 if valid, 1 with Zod error details if invalid
-```
-
-## Size Reference
-
-All formats with exact pixel dimensions:
-
-| Name | Dimensions | Ratio | Platform |
-|------|-----------|-------|----------|
-| `twitter` | 1200 × 675 | 16:9 | Twitter/X post |
-| `twitter-square` | 1080 × 1080 | 1:1 | Twitter/X square |
-| `linkedin` | 1200 × 627 | 1.91:1 | LinkedIn post |
-| `linkedin-square` | 1080 × 1080 | 1:1 | LinkedIn square |
-| `instagram-sq` | 1080 × 1080 | 1:1 | Instagram square |
-| `instagram-port` | 1080 × 1350 | 4:5 | Instagram portrait |
-| `instagram-land` | 1080 × 566 | 1.91:1 | Instagram landscape |
-| `facebook-post` | 1200 × 630 | 1.91:1 | Facebook post / link |
-| `facebook-square` | 1080 × 1080 | 1:1 | Facebook square post |
-| `facebook-cover` | 1640 × 624 | 2.63:1 | Facebook page cover |
-| `facebook-event` | 1920 × 1080 | 16:9 | Facebook event cover |
-| `facebook-group-cover` | 1640 × 856 | 1.91:1 | Facebook group cover |
-| `threads-sq` | 1080 × 1080 | 1:1 | Threads square |
-| `threads-port` | 1080 × 1350 | 4:5 | Threads portrait *(recommended)* |
-| `threads-land` | 1080 × 566 | 1.91:1 | Threads landscape |
-| `story` | 1080 × 1920 | 9:16 | Stories (IG / FB / TW) |
-| `og` | 1200 × 630 | 1.91:1 | Open Graph / default social preview |
-| `readme-hero` | 1280 × 640 | 2:1 | Blog/README header |
-| `slide-16x9` | 1920 × 1080 | 16:9 | Slides (presentation) |
-| `4x3` | 1600 × 1200 | 4:3 | Slides / covers |
-| `3x2` | 1500 × 1000 | 3:2 | Article headers |
-| `custom` | variable | free | Custom dimensions |
-
-> Facebook carousels render best with `facebook-square` (1080×1080).
-
-### Vertical alignment
-
-By default, card content is vertically centered on the canvas. Add `"align": "spread"` to your card root to distribute blocks edge-to-edge (the pre-0.5.0 behavior). Other values are `"top"` and `"bottom"`. In decks, set alignment in `defaults` or override per-slide.
-
-## Themes
-
-12 built-in themes, covering terminal, editorial, brutalist, and zen aesthetics:
-
-| Theme | Background | Accent | Fonts |
-|-------|-----------|--------|-------|
-| `terminal-green` | `#0B0F14` | `#22C55E` | JetBrains Mono / IBM Plex Sans |
-| `brand-midnight` | `#0f172a` | `#a78bfa` | Space Grotesk / IBM Plex Mono |
-| `dark-teal` | `#1a1a1a` | `#4ecdc4` | Playfair Display / JetBrains Mono |
-| `dark-orange` | `#1c1917` | `#f97316` | Playfair Display / JetBrains Mono |
-| `noir-crimson` | `#0A0A0A` | `#DC2626` | Fraunces / Inter |
-| `oceanic` | `#0F1E2E` | `#FF8A65` | Instrument Serif / Inter |
-| `light-minimal` | `#fafaf9` | `#0ea5e9` | Inter / Inter |
-| `paper-cream` | `#F6F1E7` | `#7E2A1C` | EB Garamond / Inter |
-| `sunset-rose` | `#FFF3EC` | `#EC4899` | Bricolage Grotesque / Inter |
-| `brutal-white` | `#FFFFFF` | `#FDE047` | Archivo Black / Space Mono |
-| `kyoto` | `#FAF8F3` | `#D4411E` | Shippori Mincho / Inter |
-| `mono-slate` | `#F5F5F4` | `#0C0A09` | Syne / JetBrains Mono |
-
-### Themes are fork points, not a fixed menu
-
-The twelve built-ins are starting points. Duplicating one and changing a single color
-is usually enough to match an existing brand:
-
-```bash
-quoteforge themes duplicate terminal-green my-brand
-```
-
-That writes `~/.config/quoteforge/themes/my-brand.json` — plain, hand-editable JSON.
-Change the accent:
-
-```json
-{
-  "name": "my-brand",
-  "displayName": "My Brand",
-  "colors": {
-    "accent": "#4ecdc4"
-  }
-}
-```
-
-Then render with it:
-
-```bash
-quoteforge generate card.json --theme my-brand
-```
-
-`quoteforge themes show my-brand` prints the resolved theme with color swatches, and
-`quoteforge themes list` includes it alongside the built-ins.
-
-`terminal-green` is a good base for a dark developer palette — JetBrains Mono on a
-near-black background. `paper-cream` and `light-minimal` suit editorial and print-like
-work.
-
-## Templates
-
-28 built-in layouts in five families. Run `quoteforge new` for a picker, or see the
-[templates docs](https://quoteforge.dev/docs/templates) for a rendered sample of each.
-
-**Statement** — single idea, headline-led
-
-| Template | Layout | Best for |
-|----------|--------|----------|
-| `manifesto` | Top-down flow, large headline | Statement posts, thought leadership |
-| `quote` | Centered, quotation-mark motif | Quotes, key takeaways |
-| `minimal` | Extra whitespace, restrained | Wide formats, clean CTAs |
-| `spotlight` | Poster headline between kicker and footer | Single-rule posts |
-| `frame` | Bordered plate with corner marks | Announcements |
-| `sticky` | Tilted note with a drop shadow | Reminders, hot takes |
-
-**Structure & data** — the shape carries meaning
-
-| Template | Layout | Best for |
-|----------|--------|----------|
-| `list` | Numbered or bulleted rhythm | "5 lessons", "10 tips" |
-| `ledger` | Key/value rows under a heavy rule | Specs, comparisons |
-| `index` | Table-of-contents rows with leader dots | Chapter/agenda cards |
-| `grid` | 2×2 of peer cells (exactly 4 items) | Four-part frameworks |
-| `timeline` | Vertical spine with dated nodes | Roadmaps, histories |
-| `versus` | Two columns split by a centre marker | Before/after, A vs B |
-| `stat` | One oversized figure with unit and note | Single-metric posts |
-| `chart` | Horizontal bars, pure CSS | Survey results, benchmarks |
-
-**Developer** — terminal and editor vernacular
-
-| Template | Layout | Best for |
-|----------|--------|----------|
-| `terminal` | Shell session with prompt glyphs | CLI demos |
-| `code` | Filename tab over numbered lines | Snippets |
-| `diff` | Added/removed lines with gutter markers | Changelog highlights |
-| `window` | App window chrome with a title bar | Product shots |
-
-**Editorial** — print formats
-
-| Template | Layout | Best for |
-|----------|--------|----------|
-| `cover` | Magazine cover with byline and issue line | Article covers |
-| `split` | Two-panel split with a colour field | Wide headers, OG images |
-| `memo` | Internal memo with an aligned field grid | Announcements |
-| `receipt` | Itemised slip ending in a total | Cost/tally posts |
-| `ticket` | Perforated stub with a tear line | Events |
-| `calendar` | Date block over an event body | Dated posts |
-
-**People & media** — attributed and conversational
-
-| Template | Layout | Best for |
-|----------|--------|----------|
-| `profile` | Avatar initials, name, handle, quote | Testimonials |
-| `chat` | Alternating message bubbles | Conversations |
-| `prompt` | Prompt/response pair | AI-chat screenshots |
-| `polaroid` | Instant photo with a handwritten caption | Photo captions |
-
-## Content Model
-
-### Card (single image)
+A card is JSON:
 
 ```json
 {
@@ -364,63 +48,45 @@ work.
 }
 ```
 
-### Deck (carousel)
+A deck is the same shape with `"type": "deck"`, shared `defaults`, and a `slides` array. Both, along with all 11 block types and the inline part styles, are in the [content schema](https://quoteforge.dev/docs/content-schema).
 
-```json
-{
-  "type": "deck",
-  "defaults": { "template": "manifesto", "theme": "dark-teal", "size": "instagram-sq", "showCounter": true },
-  "slides": [
-    { "id": "slide-01", "blocks": [{ "type": "headline", "parts": [{ "text": "Slide 1", "style": "normal" }] }] },
-    { "id": "slide-02", "blocks": [{ "type": "text", "content": "Slide 2 content" }] }
-  ]
-}
+## Commands
+
+| Command | Does |
+|---------|------|
+| `generate <file>` | Render one card to PNG |
+| `slides <deck>` | Render a deck to numbered PNGs plus a ZIP |
+| `batch <dir>` | Render every card and deck in a folder |
+| `preview <file>` | Live browser preview with hot reload |
+| `studio` | WYSIWYG editor in the browser |
+| `new` | Interactive card or deck creator |
+| `themes` | list, show, duplicate, create, validate |
+| `validate <file>` | Zod-validate a card, deck, or theme. Exits non-zero on failure, so it wires into CI |
+| `doctor` | Report bundled assets, resolved Chrome, and runtime versions |
+
+Every flag is in the [CLI reference](https://quoteforge.dev/docs/cli).
+
+## What ships
+
+28 templates in five families: statement, structure and data, developer, editorial, people and media. 12 themes covering terminal, editorial, brutalist, and zen palettes. 22 size presets from `twitter` to `slide-16x9`, plus `custom` for arbitrary dimensions.
+
+Themes are fork points, not a fixed menu:
+
+```bash
+quoteforge themes duplicate terminal-green my-brand
 ```
 
-### Block Types
+That writes hand-editable JSON to `~/.config/quoteforge/themes/`, where changing one accent colour is usually enough to match a brand.
 
-| Type | Description | Key Fields |
-|------|-------------|------------|
-| `headline` | Large display text with mixed inline styles | `parts[]` |
-| `blockquote` | Left-bordered quote block | `parts[]` |
-| `text` | Plain body paragraph | `content` |
-| `bullet-list` | Label + text items with accent dot | `items[]{label, text}` |
-| `callout` | Rounded box highlight | `items[]{label, text}` |
-| `divider` | Full-width horizontal rule | — |
-| `spacer` | Vertical whitespace | `size: sm\|md\|lg` |
-| `image` | Inline image (URL, local path, or data-URI) | `src`, `alt?`, `width: sm\|md\|lg\|full`, `align: left\|center\|right` |
-| `stat` | One oversized figure with unit and note | `value`, `unit?`, `label?`, `note?` |
-| `code` | Filename tab over numbered source lines | `lines[]`, `filename?`, `lang?` |
-| `chart` | Horizontal bars, pure CSS | `rows[]{label, value 0-100, muted?}`, `unit?` |
+Browse every layout and palette: [templates](https://quoteforge.dev/docs/templates), [themes](https://quoteforge.dev/docs/themes).
 
-Several templates **reinterpret** what a `bullet-list`/`callout` item's `label` means —
-in `ledger` it is the row key, in `timeline` the date, in `chart` the bar caption. The
-[templates docs](https://quoteforge.dev/docs/templates) spell this out per template.
+## Repo layout
 
-### Template chrome
-
-`eyebrow` is an optional string (max 48) on a card, slide, or deck `defaults`, rendered as
-a small kicker above the main content:
-
-```json
-{ "template": "cover", "eyebrow": "Issue 01", "blocks": [] }
-```
-
-Only 8 templates have a slot for it — `cover`, `memo`, `receipt`, `split`, `spotlight`,
-`terminal`, `ticket`, `window`. Set it on another and the CLI warns rather than silently
-dropping it.
-
-### Inline Part Styles
-
-`normal` · `bold` · `italic` · `accent` · `accent-italic` · `mono` · `muted`
-
-## Layout
-
-- `src/` — CLI + renderer (Bun + Nunjucks + Puppeteer)
-- `studio/` — bundled WYSIWYG editor (Vite + React + Zustand, launched by `quoteforge studio`)
-- `site/` — standalone landing + MDX docs SPA (separate nginx Dockerfile for deployment)
-- `templates/` — 28 built-in card layouts sharing a responsive base CSS
-- `themes/` — 12 JSON theme files conforming to `_schema.json`
+- `src/`: CLI + renderer (Bun + Nunjucks + Puppeteer)
+- `studio/`: bundled WYSIWYG editor (Vite + React + Zustand, launched by `quoteforge studio`)
+- `site/`: standalone landing + MDX docs SPA (separate nginx Dockerfile for deployment)
+- `templates/`: 28 built-in card layouts sharing a responsive base CSS
+- `themes/`: 12 JSON theme files conforming to `_schema.json`
 
 ## Stack
 
