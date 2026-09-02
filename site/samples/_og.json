@@ -2,7 +2,6 @@
   "template": "cover",
   "theme": "terminal-green",
   "size": "og",
-  "eyebrow": "quoteforge.kevwilfried.dev",
   "blocks": [
     {
       "id": "h",
@@ -21,7 +20,7 @@
     {
       "id": "b",
       "type": "text",
-      "content": "A developer-native CLI and studio. 28 templates, 12 themes, 22 sizes."
+      "content": "quoteforge.kevwilfried.dev \u00b7 A developer-native CLI and studio. 28 templates, 12 themes, 22 sizes."
     }
   ]
 }
