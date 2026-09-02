@@ -1,4 +1,4 @@
-/* Versus — symmetric comparison. `label` means the side's caption
+/* Versus: symmetric comparison. `label` means the side's caption
    ("Before"/"After"); `text` is the value shown large. Exactly 2 items
    are expected: the first `bullet-list`/`callout` block found supplies
    both sides from its first two items. Extra items are ignored. Fewer

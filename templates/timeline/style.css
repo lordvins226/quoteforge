@@ -1,4 +1,4 @@
-/* Timeline — spine with nodes. `label` means the time marker ("Shipped",
+/* Timeline: spine with nodes. `label` means the time marker ("Shipped",
    "Q3", a date); a trailing "*" marks the node complete. Completed nodes
    fill with --accent; pending nodes stay --bg with a --callout-border
    ring, so done vs pending reads at a glance. */

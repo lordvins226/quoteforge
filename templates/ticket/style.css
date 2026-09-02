@@ -1,5 +1,5 @@
-/* Ticket — stub and perforation. In the meta row, `label` means the field
-   value (text is unused there — the value alone is the display). The
+/* Ticket: stub and perforation. In the meta row, `label` means the field
+   value (text is unused there, the value alone is the display). The
    last item in the list supplies the stub: its label is the stub number,
    its text is the short stub caption ("Admit one"). card.eyebrow is the
    kicker above the title ("Live", "Online"). */

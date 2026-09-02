@@ -13,7 +13,7 @@ export function Install() {
         </h2>
         <p className="text-fog-2 mb-10 max-w-[52ch] mx-auto">
           Single binary. No Node, no Bun, no framework. Needs Chrome or Chromium
-          for rendering — auto-downloaded on first run if you don't have it.
+          for rendering. It is auto-downloaded on first run if you don't have it.
         </p>
 
         <div className="grid md:grid-cols-2 gap-4 text-left">

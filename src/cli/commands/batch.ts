@@ -65,7 +65,7 @@ export const batchCommand = new Command("batch")
     let processed = 0;
     let skipped = 0;
 
-    console.log(chalk.dim(`Processing ${files.length} file(s) from ${dir}…\n`));
+    console.log(chalk.dim(`Processing ${files.length} file(s) from ${dir}...\n`));
 
     for (const file of files) {
       const filePath = join(dir, file);
@@ -143,7 +143,7 @@ export const batchCommand = new Command("batch")
         }
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : String(err);
-        console.warn(chalk.yellow(`  ⚠ Failed: ${file} — ${msg}`));
+        console.warn(chalk.yellow(`  ⚠ Failed: ${file} - ${msg}`));
         skipped++;
       }
     }

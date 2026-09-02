@@ -1,4 +1,4 @@
-/* Cover — bottom-weighted title, pinned between a top meta line and a byline row */
+/* Cover: bottom-weighted title, pinned between a top meta line and a byline row */
 
 .card.cover {
   justify-content: space-between;

@@ -79,7 +79,7 @@ export const generateCommand = new Command("generate")
       console.warn(chalk.yellow(`⚠ ${warning}`));
     }
 
-    console.log(chalk.dim(`Rendering ${basename(filePath)} with theme "${themeName}" at size "${sizeName}"…`));
+    console.log(chalk.dim(`Rendering ${basename(filePath)} with theme "${themeName}" at size "${sizeName}"...`));
 
     const fitContent = Boolean(opts.fitContent || opts.trim);
 

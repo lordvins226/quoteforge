@@ -1,5 +1,5 @@
-/* Grid — 2x2 peers. `label` means the cell's accent chip; `text` is the
-   cell's body. Requires exactly 4 items — the CLI should warn (not fail)
+/* Grid: 2x2 peers. `label` means the cell's accent chip; `text` is the
+   cell's body. Requires exactly 4 items, the CLI should warn (not fail)
    at other counts; Nunjucks has no way to emit that warning itself. */
 
 .card.grid-tpl {

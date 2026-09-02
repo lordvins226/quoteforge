@@ -213,7 +213,7 @@ export function BlockEditor({ block, onChange }: BlockEditorProps) {
               type="text"
               value={block.src}
               onChange={(e) => onChange({ ...block, src: e.target.value })}
-              placeholder="https://… or upload below"
+              placeholder="https://... or upload below"
               className="w-full mt-1 bg-neutral-900 border border-neutral-700 rounded px-2 py-1.5 text-sm text-neutral-100 focus:outline-none focus:border-teal-500"
             />
           </div>

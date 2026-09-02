@@ -1,4 +1,4 @@
-/* Ledger — ruled key/value rows. `label` means the key (left column);
+/* Ledger: ruled key/value rows. `label` means the key (left column);
    `text` is the value. A heavy rule sits under the header, hairlines
    separate rows, and a trailing text block becomes the muted mono footer. */
 

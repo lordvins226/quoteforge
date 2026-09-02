@@ -1,4 +1,4 @@
-/* Memo — letterhead. `label` means the field name (`To`, `From`, `Re`);
+/* Memo: letterhead. `label` means the field name (`To`, `From`, `Re`);
    `text` is the value. card.eyebrow is the org name in the letterhead;
    the "Memorandum" kind marker is static chrome, not content-driven.
    A `max-content 1fr` field grid keeps the colons aligned regardless of

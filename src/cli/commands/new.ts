@@ -27,13 +27,13 @@ export const newCommand = new Command("new")
     size?: string;
     name?: string;
   }) => {
-    clack.intro(chalk.bold("QuoteForge — Create new content"));
+    clack.intro(chalk.bold("QuoteForge: create new content"));
 
     const type = opts.type ?? await clack.select({
       message: "What do you want to create?",
       options: [
-        { value: "card", label: "Card — single content card" },
-        { value: "deck", label: "Deck — multi-slide carousel" },
+        { value: "card", label: "Card: single content card" },
+        { value: "deck", label: "Deck: multi-slide carousel" },
       ],
     });
 

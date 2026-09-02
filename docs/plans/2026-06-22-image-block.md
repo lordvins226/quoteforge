@@ -11,13 +11,13 @@
 ## Global Constraints
 
 - Runtime is Bun; tests run with `bun test`. Do NOT use npm/node scripts.
-- TypeScript strict everywhere — no `any`, use `unknown`. (Pre-existing `tsc` errors exist; verify no NEW errors in touched files only.)
-- Schema authority is `src/cli/utils/validator.ts`; `SIZES` and `Block` are duplicated in `studio/src/types/index.ts` — schema changes touch both.
-- NEVER hardcode colors in template CSS — colors come from theme CSS custom properties (image block carries none in V1).
-- React components MUST NOT touch the filesystem — uploads become data-URIs in-browser via `FileReader`.
+- TypeScript strict everywhere: no `any`, use `unknown`. (Pre-existing `tsc` errors exist; verify no NEW errors in touched files only.)
+- Schema authority is `src/cli/utils/validator.ts`; `SIZES` and `Block` are duplicated in `studio/src/types/index.ts`: schema changes touch both.
+- NEVER hardcode colors in template CSS: colors come from theme CSS custom properties (image block carries none in V1).
+- React components MUST NOT touch the filesystem: uploads become data-URIs in-browser via `FileReader`.
 - No new dependencies without asking the user (none required by this plan).
-- Block partials are NOT auto-discovered — a new partial must be registered in `src/assetBundle.ts`.
-- Commit format: `type(quoteforge[scope]): description` — no bullet points, no author, no extra body.
+- Block partials are NOT auto-discovered: a new partial must be registered in `src/assetBundle.ts`.
+- Commit format: `type(quoteforge[scope]): description`, no bullet points, no author, no extra body.
 
 **Source of truth spec:** `docs/specs/2026-06-22-image-block-design.md`
 **Scope ADR:** `docs/adr/0001-inline-image-block-scope.md`
@@ -32,7 +32,7 @@
 - Test: `src/__tests__/validator.test.ts`
 
 **Interfaces:**
-- Produces: `ImageBlock = { type: "image"; id?: string; src: string; alt?: string; width: "sm"|"md"|"lg"|"full"; height: ...}` — note `width`/`align` have schema defaults, so parsed output always has them.
+- Produces: `ImageBlock = { type: "image"; id?: string; src: string; alt?: string; width: "sm"|"md"|"lg"|"full"; height: ...}`, note `width`/`align` have schema defaults, so parsed output always has them.
 - Produces (studio): `Block` union member `{ type: "image"; id?: string; src: string; alt?: string; width: "sm"|"md"|"lg"|"full"; align: "left"|"center"|"right" }`.
 
 - [ ] **Step 1: Write the failing test**
@@ -69,7 +69,7 @@ describe("Image block schema", () => {
 - [ ] **Step 2: Run test to verify it fails**
 
 Run: `bun test src/__tests__/validator.test.ts`
-Expected: FAIL — the `image` type is not in the discriminated union (Zod reports invalid `type`).
+Expected: FAIL, the `image` type is not in the discriminated union (Zod reports invalid `type`).
 
 - [ ] **Step 3: Add the schema**
 
@@ -207,7 +207,7 @@ describe("resolveImageBlocks", () => {
 - [ ] **Step 2: Run test to verify it fails**
 
 Run: `bun test src/__tests__/image-resolver.test.ts`
-Expected: FAIL — module `../renderer/image-resolver.js` does not exist.
+Expected: FAIL, module `../renderer/image-resolver.js` does not exist.
 
 - [ ] **Step 3: Implement the resolver**
 
@@ -290,7 +290,7 @@ git commit -m "feat(quoteforge[image-block]): add image source resolver"
 
 - [ ] **Step 1: Write the failing test**
 
-Add to `src/__tests__/template-engine.test.ts`, inside the `describe("template-engine: renderTemplate", …)` block. It uses the file's existing `loadJSON` helper and `CardContentSchema`/`ThemeSchema` (already imported at the top):
+Add to `src/__tests__/template-engine.test.ts`, inside the `describe("template-engine: renderTemplate", ...)` block. It uses the file's existing `loadJSON` helper and `CardContentSchema`/`ThemeSchema` (already imported at the top):
 
 ```ts
 test("renders an image block with width and align classes and the src", () => {
@@ -313,7 +313,7 @@ test("renders an image block with width and align classes and the src", () => {
 - [ ] **Step 2: Run test to verify it fails**
 
 Run: `bun test src/__tests__/template-engine.test.ts`
-Expected: FAIL — no `block-image` markup (the `image` branch is missing from the template).
+Expected: FAIL, no `block-image` markup (the `image` branch is missing from the template).
 
 - [ ] **Step 3: Create the partial**
 
@@ -422,7 +422,7 @@ import { resolveImageBlocks } from "../../renderer/image-resolver.js";
 const deck = resolveImageBlocks(result.data, dirname(filePath));
 ```
 
-`renderDeck(deck, …)` then receives resolved slide image sources.
+`renderDeck(deck, ...)` then receives resolved slide image sources.
 
 - [ ] **Step 3: Resolve in `batch.ts`**
 
@@ -466,7 +466,7 @@ Create `content/image-demo.json`:
 - [ ] **Step 5: Verify end-to-end render**
 
 Run: `bun quoteforge generate content/image-demo.json --output outputs/image-demo.png`
-Expected: command succeeds, prints the output path, and `outputs/image-demo.png` exists with the logo visible (centered, ~50% width). `outputs/` is gitignored — do not commit it.
+Expected: command succeeds, prints the output path, and `outputs/image-demo.png` exists with the logo visible (centered, ~50% width). `outputs/` is gitignored, do not commit it.
 
 Also verify a remote URL still works by temporarily setting `"src"` to an `https://` image and re-running (optional).
 
@@ -523,7 +523,7 @@ In `studio/src/components/Editor/BlockEditor.tsx`, add a `case "image"` to the `
               type="text"
               value={block.src}
               onChange={(e) => onChange({ ...block, src: e.target.value })}
-              placeholder="https://… or upload below"
+              placeholder="https://... or upload below"
               className="w-full mt-1 bg-neutral-900 border border-neutral-700 rounded px-2 py-1.5 text-sm text-neutral-100 focus:outline-none focus:border-teal-500"
             />
           </div>
@@ -581,7 +581,7 @@ In `studio/src/components/Editor/BlockEditor.tsx`, add a `case "image"` to the `
 - [ ] **Step 4: Typecheck**
 
 Run: `bun run typecheck`
-Expected: No NEW errors referencing `BlockEditor.tsx`, `BlockList.tsx`, `cardStore.ts`, or `deckStore.ts`. (Pre-existing unrelated errors may remain — compare against a pre-change run if unsure.)
+Expected: No NEW errors referencing `BlockEditor.tsx`, `BlockList.tsx`, `cardStore.ts`, or `deckStore.ts`. (Pre-existing unrelated errors may remain, compare against a pre-change run if unsure.)
 
 - [ ] **Step 5: Manual studio verification**
 
@@ -604,7 +604,7 @@ git commit -m "feat(quoteforge[image-block]): add image block editor to studio"
 - [ ] **Step 1: Run the whole suite**
 
 Run: `bun test`
-Expected: PASS — all existing tests plus the new validator, resolver, and template-engine image tests.
+Expected: PASS, all existing tests plus the new validator, resolver, and template-engine image tests.
 
 - [ ] **Step 2: Sanity-render a deck slide with an image (optional)**
 
@@ -616,4 +616,4 @@ Add an `image` block to one slide of an existing deck JSON under `decks/` and ru
 
 - Width percentages are relative to the card content column (inside `--padding`), matching other blocks.
 - Studio uploads can produce large data-URIs; acceptable for V1 (see ADR 0001).
-- If `template-engine.test.ts` builds its theme differently than assumed in Task 3 Step 1, follow that file's existing fixture pattern — do not introduce a second theme-loading style.
+- If `template-engine.test.ts` builds its theme differently than assumed in Task 3 Step 1, follow that file's existing fixture pattern: do not introduce a second theme-loading style.

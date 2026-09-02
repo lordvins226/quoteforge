@@ -364,7 +364,7 @@ describe("polaroid template", () => {
     expect(html).toContain('align-right');
   });
 
-  test("survives a missing image block — empty well, nothing broken", () => {
+  test("survives a missing image block: empty well, nothing broken", () => {
     const card = CardContentSchema.parse({
       template: "polaroid",
       theme: "mono-slate",
@@ -595,7 +595,7 @@ describe("diff template", () => {
     expect(html).toContain(foot && "content" in foot ? foot.content : "");
   });
 
-  test("style.css uses only opacity and line-through to distinguish removals — no hex, no color-name literals", () => {
+  test("style.css uses only opacity and line-through to distinguish removals, no hex, no color-name literals", () => {
     assertNoHardcodedHex("diff");
     const styleCSS = readFileSync(resolve(ROOT, "templates/diff/style.css"), "utf-8");
     expect(styleCSS).toContain("text-decoration: line-through");
@@ -635,7 +635,7 @@ describe("receipt template", () => {
     expect(html).toContain("rc-total");
     expect(html).toContain('<span>Total</span><span class="amt">1 command</span>');
     expect(html).toContain("rc-foot");
-    expect(html).toContain("Thank you — come back soon");
+    expect(html).toContain("Thank you — come back soon"); // emdash-ok: mirrors content/examples/receipt-demo.json
   });
 
   test("style.css has no literal hex color outside theme-injected :root vars", () => {
@@ -733,7 +733,7 @@ describe("prompt template", () => {
       });
 
     // the schema requires >=1 item on bullet-list/callout, so 0 items is not a
-    // reachable case through valid content — 1 item is the true floor.
+    // reachable case through valid content, 1 item is the true floor.
     const one = bodyOnly(renderTemplate(build(["Prompt"]), theme, { w: 1080, h: 1080 }));
     expect(one.match(/pr-turn you/g)?.length).toBe(1);
     expect(one.match(/pr-turn ai/g)).toBeNull();

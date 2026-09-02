@@ -1,4 +1,4 @@
-/* List — compact, data-dense, tighter spacing */
+/* List: compact, data-dense, tighter spacing */
 
 .headline {
   font-size: clamp(1.5rem, min(5vh, 6vw), 3.5rem);

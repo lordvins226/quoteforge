@@ -1,4 +1,4 @@
-/* Receipt — itemized slip. `label` means the amount column; `text` is the
+/* Receipt: itemized slip. `label` means the amount column; `text` is the
    row's description. The last item in the list becomes the total row
    (its label is the total amount, its text the "Total" caption).
    card.eyebrow, when present, sits under the header as the shop's

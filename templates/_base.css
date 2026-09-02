@@ -1,4 +1,4 @@
-/* QuoteForge — Shared base CSS
+/* QuoteForge: shared base CSS
    Injected into all templates before template-specific styles.
    Font sizes and spacing driven by computed --type-scale, --headline-scale,
    --space-scale variables injected by the template engine based on card dimensions. */
@@ -18,7 +18,7 @@ body {
   overflow: hidden;
 }
 
-/* Card container — fills viewport, content flows top to bottom */
+/* Card container: fills viewport, content flows top to bottom */
 .card {
   width: 100%;
   height: 100vh;
@@ -56,7 +56,7 @@ body {
   flex: 0 0 auto;
 }
 
-/* ─── Typography — dimension-aware scaling ─── */
+/* ─── Typography, dimension-aware scaling ─── */
 
 .headline {
   font-family: var(--font-headline);
@@ -74,7 +74,7 @@ body {
 .part-mono         { font-family: var(--font-body); font-size: 0.85em; }
 .part-muted        { opacity: 0.6; }
 
-/* ─── Block styles — scaled font sizes ─── */
+/* ─── Block styles, scaled font sizes ─── */
 
 .block-blockquote blockquote {
   border-left: 4px solid var(--bq-border);
@@ -148,7 +148,7 @@ body {
   width: 100%;
 }
 
-/* ─── Spacer — scaled heights ─── */
+/* ─── Spacer, scaled heights ─── */
 
 .block-spacer--sm { height: calc(1rem * var(--space-scale)); }
 .block-spacer--md { height: calc(2rem * var(--space-scale)); }

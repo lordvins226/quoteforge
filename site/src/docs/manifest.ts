@@ -7,7 +7,7 @@ export interface DocMeta {
 
 export const DOCS: readonly DocMeta[] = [
   { slug: "getting-started", title: "Getting Started", description: "Install QuoteForge and render your first card.", section: "Introduction" },
-  { slug: "studio", title: "Studio", description: "The WYSIWYG editor — blocks, previews, decks, exports.", section: "Introduction" },
+  { slug: "studio", title: "Studio", description: "The WYSIWYG editor: blocks, previews, decks, exports.", section: "Introduction" },
   { slug: "cli", title: "CLI Reference", description: "Every command, every flag.", section: "Reference" },
   { slug: "content-schema", title: "Content Schema", description: "Cards, decks, and the 7 block types.", section: "Reference" },
   { slug: "themes", title: "Themes", description: "20 CSS variables, BYO theme JSON.", section: "Reference" },

@@ -1,19 +1,19 @@
-# Vertical Alignment, Non-Social Presets, and Content-Fit Cropping — Design
+# Vertical Alignment, Non-Social Presets, and Content-Fit Cropping: Design
 
 **Date:** 2026-07-19
 **Status:** Approved
-**Target release:** v0.5.0 (minor — contains a rendering-behavior change; see "Versioning")
-**Depends on:** v0.4.0 lot 1 (`docs/specs/2026-07-19-strict-schema-and-custom-size-design.md`) — the
+**Target release:** v0.5.0 (minor, contains a rendering-behavior change; see "Versioning")
+**Depends on:** v0.4.0 lot 1 (`docs/specs/2026-07-19-strict-schema-and-custom-size-design.md`), the
 `resolveDimensions` resolver and strict schemas this builds on.
 
 ## Goal
 
 Give the author control over where content sits vertically on the canvas, add size presets
 for non-social targets, and offer a CLI crop that trims the canvas to the content. Together
-these make QuoteForge usable for embedded web visuals — grid thumbnails, blog headers,
-README banners — not only standalone social posts.
+these make QuoteForge usable for embedded web visuals, grid thumbnails, blog headers,
+README banners, not only standalone social posts.
 
-## Background — the actual defect
+## Background: the actual defect
 
 Every template distributes blocks over the full canvas height. The cause is in
 `templates/_base.css`:
@@ -24,7 +24,7 @@ Every template distributes blocks over the full canvas height. The cause is in
 
 Each block is a greedy flex item: it grows to absorb the remaining height, then centers its
 content inside its own inflated box. With short content, a headline pinned near the top and a
-list stranded at ~67% height leave a large void between them — the void is *inside* the second
+list stranded at ~67% height leave a large void between them, the void is *inside* the second
 block, not between blocks, which is why `-trim` in ImageMagick cannot remove it.
 
 No template overrides `.card`'s `justify-content` (verified: the only per-template
@@ -41,7 +41,7 @@ is centralized and clean.
 
 ## Non-goals
 
-- Safe-area / `--safe-aspect` for centered crops — v0.6.0 (lot 3). It depends on this release's
+- Safe-area / `--safe-aspect` for centered crops: v0.6.0 (lot 3). It depends on this release's
   alignment control.
 - Horizontal alignment control. Content is horizontally centered by template CSS; no request
   for per-card horizontal control exists. YAGNI.
@@ -72,10 +72,10 @@ Two coupled changes in `templates/_base.css`:
 
 1. `.block` changes from `flex: 1 1 0` to `flex: 0 0 auto`, so a block takes its natural
    content height instead of growing to fill. `justify-content: center` on `.block` (which
-   centered content inside the inflated box) is removed — it no longer has a purpose once the
+   centered content inside the inflated box) is removed, it no longer has a purpose once the
    box is content-sized.
-2. `.card` gains an alignment class — `align-center`, `align-top`, `align-bottom`,
-   `align-spread` — that sets its `justify-content`. `.card` already has
+2. `.card` gains an alignment class: `align-center`, `align-top`, `align-bottom`,
+   `align-spread`, that sets its `justify-content`. `.card` already has
    `display: flex; flex-direction: column`, so `justify-content` is the vertical axis.
 
 The template engine injects the class onto the `.card` element. The four templates render
@@ -91,7 +91,7 @@ vertical space, which composes naturally with any alignment.
 The pre-0.5.0 rendering distributed blocks with `flex: 1 1 0`. Every existing card re-renders
 with content grouped and centered instead of spread. `spread` is the closest match to the old
 look and is provided as the escape hatch, but it is `space-between`, not the old equal-grow
-distribution — it is not byte-identical. This is a deliberate change to the default rendering
+distribution, it is not byte-identical. This is a deliberate change to the default rendering
 of all existing content and is called out in the CHANGELOG as breaking.
 
 ### Tests
@@ -131,9 +131,9 @@ network. This is intentional and documented.
 
 Per `CLAUDE.md`, `SIZES` is mirrored in three places. All three update together:
 
-1. `src/cli/utils/validator.ts` — the `SIZES` authority (source of the Zod enum).
-2. `studio/src/types/index.ts` — the browser mirror.
-3. `src/__tests__/validator.test.ts` — the count assertion, which moves from 17 to **22**.
+1. `src/cli/utils/validator.ts`: the `SIZES` authority (source of the Zod enum).
+2. `studio/src/types/index.ts`: the browser mirror.
+3. `src/__tests__/validator.test.ts`: the count assertion, which moves from 17 to **22**.
 
 ### Tests
 
@@ -164,13 +164,13 @@ The crop is measured in the browser, where the layout already exists, not by pos
 pixels:
 
 1. After `page.setContent` and font settling, `page.evaluate` measures the bounding box of the
-   rendered content — the union of the block elements' rects inside `.card`.
+   rendered content, the union of the block elements' rects inside `.card`.
 2. The box is expanded by the theme's resolved padding on all sides (the same
    `--padding * --space-scale` value the card uses), clamped to the canvas.
 3. `page.screenshot({ clip })` captures only that region, at the same `deviceScaleFactor`.
 
-The output PNG's dimensions therefore depend on the content. This is the point — a short card
-crops to a compact image with no void — but it means `--fit-content` and a fixed target size
+The output PNG's dimensions therefore depend on the content. This is the point, a short card
+crops to a compact image with no void, but it means `--fit-content` and a fixed target size
 are different intents. When both a non-square deck warning and `--fit-content` apply, the crop
 wins on dimensions.
 
@@ -191,7 +191,7 @@ docs recommend `--fit-content` for single cards and warn (not block) when it is 
 
 - `--fit-content` on a short card produces a PNG shorter than the full canvas height.
 - The cropped PNG retains the theme padding around the content (the content is not flush to the
-  edge — assert a padding band exists, e.g. the corner pixels match the background color).
+  edge, assert a padding band exists, e.g. the corner pixels match the background color).
 - `--trim` behaves identically to `--fit-content`.
 - A full-bleed card (content already filling the canvas) is effectively unchanged by
   `--fit-content` (dimensions within a small tolerance of the uncropped render).
@@ -205,7 +205,7 @@ use, or extract the measurement/clip computation into a pure function tested wit
 ## Versioning
 
 **v0.5.0**, a minor. The alignment change re-renders every existing card (content grouped and
-centered rather than distributed). No schema *rejects* previously-valid files — unlike lot 1 —
+centered rather than distributed). No schema *rejects* previously-valid files, unlike lot 1,
 but the visual output changes, which is a behavior change worth a minor bump and an explicit
 CHANGELOG note: existing cards now center by default; add `"align": "spread"` to approximate
 the previous distribution.
@@ -214,7 +214,7 @@ The presets and `--fit-content` are purely additive.
 
 ## Implementation order
 
-1. Size presets — additive, no interaction with the others, lands first.
-2. Vertical alignment — the schema field, the CSS change, the template class injection.
-3. `--fit-content` — depends on nothing in 1-2 structurally but is documented against both.
-4. Documentation — README and `site/src/docs` reflect the final behavior.
+1. Size presets: additive, no interaction with the others, lands first.
+2. Vertical alignment: the schema field, the CSS change, the template class injection.
+3. `--fit-content`: depends on nothing in 1-2 structurally but is documented against both.
+4. Documentation: README and `site/src/docs` reflect the final behavior.

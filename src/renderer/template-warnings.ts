@@ -32,7 +32,7 @@ function templateSource(template: string): string {
  * keeps the set over-permissive on purpose: a missed warning costs less than one
  * that cries about a card which renders fine.
  *
- * Returns undefined when the template is unknown or dispatches some other way —
+ * Returns undefined when the template is unknown or dispatches some other way,
  * callers stay quiet rather than guess.
  */
 function handledBlockTypes(template: string): Set<string> | undefined {
@@ -42,7 +42,7 @@ function handledBlockTypes(template: string): Set<string> | undefined {
 }
 
 /**
- * Non-fatal layout advice. A card that trips one of these still renders — the
+ * Non-fatal layout advice. A card that trips one of these still renders, the
  * result just will not look like the template intends.
  */
 export function templateWarnings(card: WarnableCard): string[] {
@@ -63,7 +63,7 @@ export function templateWarnings(card: WarnableCard): string[] {
 
   if (card.eyebrow !== undefined && !templateSource(card.template).includes("eyebrow")) {
     warnings.push(
-      `Template "${card.template}" has no eyebrow slot — the "eyebrow" field will not render.`,
+      `Template "${card.template}" has no eyebrow slot, so the "eyebrow" field will not render.`,
     );
   }
 
@@ -76,7 +76,7 @@ export function templateWarnings(card: WarnableCard): string[] {
     if (dropped.length > 0) {
       const list = dropped.map((type) => `"${type}"`).join(", ");
       warnings.push(
-        `Template "${card.template}" does not render ${list} — that content will not appear ` +
+        `Template "${card.template}" does not render ${list}, so that content will not appear ` +
           `in the image. Pick a template that handles it, or move the text into a block the ` +
           `template renders.`,
       );

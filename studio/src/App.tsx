@@ -42,7 +42,7 @@ function StudioApp() {
   const handleSave = useCallback(async () => {
     const filePath = mode === "card" ? cardStore.filePath : deckStore.filePath;
     if (!filePath) {
-      toast("No file loaded — use Open to load a file first", "error");
+      toast("No file loaded, use Open to load a file first", "error");
       return;
     }
     const content = mode === "card" ? cardStore.card : deckStore.deck;

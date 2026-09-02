@@ -39,7 +39,7 @@ describe("Part schema", () => {
   });
 });
 
-describe("Block schema — all 7 types", () => {
+describe("Block schema: all 7 types", () => {
   test("headline with parts", () => {
     expect(() =>
       BlockSchema.parse({
@@ -226,7 +226,7 @@ describe("Chart block schema", () => {
   });
 });
 
-describe("SizeName enum — all 22 sizes", () => {
+describe("SizeName enum: all 22 sizes", () => {
   const allSizes = [
     "twitter", "twitter-square",
     "linkedin", "linkedin-square",

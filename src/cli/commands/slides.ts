@@ -111,7 +111,7 @@ export const slidesCommand = new Command("slides")
     }
 
     const totalSlides = slideIndex !== undefined ? 1 : deck.slides.length;
-    console.log(chalk.dim(`Rendering ${totalSlides} slide${totalSlides > 1 ? "s" : ""} from ${basename(filePath)}…`));
+    console.log(chalk.dim(`Rendering ${totalSlides} slide${totalSlides > 1 ? "s" : ""} from ${basename(filePath)}...`));
 
     const { buffers, names } = await renderDeck(deck, {
       sizeOverride: opts.size as typeof deck.defaults.size | undefined,

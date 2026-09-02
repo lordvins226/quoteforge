@@ -42,7 +42,7 @@ const FEATURES: Feature[] = [
   {
     icon: Package,
     title: "21 sizes, plus custom",
-    description: "Twitter, Instagram, Facebook, Threads, LinkedIn, Story, slides and Open Graph — or set your own width and height.",
+    description: "Twitter, Instagram, Facebook, Threads, LinkedIn, Story, slides and Open Graph, or set your own width and height.",
   },
   {
     icon: Gauge,

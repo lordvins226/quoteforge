@@ -1,4 +1,4 @@
-# Vertical Alignment, Non-Social Presets, and Content-Fit Cropping — Implementation Plan
+# Vertical Alignment, Non-Social Presets, and Content-Fit Cropping: Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -14,8 +14,8 @@
 
 - Runtime is Bun. Tests run with `bun test` (the release gate; `bun run typecheck` is pre-existing red repo-wide and is informational only). No npm scripts, no Node-only APIs.
 - TypeScript strict, no `any`.
-- `src/cli/utils/validator.ts` is the schema authority. `SIZES` is mirrored in `studio/src/types/index.ts` and counted in `src/__tests__/validator.test.ts` — update all three together. This plan takes the count from 17 to 22.
-- Never hardcode colors in template CSS — every color is a CSS custom property injected from theme JSON at `:root`. This plan touches layout CSS only; it adds no color.
+- `src/cli/utils/validator.ts` is the schema authority. `SIZES` is mirrored in `studio/src/types/index.ts` and counted in `src/__tests__/validator.test.ts`: update all three together. This plan takes the count from 17 to 22.
+- Never hardcode colors in template CSS: every color is a CSS custom property injected from theme JSON at `:root`. This plan touches layout CSS only; it adds no color.
 - Default `align` is `center`. Absent `align` must resolve to `center`, not empty.
 - New preset dimensions (exact): `og` 1200×630, `readme-hero` 1280×640, `slide-16x9` 1920×1080, `4x3` 1600×1200, `3x2` 1500×1000.
 - No code comments unless a step requires them.
@@ -36,10 +36,10 @@
 
 - [ ] **Step 1: Write the failing tests**
 
-In `src/__tests__/validator.test.ts`, update the size-count describe block — it currently asserts `toHaveLength(17)` in a block titled "all 17 sizes". Change both the title and the number to 22, and add value assertions:
+In `src/__tests__/validator.test.ts`, update the size-count describe block, it currently asserts `toHaveLength(17)` in a block titled "all 17 sizes". Change both the title and the number to 22, and add value assertions:
 
 ```ts
-describe("SizeName enum — all 22 sizes", () => {
+describe("SizeName enum, all 22 sizes", () => {
   test("has exactly 22 sizes", () => {
     expect(Object.keys(SIZES)).toHaveLength(22);
   });
@@ -61,7 +61,7 @@ describe("Non-social presets", () => {
 - [ ] **Step 2: Run tests to verify they fail**
 
 Run: `bun test src/__tests__/validator.test.ts`
-Expected: FAIL — count is 17, new keys undefined.
+Expected: FAIL, count is 17, new keys undefined.
 
 - [ ] **Step 3: Add the presets**
 
@@ -103,7 +103,7 @@ git commit -m "feat(quoteforge[schema]): add og, readme-hero, slide-16x9, 4x3, 3
 - Modify: `studio/src/types/index.ts` (`CardContent`, `Slide`, `DeckContent.defaults`)
 - Modify: `templates/_base.css`
 - Modify: `templates/quote/template.njk`, `templates/manifesto/template.njk`, `templates/list/template.njk`, `templates/minimal/template.njk`
-- Modify: `src/renderer/template-engine.ts` (`renderTemplate` — expose the align class)
+- Modify: `src/renderer/template-engine.ts` (`renderTemplate`, expose the align class)
 - Test: `src/__tests__/validator.test.ts`
 - Test: `src/__tests__/template-engine.test.ts`
 
@@ -152,7 +152,7 @@ Note the `.strict()` schemas from lot 1: `align` must be a declared field or str
 - [ ] **Step 2: Run tests to verify they fail**
 
 Run: `bun test src/__tests__/validator.test.ts`
-Expected: FAIL — `align` is an unknown key under strict validation, so even valid values throw.
+Expected: FAIL, `align` is an unknown key under strict validation, so even valid values throw.
 
 - [ ] **Step 3: Add the align field to the schemas**
 
@@ -163,7 +163,7 @@ export const AlignSchema = z.enum(["top", "center", "bottom", "spread"]);
 export type Align = z.infer<typeof AlignSchema>;
 ```
 
-Add `align: AlignSchema.optional(),` as a field to each of `CardContentSchema`, `SlideSchema`, and `DeckDefaultsSchema`. Place it before the `blocks` / trailing fields. Do not give it a Zod `.default()` — the default is applied at render time (Step 6) so that "absent" is distinguishable and inheritance works correctly (a slide with no `align` must fall back to deck defaults, not to a parsed-in `center`).
+Add `align: AlignSchema.optional(),` as a field to each of `CardContentSchema`, `SlideSchema`, and `DeckDefaultsSchema`. Place it before the `blocks` / trailing fields. Do not give it a Zod `.default()`, the default is applied at render time (Step 6) so that "absent" is distinguishable and inheritance works correctly (a slide with no `align` must fall back to deck defaults, not to a parsed-in `center`).
 
 - [ ] **Step 4: Change the block flex and add alignment classes in _base.css**
 
@@ -179,7 +179,7 @@ In `templates/_base.css`, replace the `.block` rule (lines 33-40):
 }
 ```
 
-(`flex: 1 1 0` → `flex: 0 0 auto`; the `justify-content: center` line is removed — it centered content inside the previously-inflated box and has no purpose once the box is content-sized.)
+(`flex: 1 1 0` → `flex: 0 0 auto`; the `justify-content: center` line is removed, it centered content inside the previously-inflated box and has no purpose once the box is content-sized.)
 
 Add the alignment classes immediately after the `.card` rule (after line 31):
 
@@ -256,7 +256,7 @@ describe("Vertical alignment rendering", () => {
 ```
 
 Match the existing test file's helper for loading a theme (it already renders templates, so a
-theme-loading pattern exists there — reuse it rather than inventing one).
+theme-loading pattern exists there, reuse it rather than inventing one).
 
 - [ ] **Step 8: Run tests to verify they pass**
 
@@ -310,15 +310,15 @@ git commit -m "feat(quoteforge[renderer]): add vertical alignment control with c
 
 **Files:**
 - Create: `src/renderer/fit-content.ts`
-- Modify: `src/renderer/renderer.ts` (`renderCardOnPage` — optional clip)
+- Modify: `src/renderer/renderer.ts` (`renderCardOnPage`, optional clip)
 - Modify: `src/cli/commands/generate.ts`, `src/cli/commands/slides.ts`, `src/cli/commands/batch.ts` (the `--fit-content` / `--trim` flag)
 - Test: `src/__tests__/fit-content.test.ts`
 
 **Interfaces:**
 - Consumes: `resolveDimensions` (lot 1), the theme's resolved padding.
 - Produces:
-  - `computeContentClip(box: Rect, padding: number, canvas: Dimensions): Rect` — pure function mapping a measured content box + padding to a clamped clip rect.
-  - `renderCardOnPage(..., fitContent?: boolean)` — when true, screenshots the computed clip instead of the full viewport.
+  - `computeContentClip(box: Rect, padding: number, canvas: Dimensions): Rect`: pure function mapping a measured content box + padding to a clamped clip rect.
+  - `renderCardOnPage(..., fitContent?: boolean)`: when true, screenshots the computed clip instead of the full viewport.
 
 - [ ] **Step 1: Write the failing test for the pure clip computation**
 
@@ -364,7 +364,7 @@ describe("computeContentClip", () => {
 - [ ] **Step 2: Run test to verify it fails**
 
 Run: `bun test src/__tests__/fit-content.test.ts`
-Expected: FAIL — `Cannot find module '../renderer/fit-content.js'`.
+Expected: FAIL, `Cannot find module '../renderer/fit-content.js'`.
 
 - [ ] **Step 3: Implement the pure clip computation**
 
@@ -442,7 +442,7 @@ In `src/cli/commands/generate.ts`, add the flag (both spellings map to one optio
 In the action, pass `fitContent: Boolean(opts.fitContent || opts.trim)` down to `renderCard`.
 Add the same flag and wiring to `src/cli/commands/slides.ts` and `src/cli/commands/batch.ts`.
 For `slides`, emit a one-line warning (via the existing chalk logger) when `--fit-content` is
-combined with a deck, noting that slides may end up with differing heights — warn, do not block.
+combined with a deck, noting that slides may end up with differing heights, warn, do not block.
 
 - [ ] **Step 7: End-to-end verification**
 
@@ -451,8 +451,8 @@ bun quoteforge generate /tmp/qf-align.json --output /tmp/qf-fit.png --no-timesta
 file /tmp/qf-fit.png
 ```
 
-Expected: the PNG height is markedly less than the full `facebook-square` 2160px (at scale 2) —
-the void is cropped — while a padding band of the theme background remains around the content
+Expected: the PNG height is markedly less than the full `facebook-square` 2160px (at scale 2),
+the void is cropped, while a padding band of the theme background remains around the content
 (the content is not flush to the edge). Confirm `--trim` produces the same result.
 
 - [ ] **Step 8: Commit**
@@ -469,7 +469,7 @@ git commit -m "feat(quoteforge[cli]): add --fit-content/--trim to crop output to
 **Files:**
 - Modify: `README.md` (sizes list, a vertical-alignment note, the `--fit-content` flag)
 - Modify: `site/src/docs/content-schema.mdx` (sizes table + `align` field)
-- Modify: `site/src/docs/cli.mdx` if present (the `--fit-content`/`--trim` flag) — otherwise the CLI section of the schema/getting-started docs
+- Modify: `site/src/docs/cli.mdx` if present (the `--fit-content`/`--trim` flag), otherwise the CLI section of the schema/getting-started docs
 - Modify: `CHANGELOG.md`
 
 **Interfaces:**
@@ -554,7 +554,7 @@ git commit -m "docs(quoteforge[renderer]): document alignment, non-social preset
 
 Context: the studio types were synced in Tasks 1-2, but the UI was not wired. `align` already
 flows to the render automatically because the export/preview routes pass the whole card object
-to `renderCard`/`renderTemplate` — so align needs only store state + a UI control, no route
+to `renderCard`/`renderTemplate`, so align needs only store state + a UI control, no route
 change. Presets need adding to `SIZE_GROUPS` (the picker iterates groups, not raw `SIZES`).
 fit-content is an export-time option and needs both a UI toggle and route changes.
 
@@ -572,7 +572,7 @@ now appear under "Web / Docs".
 - [ ] **Step 2: Add align setters to the stores**
 
 In `studio/src/store/cardStore.ts`, add `setAlign: (align: Align) => void;` to the `CardStore`
-interface (import `Align` — a union type; add `type Align = "top" | "center" | "bottom" | "spread"`
+interface (import `Align`, a union type; add `type Align = "top" | "center" | "bottom" | "spread"`
 locally in the store or export it from `../types` if a shared alias is cleaner) and implement it
 mirroring `setSize`:
 
@@ -601,7 +601,7 @@ Add the matching signatures to each store's interface.
 
 - [ ] **Step 3: Create the AlignPicker component**
 
-Create `studio/src/components/Editor/AlignPicker.tsx` — a small segmented control matching the
+Create `studio/src/components/Editor/AlignPicker.tsx`, a small segmented control matching the
 studio's Tailwind idiom (built from scratch, no component library, per project rules):
 
 ```tsx
@@ -641,7 +641,7 @@ export function AlignPicker({ current, onChange }: AlignPickerProps) {
 }
 ```
 
-The `SizeName` import is unused; remove it — this note exists to catch a copy-paste artifact, not
+The `SizeName` import is unused; remove it, this note exists to catch a copy-paste artifact, not
 to keep it.
 
 - [ ] **Step 4: Wire the align picker and fit-content toggle into the Toolbar**
@@ -680,7 +680,7 @@ In `studio/src/App.tsx`:
 - [ ] **Step 6: Read fitContent in the server routes**
 
 In `src/server/routes/export.ts`, extend the body type with `fitContent?: boolean;` and pass it
-to `renderCard` (7th argument, after `scale`, `meta`, `browser` — pass `undefined` for meta and
+to `renderCard` (7th argument, after `scale`, `meta`, `browser`, pass `undefined` for meta and
 browser):
 
 ```ts
@@ -714,7 +714,7 @@ git commit -m "feat(quoteforge[studio]): expose alignment, presets, and fit-cont
 
 After all five tasks:
 
-- [ ] `bun test` — whole suite passes.
+- [ ] `bun test`: whole suite passes.
 - [ ] The reproduction short-content card renders with content centered, no mid-canvas void.
 - [ ] `"align": "spread"` moves blocks to the edges.
 - [ ] Each new preset renders at its documented dimensions.

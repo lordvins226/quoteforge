@@ -146,7 +146,7 @@ export function ThemeEditorModal({ open, onClose, onCreated }: ThemeEditorModalP
         <div className="flex justify-end gap-2 pt-2">
           <Button variant="secondary" onClick={onClose}>Cancel</Button>
           <Button variant="primary" onClick={handleSave} disabled={saving}>
-            {saving ? "Saving…" : "Create Theme"}
+            {saving ? "Saving..." : "Create Theme"}
           </Button>
         </div>
       </div>

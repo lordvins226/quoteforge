@@ -23,7 +23,7 @@ export function DocPage() {
   return (
     <DocsLayout currentSlug={meta.slug} title={meta.title}>
       <ErrorBoundary key={slug}>
-        <Suspense fallback={<p className="text-fog-3 text-sm">Loading…</p>}>
+        <Suspense fallback={<p className="text-fog-3 text-sm">Loading...</p>}>
           <MDX />
         </Suspense>
       </ErrorBoundary>

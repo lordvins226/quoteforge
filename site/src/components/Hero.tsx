@@ -28,7 +28,7 @@ export function Hero() {
             the <span className="text-mint">terminal</span>.
           </h1>
           <p className="mt-6 text-lg text-fog-2 max-w-[54ch] leading-relaxed">
-            A CLI and studio for generating quote cards and carousels from JSON. Version the source, script the output, ship the PNG — no cloud, no drag-and-drop drift.
+            A CLI and studio for generating quote cards and carousels from JSON. Version the source, script the output, ship the PNG. No cloud, no drag-and-drop drift.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <a
