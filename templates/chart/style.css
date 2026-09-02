@@ -1,4 +1,4 @@
-/* Chart — horizontal bars. Title from an optional headline block, rows from
+/* Chart: horizontal bars. Title from an optional headline block, rows from
    the chart block's data, footer from a trailing text block. */
 
 .card.chart-tpl {

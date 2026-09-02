@@ -1,6 +1,6 @@
-/* Prompt — question and answer. `label` means the role shown above each
+/* Prompt: question and answer. `label` means the role shown above each
    turn. Exactly 2 items are expected: the first `bullet-list`/`callout`
-   block found supplies both turns, using its first two items — the
+   block found supplies both turns, using its first two items, the
    first item renders as the plain prompt turn, the second as the
    accented answer turn with a caret. Fewer than 2 items degrades
    gracefully: 1 item renders only the prompt turn, 0 renders nothing.

@@ -79,7 +79,7 @@ async function ensureCachedChrome(): Promise<string> {
   if (existsSync(existing)) return existing;
 
   process.stderr.write(
-    `QuoteForge: Chrome not found. Downloading Chrome for Testing (stable, ~170MB) to ${cacheDir}…\n`,
+    `QuoteForge: Chrome not found. Downloading Chrome for Testing (stable, ~170MB) to ${cacheDir}...\n`,
   );
   const installed = await install({
     browser: Browser.CHROME,

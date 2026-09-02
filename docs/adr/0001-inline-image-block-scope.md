@@ -1,4 +1,4 @@
-# ADR 0001 — Inline image block: scope and deferred capabilities
+# ADR 0001: Inline image block: scope and deferred capabilities
 
 - Status: Accepted
 - Date: 2026-06-22
@@ -8,9 +8,9 @@
 
 Users need to include images in cards and decks and control their placement. The
 rendering pipeline is a vertical flow of typed blocks (`headline`, `divider`,
-`spacer`, …) defined by a single Zod discriminated union and rendered through
-per-type Nunjucks partials. Several image models are possible — inline (flow),
-background, and free/absolute positioning — with increasing complexity.
+`spacer`, ...) defined by a single Zod discriminated union and rendered through
+per-type Nunjucks partials. Several image models are possible, inline (flow),
+background, and free/absolute positioning, with increasing complexity.
 
 ## Decision
 
@@ -23,13 +23,13 @@ resolution to a Puppeteer-loadable `src` happens server-side, never in React.
 
 Each is recorded so the boundary is intentional, not an oversight:
 
-1. **Rounded corners / border** — needs theme-driven color custom properties
+1. **Rounded corners / border**: needs theme-driven color custom properties
    (CLAUDE.md #3) and a border-radius scale; purely cosmetic, no blocker.
-2. **Caption text** — a themed sub-text under the image; adds a styling surface and
+2. **Caption text**: a themed sub-text under the image; adds a styling surface and
    another field; revisit once inline images are in real use.
-3. **Background image** — a different layout model (image behind the card with an
+3. **Background image**: a different layout model (image behind the card with an
    overlay for legibility); separate schema shape and CSS path. Worth its own spec.
-4. **Absolute (x/y) positioning + drag-to-place** — the most flexible and most
+4. **Absolute (x/y) positioning + drag-to-place**: the most flexible and most
    complex model; requires coordinate storage, overlap/z-index rules, and dnd-kit
    work in the studio. Deferred until there is demonstrated need.
 

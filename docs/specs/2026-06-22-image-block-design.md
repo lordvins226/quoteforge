@@ -1,4 +1,4 @@
-# Design — Inline Image Block (V1)
+# Design: Inline Image Block (V1)
 
 Date: 2026-06-22
 Status: Approved
@@ -6,7 +6,7 @@ Status: Approved
 ## Goal
 
 Let users include images in cards and decks and control their inline placement.
-Images are a new block type in the existing vertical block flow — stacked like
+Images are a new block type in the existing vertical block flow, stacked like
 `headline`, `divider`, `spacer`. V1 ships horizontal alignment, width, and alt
 text. No background images, no absolute positioning, no caption (deferred).
 
@@ -18,7 +18,7 @@ text. No background images, no absolute positioning, no caption (deferred).
   Resolution happens server-side, never in React (CLAUDE.md #7).
 - **Controls (V1):** `align` (left/center/right), `width` (sm/md/lg/full), `alt`.
 - **Studio input:** URL paste **and** file upload (converted to a data-URI in the
-  browser via `FileReader` — no filesystem access from React).
+  browser via `FileReader`, no filesystem access from React).
 
 ## Out of scope (deferred)
 
@@ -36,7 +36,7 @@ render time.
 
 ### 1. Schema (source of truth)
 
-`src/cli/utils/validator.ts` — add to the `BlockSchema` discriminated union:
+`src/cli/utils/validator.ts`, add to the `BlockSchema` discriminated union:
 
 ```ts
 const ImageBlockSchema = z.object({
@@ -61,18 +61,18 @@ Mirror the type in `studio/src/types/index.ts` (the browser copy of `Block` and
     `image/svg+xml`), base64-encode, return `data:<mime>;base64,<...>`.
   - On a missing/unreadable local file: throw a clear error naming the path and the
     owning block, so the CLI can report it (consistent with existing command errors).
-- `resolveImageBlocks(content, baseDir)` — walk blocks for a card, and every slide's
+- `resolveImageBlocks(content, baseDir)`: walk blocks for a card, and every slide's
   blocks for a deck; return content with `image` block `src` resolved. Non-image
   blocks pass through untouched.
 
 **Call sites (baseDir = `dirname(contentFilePath)`):** `generate.ts`, `batch.ts`,
-`slides.ts` — resolve **before** calling `renderCard`/slide render.
+`slides.ts`, resolve **before** calling `renderCard`/slide render.
 
 **Studio:** `/api/preview` and `/export` receive card JSON whose image `src` is
 already a URL or data-URI (the studio converts uploads in-browser). These routes
 serve HTTP-supplied content, so they MUST NOT resolve local file paths (path
 traversal / arbitrary file read). They call `assertHttpOrDataImageSrc(card)` and
-reject any image block whose `src` is not `http(s):`/`data:` with a 400 — they never
+reject any image block whose `src` is not `http(s):`/`data:` with a 400, they never
 touch the filesystem for an image. Local-path → data-URI resolution happens only in
 the CLI commands, where the content file is local and trusted.
 
@@ -99,24 +99,24 @@ the CLI commands, where the content file is local and trusted.
   (tune during implementation).
 - Align: `.block-image.align-left { margin-right: auto; }`,
   `.align-right { margin-left: auto; }`, `.align-center { margin-left: auto;
-  margin-right: auto; }` — applied to the `<figure>`.
-- No hardcoded colors (CLAUDE.md #3) — image carries none in V1.
+  margin-right: auto; }`, applied to the `<figure>`.
+- No hardcoded colors (CLAUDE.md #3): image carries none in V1.
 
 ### 5. Studio UI
 
-- `components/Editor/BlockList.tsx` — add `{ value: "image", label: "Image" }` to
+- `components/Editor/BlockList.tsx`: add `{ value: "image", label: "Image" }` to
   `BLOCK_TYPES`.
-- `components/Editor/BlockEditor.tsx` — add `case "image"`: URL text input, file
+- `components/Editor/BlockEditor.tsx`: add `case "image"`: URL text input, file
   upload (`<input type="file">` → `FileReader.readAsDataURL` → store as `src`),
   width `Select` (sm/md/lg/full), align `Select` (left/center/right), alt text input.
-- Default-block factory (in the store/`onAdd` path) — produce a valid empty image
+- Default-block factory (in the store/`onAdd` path): produce a valid empty image
   block: `{ type: "image", src: "", width: "full", align: "center" }`.
 
 ### 6. Tests
 
-- `src/__tests__/validator.test.ts` — image block parses; `width`/`align` defaults
+- `src/__tests__/validator.test.ts`: image block parses; `width`/`align` defaults
   applied; `src` required.
-- New `src/__tests__/image-resolver.test.ts` — URL pass-through, data-URI
+- New `src/__tests__/image-resolver.test.ts`: URL pass-through, data-URI
   pass-through, local file → data-URI with correct MIME, missing file throws.
 
 ## Data flow
@@ -135,4 +135,4 @@ template engine ──► iframe.
 - Very large local images inflate the data-URI; acceptable for V1, revisit if export
   payloads get heavy.
 - `width` percentages are relative to the card content column (inside `--padding`),
-  not the raw canvas — matches how other blocks behave.
+  not the raw canvas, matches how other blocks behave.

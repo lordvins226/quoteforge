@@ -138,12 +138,12 @@ export const previewCommand = new Command("preview")
     console.log(chalk.dim("  Press Ctrl+C to stop.\n"));
 
     watch(filePath, () => {
-      console.log(chalk.dim(`  ↻ File changed, reloading…`));
+      console.log(chalk.dim(`  ↻ File changed, reloading...`));
       notifyClients();
     });
 
     const onThemeChange = () => {
-      console.log(chalk.dim(`  ↻ Theme changed, reloading…`));
+      console.log(chalk.dim(`  ↻ Theme changed, reloading...`));
       notifyClients();
     };
     watch(themesDir(), onThemeChange);

@@ -1,0 +1,25 @@
+#!/bin/sh
+# Blocks em dashes, en dashes and ellipsis characters from entering the repo.
+# content/, decks/ and site/samples/ are exempt: those files are rendered into
+# PNGs, where the em dash is deliberate typography rather than a stray character.
+# A single line can opt out with an "emdash-ok" marker comment.
+# Install: ln -sf ../../scripts/pre-commit .git/hooks/pre-commit
+
+# Built with printf so this script does not trip its own check.
+PATTERN=$(printf '\342\200\224\|\342\200\223\|\342\200\246')
+
+staged=$(git diff --cached --name-only --diff-filter=ACM \
+  | grep -v '^content/' \
+  | grep -v '^decks/' \
+  | grep -v '^site/samples/')
+[ -z "$staged" ] && exit 0
+
+hits=$(echo "$staged" | tr '\n' '\0' | xargs -0 grep -nI "$PATTERN" 2>/dev/null \
+  | grep -v 'emdash-ok')
+if [ -n "$hits" ]; then
+  echo "pre-commit: typographic characters found. Use a plain ASCII hyphen or rewrite."
+  echo "$hits"
+  echo "Bypass with --no-verify if the character is genuinely intended."
+  exit 1
+fi
+exit 0

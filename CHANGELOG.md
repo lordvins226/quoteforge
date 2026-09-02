@@ -4,7 +4,7 @@
 
 ### Added
 - **`generate` and `slides` now warn when a template drops a block.** 15 of the 28 templates
-  render only a subset of block types and silently discard the rest — a `headline` on `memo`,
+  render only a subset of block types and silently discard the rest, a `headline` on `memo`,
   a `text` block on `ticket`, anything but `bullet-list`/`callout` on `grid`, `versus`, and
   `prompt`. The card validated, rendered, exited 0, and was missing content the author had
   written. The warning names the template and the dropped types. It reads each template's own
@@ -15,19 +15,19 @@
 ### Changed
 - **Body text now scales with the canvas.** `headline-size` was viewport-relative while
   `body-size` was a fixed `1rem` capped by a `--type-scale` ceiling of 1.25, so body text
-  rendered at 20px on every canvas — the same on a 400×400 card as on a 1920×1080 slide, and
-  the templates' own 28–32px `clamp()` maxima never engaged. The scale multiplier is now 1.85
+  rendered at 20px on every canvas, the same on a 400×400 card as on a 1920×1080 slide, and
+  the templates' own 28-32px `clamp()` maxima never engaged. The scale multiplier is now 1.85
   (was 1.5) and its ceiling 1.6 (was 1.25). Square, portrait, and story cards go from 20px to
   26px; 16:9 from 14px to 17px; Open Graph from 13px to 16px.
 
   **This changes existing output.** Regenerating a card authored against 1.0.0 produces larger
-  type. Nothing overflows in the built-in templates — the densest were re-rendered and checked
-  — but a custom template with tight vertical budgets should be re-rendered before upgrading.
+  type. Nothing overflows in the built-in templates, the densest were re-rendered and checked
+ , but a custom template with tight vertical budgets should be re-rendered before upgrading.
 
 ### Added
 - Theme colour token `on-accent`: the text colour used on accent-filled surfaces
   (sticky note, split rail, chat bubble, calendar date block, window CTA, profile avatar).
-  Optional — defaults to `background`, so existing themes are unaffected.
+  Optional, defaults to `background`, so existing themes are unaffected.
 
 ### Fixed
 - `code` blocks rendered in the theme's body font, which is proportional in most themes
@@ -37,11 +37,11 @@
   accent and background sit close in luminance. `brutal-white` rendered white-on-yellow at a
   1.32:1 contrast ratio; it is now 15.93:1. `light-minimal`, `sunset-rose`, and `noir-crimson`
   were also below the 4.5:1 threshold and now carry an explicit `on-accent`.
-- `align` was inert on templates whose content lives in a full-height inner body — `terminal`,
+- `align` was inert on templates whose content lives in a full-height inner body: `terminal`,
   `diff`, and `frame` ignored `top`, `bottom`, and `spread` entirely.
 - Docs images rendered unstyled at full resolution; template samples are now contained and
   captioned.
-- `spotlight` and `frame` samples did not match their designs — the first lost its accent word,
+- `spotlight` and `frame` samples did not match their designs: the first lost its accent word,
   the second rendered at body size because it used a `blockquote` block.
 
 ## 1.0.0
@@ -70,7 +70,7 @@
   of a raw `ENOENT` stack trace for the template's missing `style.css`.
 - `quoteforge new` offered only four templates from a hardcoded list; it now offers every
   installed template and rejects an unknown `--template`.
-- Studio: adding a `stat`, `code`, or `chart` block to a deck slide crashed the editor —
+- Studio: adding a `stat`, `code`, or `chart` block to a deck slide crashed the editor,
   the deck store's block factory had not been extended for the new types.
 
 ### Changed

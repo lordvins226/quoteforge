@@ -1,7 +1,7 @@
-/* Chat — two voices. `label` means the speaker: "me" renders as the
+/* Chat: two voices. `label` means the speaker: "me" renders as the
    outgoing (right-aligned, accent) bubble, anything else is incoming
    (left-aligned, callout-border). One squared corner per bubble supplies
-   the tail — no SVG. An optional headline/text block renders as a small
+   the tail, no SVG. An optional headline/text block renders as a small
    centered meta line (e.g. a date or thread title). */
 
 .card.chat {

@@ -47,7 +47,7 @@ export function CardGallery() {
             These PNGs aren't mockups. Each one comes from
             <code className="mx-1 px-1.5 py-0.5 bg-ink-3 border border-line rounded font-mono text-xs">quoteforge generate</code>
             run against a JSON file in <code className="mx-1 px-1.5 py-0.5 bg-ink-3 border border-line rounded font-mono text-xs">site/samples/</code>
-            — the same shape you'd write yourself.
+            in the same shape you'd write yourself.
           </p>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

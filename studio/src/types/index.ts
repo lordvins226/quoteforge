@@ -107,11 +107,11 @@ export const TEMPLATE_FAMILIES: { label: string; templates: TemplateInfo[] }[] =
       { name: "list",       label: "List",       blurb: "Numbered or bulleted rhythm, evenly distributed" },
       { name: "ledger",     label: "Ledger",     blurb: "Key/value rows under a heavy header rule" },
       { name: "index",      label: "Index",      blurb: "Table-of-contents rows with leader dots" },
-      { name: "grid",       label: "Grid",       blurb: "2×2 peer cells — best with exactly 4 items" },
+      { name: "grid",       label: "Grid",       blurb: "2×2 peer cells, best with exactly 4 items" },
       { name: "timeline",   label: "Timeline",   blurb: "Vertical spine with dated nodes" },
       { name: "versus",     label: "Versus",     blurb: "Two columns split by a centre marker" },
       { name: "stat",       label: "Stat",       blurb: "One oversized figure with unit and note" },
-      { name: "chart",      label: "Chart",      blurb: "Horizontal bars — pure CSS, no chart library" },
+      { name: "chart",      label: "Chart",      blurb: "Horizontal bars, pure CSS, no chart library" },
     ],
   },
   {
@@ -126,7 +126,7 @@ export const TEMPLATE_FAMILIES: { label: string; templates: TemplateInfo[] }[] =
   {
     label: "Editorial",
     templates: [
-      { name: "cover",      label: "Cover",      blurb: "Magazine cover — title, byline, issue line" },
+      { name: "cover",      label: "Cover",      blurb: "Magazine cover: title, byline, issue line" },
       { name: "split",      label: "Split",      blurb: "Two-panel split with a colour field" },
       { name: "memo",       label: "Memo",       blurb: "Internal memo with an aligned field grid" },
       { name: "receipt",    label: "Receipt",    blurb: "Itemised slip ending in a total" },

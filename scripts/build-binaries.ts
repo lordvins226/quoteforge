@@ -82,7 +82,7 @@ async function buildOne(target: Target): Promise<{ archive: string; sha256: stri
 
   const digest = await sha256(archivePath);
   await writeFile(`${archivePath}.sha256`, `${digest}  ${archiveName}\n`);
-  console.log(`  ✓ ${archiveName}  ${digest.slice(0, 12)}…`);
+  console.log(`  ✓ ${archiveName}  ${digest.slice(0, 12)}...`);
   return { archive: archivePath, sha256: digest };
 }
 

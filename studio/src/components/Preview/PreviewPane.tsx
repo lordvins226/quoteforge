@@ -82,7 +82,7 @@ export function PreviewPane({ card, theme, size, slideIndex = 0, slideTotal = 1,
       {error ? (
         <div className="text-neutral-500 text-sm">{error}</div>
       ) : loading && !html ? (
-        <div className="text-neutral-600 text-xs animate-pulse">Loading preview…</div>
+        <div className="text-neutral-600 text-xs animate-pulse">Loading preview...</div>
       ) : (
         <div style={{ width: scaledW, height: scaledH, position: "relative" }}>
           <iframe

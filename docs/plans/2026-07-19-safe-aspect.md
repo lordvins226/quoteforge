@@ -1,4 +1,4 @@
-# Safe-Aspect Cropping Guard — Implementation Plan
+# Safe-Aspect Cropping Guard: Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -31,7 +31,7 @@
 **Interfaces:**
 - Consumes: `Dimensions` from `src/renderer/dimensions.ts` (lot 1).
 - Produces:
-  - `parseAspectRatio(input: string): number` — returns `tw / th`, throws on invalid input.
+  - `parseAspectRatio(input: string): number`: returns `tw / th`, throws on invalid input.
   - `SafeInset { top: number; right: number; bottom: number; left: number }`
   - `computeSafeInset(dimensions: Dimensions, ratio: number): SafeInset`
 
@@ -89,7 +89,7 @@ describe("computeSafeInset", () => {
 - [ ] **Step 2: Run tests to verify they fail**
 
 Run: `bun test src/__tests__/safe-aspect.test.ts`
-Expected: FAIL — `Cannot find module '../renderer/safe-aspect.js'`.
+Expected: FAIL, `Cannot find module '../renderer/safe-aspect.js'`.
 
 - [ ] **Step 3: Implement**
 
@@ -156,7 +156,7 @@ git commit -m "feat(quoteforge[renderer]): add safe-aspect inset computation and
 **Files:**
 - Modify: `templates/_base.css` (the `.card` padding)
 - Modify: `src/renderer/template-engine.ts` (`buildCssVars`, `renderTemplate`)
-- Modify: `src/renderer/renderer.ts` (`renderCardOnPage` — accept and forward the inset)
+- Modify: `src/renderer/renderer.ts` (`renderCardOnPage`, accept and forward the inset)
 - Test: `src/__tests__/template-engine.test.ts`
 
 **Interfaces:**
@@ -198,7 +198,7 @@ describe("Safe-aspect insets", () => {
 - [ ] **Step 2: Run test to verify it fails**
 
 Run: `bun test src/__tests__/template-engine.test.ts`
-Expected: FAIL — the `--safe-*` variables are not emitted.
+Expected: FAIL, the `--safe-*` variables are not emitted.
 
 - [ ] **Step 3: Emit the variables**
 
@@ -252,7 +252,7 @@ Run: `bun test src/__tests__/template-engine.test.ts`
 Expected: PASS.
 
 Run: `bun test`
-Expected: PASS — existing render/scaling tests stay green because the default insets are zero.
+Expected: PASS, existing render/scaling tests stay green because the default insets are zero.
 
 - [ ] **Step 7: Commit**
 
@@ -325,7 +325,7 @@ git commit -m "feat(quoteforge[cli]): add --safe-aspect flag for crop-safe layou
 Document `--safe-aspect <ratio>` in the CLI docs and README: what it guarantees (content
 survives a center-crop toward the ratio), the accepted ratio forms (`W:H`, `WxH`, decimal), the
 recommendation to pair it with `align: center` (the default), and that it is not meant to be
-combined with `--fit-content` (opposite intents). Include a worked example — a square card made
+combined with `--fit-content` (opposite intents). Include a worked example, a square card made
 safe for a 16:9 embed.
 
 - [ ] **Step 2: Changelog**
@@ -359,7 +359,7 @@ git commit -m "docs(quoteforge[cli]): document --safe-aspect"
 
 After all four tasks:
 
-- [ ] `bun test` — whole suite passes.
+- [ ] `bun test`: whole suite passes.
 - [ ] A square card with `--safe-aspect 16:9` keeps all content in the central 16:9 band.
 - [ ] An invalid ratio exits with a clear error and no output.
 - [ ] A render without `--safe-aspect` is unchanged (safe insets default to zero).

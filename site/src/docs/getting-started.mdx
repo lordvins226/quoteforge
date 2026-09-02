@@ -64,9 +64,9 @@ quoteforge doctor             # reports assets, Chrome, runtime
 
 QuoteForge renders via headless Chrome. On first run it resolves a browser in this order:
 
-1. `$QUOTEFORGE_CHROME` — point at any Chrome/Chromium/Edge executable.
-2. **System install** — Chrome, Chromium, or Edge at the standard per-OS paths.
-3. **Pinned Chrome for Testing** — auto-downloaded (~170MB) to `~/.cache/quoteforge/chrome/` if neither of the above exists.
+1. `$QUOTEFORGE_CHROME`: point at any Chrome/Chromium/Edge executable.
+2. **System install**: Chrome, Chromium, or Edge at the standard per-OS paths.
+3. **Pinned Chrome for Testing**: auto-downloaded (~170MB) to `~/.cache/quoteforge/chrome/` if neither of the above exists.
 
 CI tip: pre-bake `$QUOTEFORGE_CHROME` in your image or install Chromium with your package manager to skip the auto-download entirely.
 
@@ -78,7 +78,7 @@ The repo ships with example content. Render one:
 quoteforge generate content/examples/manifesto-wiki.json
 ```
 
-You'll find the PNG in `outputs/`. Open it — that's the full pipeline: Zod validation → Nunjucks rendering → headless Chrome → PNG buffer → disk.
+You'll find the PNG in `outputs/`. Open it, that's the full pipeline: Zod validation → Nunjucks rendering → headless Chrome → PNG buffer → disk.
 
 ## Your first deck
 
@@ -88,7 +88,7 @@ A deck is a carousel of slides that share defaults:
 quoteforge slides decks/examples/stoic-wisdom.json
 ```
 
-Output: `outputs/stoic-wisdom/01.png` … `10.png` plus `outputs/stoic-wisdom.zip`.
+Output: `outputs/stoic-wisdom/01.png` ... `10.png` plus `outputs/stoic-wisdom.zip`.
 
 ## The studio
 
@@ -102,6 +102,6 @@ Opens `http://localhost:4242` with live preview, drag-and-drop blocks, undo/redo
 
 ## Next steps
 
-- [CLI Reference](/docs/cli) — every command and flag
-- [Content Schema](/docs/content-schema) — the JSON shape of cards and decks
-- [Themes](/docs/themes) — customize colors, fonts, and spacing
+- [CLI Reference](/docs/cli): every command and flag
+- [Content Schema](/docs/content-schema): the JSON shape of cards and decks
+- [Themes](/docs/themes): customize colors, fonts, and spacing

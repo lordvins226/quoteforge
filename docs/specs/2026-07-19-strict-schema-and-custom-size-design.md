@@ -1,8 +1,8 @@
-# Strict Schemas, Custom Dimensions, and Version Reporting — Design
+# Strict Schemas, Custom Dimensions, and Version Reporting: Design
 
 **Date:** 2026-07-19
 **Status:** Approved
-**Target release:** v0.4.0 (minor — see "Versioning" below)
+**Target release:** v0.4.0 (minor, see "Versioning" below)
 
 ## Goal
 
@@ -27,9 +27,9 @@ controllable.
 
 ## Non-goals
 
-- Vertical alignment (`align: top|center|bottom|spread`) — lot 2.
-- New size presets (`og`, `4x3`, `3x2`, `slide-16x9`, `readme-hero`) — lot 2.
-- Safe area, `--trim`, `--fit-content` — lot 3.
+- Vertical alignment (`align: top|center|bottom|spread`): lot 2.
+- New size presets (`og`, `4x3`, `3x2`, `slide-16x9`, `readme-hero`): lot 2.
+- Safe area, `--trim`, `--fit-content`: lot 3.
 - Any change to how existing presets render. A card using a preset size must resolve
   to the same dimensions and the same computed type/space scales before and after
   this work. (Dimensions and scales are asserted directly; pixel-level comparison is
@@ -58,7 +58,7 @@ install is stale and waste time "updating" an already-current binary.
 const VERSION = (pkg as { version: string }).version;
 ```
 
-So the correct pattern is already proven to survive `bun build --compile` — Bun
+So the correct pattern is already proven to survive `bun build --compile`, Bun
 inlines the imported JSON at build time.
 
 ### Design
@@ -71,7 +71,7 @@ that bump it.
 
 A regression test asserts the CLI's reported version equals `package.json`'s version,
 read dynamically at test time. The expected value must never be a literal string in
-the test — a hardcoded expectation would go stale exactly like the bug it guards.
+the test, a hardcoded expectation would go stale exactly like the bug it guards.
 
 ---
 
@@ -99,7 +99,7 @@ than merely reporting that the file is invalid.
 
 **Zod v4 subtlety:** members of a discriminated union must each be strict.
 Strictness applied to the union wrapper does not propagate to its members. Without
-per-member strictness, a typo inside a block (`"part"` for `"parts"`) still passes —
+per-member strictness, a typo inside a block (`"part"` for `"parts"`) still passes,
 which is the same class of bug this section exists to close.
 
 ### Tests
@@ -132,13 +132,13 @@ const dimensions = SIZES[size];   // renderer.ts:22
 // ... width: dimensions.w, height: dimensions.h   (renderer.ts:26-27)
 ```
 
-A 0×0 viewport makes Puppeteer fall back to its 800×600 default — which at
+A 0×0 viewport makes Puppeteer fall back to its 800×600 default, which at
 `--scale 2` is exactly the 1600×1200 output observed.
 
 There is a second consequence: `src/renderer/template-engine.ts:52` computes
 `areaScale = Math.sqrt(dimensions.w * dimensions.h) / 1080`. With 0×0 this is `0`,
 collapsing every font size and spacing value to zero. That is why the image is not
-merely mis-sized but *empty* — the text is rendered at zero pixels. Both call sites
+merely mis-sized but *empty*, the text is rendered at zero pixels. Both call sites
 must receive real dimensions.
 
 ### Design
@@ -163,10 +163,10 @@ directions:
 
 | `size` | `width` / `height` | Result |
 |--------|--------------------|--------|
-| `"custom"` | both present | Valid — dimensions applied |
-| `"custom"` | missing or partial | **Rejected** — names the missing key |
-| preset | absent | Valid — preset dimensions applied |
-| preset | present | **Rejected** — dimensions would be ignored, so accepting them silently is the original bug |
+| `"custom"` | both present | Valid: dimensions applied |
+| `"custom"` | missing or partial | **Rejected**: names the missing key |
+| preset | absent | Valid: preset dimensions applied |
+| preset | present | **Rejected**: dimensions would be ignored, so accepting them silently is the original bug |
 
 Because the constraint is relational rather than structural, it is expressed with a
 refinement over the parsed object rather than by making the keys structurally
@@ -177,7 +177,7 @@ deck can set custom dimensions once or vary them per slide.
 The ceiling protects against a typo like `999999` exhausting memory in headless
 Chrome; 8000 comfortably exceeds any real print or display target.
 
-**Resolution:** a single function maps validated content to concrete dimensions —
+**Resolution:** a single function maps validated content to concrete dimensions,
 returning the preset's values for a named size, or the explicit values for `custom`.
 Both `renderer.ts` and `template-engine.ts` consume it, so the 0×0 sentinel can never
 reach a consumer again. `SIZES.custom` keeps its entry (it is a legitimate enum
@@ -225,8 +225,8 @@ the accent, render with it. State where user themes are persisted
 `terminal-green` is a well-suited base for a dark developer palette.
 
 `references/content-schema.md` (the skill's schema reference) gets the same treatment
-for the theme field, and its size table — which currently lists `custom | free | —`
-with no indication of how to supply dimensions — is updated with the syntax from
+for the theme field, and its size table, which currently lists `custom | free | -`
+with no indication of how to supply dimensions, is updated with the syntax from
 section 3.
 
 ### Tests
@@ -241,8 +241,8 @@ commands are exercised as part of the theme-workflow test.
 
 This ships as **v0.4.0**, not a patch.
 
-Strict validation rejects files that previously passed. A user with a stray key —
-a leftover `"_note"`, a field from another tool — sees `validate` start failing after
+Strict validation rejects files that previously passed. A user with a stray key,
+a leftover `"_note"`, a field from another tool, sees `validate` start failing after
 what a patch number advertises as a safe upgrade. The version number is the only
 signal available before the upgrade, so it should carry the warning.
 
@@ -250,16 +250,16 @@ The `CHANGELOG` entry states explicitly that unknown keys are now rejected and t
 `size: "custom"` requires `width`/`height`, so anyone hitting a new failure can map
 it to a deliberate change rather than a regression.
 
-Rendering output is unchanged for every existing valid file — the alignment change
+Rendering output is unchanged for every existing valid file, the alignment change
 that *does* alter existing renders is deliberately held back to lot 2.
 
 ## Implementation order
 
-1. Version fix — independent, no schema interaction, lands first as a clean win.
-2. Custom dimensions — schema refinement plus the shared resolver.
-3. Strict schemas — applied after custom dimensions so that `width`/`height` are
+1. Version fix: independent, no schema interaction, lands first as a clean win.
+2. Custom dimensions: schema refinement plus the shared resolver.
+3. Strict schemas: applied after custom dimensions so that `width`/`height` are
    already legitimate keys and do not have to be exempted and then un-exempted.
-4. Documentation — reflects the final shipped behaviour.
+4. Documentation: reflects the final shipped behaviour.
 
 Step 3 after step 2 matters: reversing them would make the example files fail
 validation in between, leaving the tree red for no reason.

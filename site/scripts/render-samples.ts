@@ -22,7 +22,7 @@ if (jsonFiles.length === 0) {
   process.exit(1);
 }
 
-console.log(`▸ rendering ${jsonFiles.length} landing samples…`);
+console.log(`▸ rendering ${jsonFiles.length} landing samples...`);
 
 for (const file of jsonFiles) {
   const filePath = join(samplesSrc, file);

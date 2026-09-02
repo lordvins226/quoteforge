@@ -1,4 +1,4 @@
-/* Profile — single-voice testimonial: a large quote above an attribution row.
+/* Profile: single-voice testimonial: a large quote above an attribution row.
    Falls back to initials on an --accent disc when no image block is present. */
 
 .card.profile {

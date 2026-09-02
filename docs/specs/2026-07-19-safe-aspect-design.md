@@ -1,19 +1,19 @@
-# Safe-Aspect Cropping Guard — Design
+# Safe-Aspect Cropping Guard: Design
 
 **Date:** 2026-07-19
 **Status:** Approved
-**Target release:** v0.6.0 (minor — additive)
-**Depends on:** v0.5.0 lot 2 (`docs/specs/2026-07-19-vertical-alignment-and-presets-design.md`) —
+**Target release:** v0.6.0 (minor, additive)
+**Depends on:** v0.5.0 lot 2 (`docs/specs/2026-07-19-vertical-alignment-and-presets-design.md`),
 the alignment control that centers content, which `--safe-aspect` relies on to keep content
 inside the safe region.
 
 ## Goal
 
 Let an author guarantee that all text survives a center-crop toward a target aspect ratio, so a
-QuoteForge image dropped into a mismatched `object-fit: cover` container — a grid thumbnail, an
-avatar, a blog card — is not silently truncated at the edges.
+QuoteForge image dropped into a mismatched `object-fit: cover` container, a grid thumbnail, an
+avatar, a blog card, is not silently truncated at the edges.
 
-## Background — the problem
+## Background: the problem
 
 A rendered image often lands in a container whose ratio differs from the image's. The browser
 scales to cover and crops from the center, and QuoteForge's content, pushed toward the edges,
@@ -35,8 +35,8 @@ full size; the guarantee is that a center-crop toward `<ratio>` keeps all conten
 
 This was chosen over a content-level "safe area" field because it is opt-in per render, adds no
 schema surface, changes no default rendering, and composes with the existing `align` control
-without a second placement system to reconcile. The trade-off — it is not versioned with the
-content — is acceptable: the target container ratio is a property of where the image is being
+without a second placement system to reconcile. The trade-off, it is not versioned with the
+content, is acceptable: the target container ratio is a property of where the image is being
 *used*, not of the content itself, so a render-time flag is the honest home for it.
 
 ## Non-goals
@@ -59,7 +59,7 @@ Given canvas `w × h` (from `resolveDimensions`) and target ratio `r = tw / th`:
   height is `w / r`; the inset on each of top and bottom is `(h − w / r) / 2`.
 - If `r < c` (target narrower/taller): the crop trims left and right. The safe width is `h · r`;
   the inset on each of left and right is `(w − h · r) / 2`.
-- If `r == c`: no inset — the ratios already match.
+- If `r == c`: no inset, the ratios already match.
 
 The inset is injected as **additional** padding on the cropped axis, on top of the theme's
 padding, via a CSS variable the template applies to `.card`. Because lot 2 makes content
@@ -79,7 +79,7 @@ returning per-side pixel insets (two sides zero, two sides equal), testable with
 
 `--safe-aspect` accepts `W:H` (e.g. `4:3`, `16:9`), `WxH` (e.g. `4x3`), or a positive decimal
 (e.g. `1.91`). Both components must be positive numbers. An unparseable or non-positive value is
-a CLI error with a message showing the accepted forms — it does not silently no-op.
+a CLI error with a message showing the accepted forms, it does not silently no-op.
 
 ### Interaction with other flags
 
@@ -87,7 +87,7 @@ a CLI error with a message showing the accepted forms — it does not silently n
   content is centered within the safe box, which is the intended and safest combination. With
   `top`/`bottom` the content is pushed to an edge of the *safe* box, still inside the crop-safe
   region. The docs recommend `center` with `--safe-aspect`.
-- **`--fit-content` (lot 2):** the two express opposite intents — `--safe-aspect` shapes a
+- **`--fit-content` (lot 2):** the two express opposite intents, `--safe-aspect` shapes a
   fixed-size canvas for a known crop; `--fit-content` removes the canvas margins entirely.
   Combining them crops away the safe padding, defeating the guard. The docs state they are not
   meant to be combined; the tool does not block it (warn, not error).
@@ -103,7 +103,7 @@ a CLI error with a message showing the accepted forms — it does not silently n
 - Ratio parsing accepts `4:3`, `4x3`, `1.91`; rejects `0:3`, `-1`, `abc`, `4:` with a clear
   error.
 - End-to-end: a card rendered with `--safe-aspect 16:9` on a square size places all content
-  within the central 16:9 band — assert via the emitted inset padding value, not pixel geometry.
+  within the central 16:9 band, assert via the emitted inset padding value, not pixel geometry.
 
 The end-to-end render needs headless Chrome; follow the render-test gating established in the
 lot 1 / lot 2 follow-ups, and keep `computeSafeInset` and the ratio parser pure so the bulk of
@@ -116,7 +116,7 @@ and absent by default.
 
 ## Implementation order
 
-1. `computeSafeInset` + ratio parser — pure, fully unit-tested first.
-2. Renderer wiring — inject the inset as a CSS variable the card padding consumes.
+1. `computeSafeInset` + ratio parser: pure, fully unit-tested first.
+2. Renderer wiring: inject the inset as a CSS variable the card padding consumes.
 3. CLI flag on `generate`/`slides`/`batch`.
-4. Documentation — README and `site/src/docs`.
+4. Documentation: README and `site/src/docs`.

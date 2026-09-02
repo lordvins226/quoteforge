@@ -1,6 +1,6 @@
-/* Calendar — date block leads. On the first `callout` (or `bullet-list`)
+/* Calendar: date block leads. On the first `callout` (or `bullet-list`)
    item only, `label` means the month and `text` is the day numeral. Any
-   further items in that block are ignored — the date block shows one
+   further items in that block are ignored, the date block shows one
    date. `headline` becomes the sentence beside/below it; a trailing
    `text` block becomes the small detail line under the sentence. */
 

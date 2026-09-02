@@ -41,12 +41,12 @@ describe("template-engine: renderTemplate", () => {
     const card = CardContentSchema.parse(loadJSON("content/examples/manifesto-wiki.json"));
     const theme = ThemeSchema.parse(loadJSON("themes/dark-teal.json"));
 
-    // This will throw until renderPart() is implemented — that's expected
+    // This will throw until renderPart() is implemented, that's expected
     let html: string;
     try {
       html = renderTemplate(card, theme);
     } catch {
-      // renderPart TODO stub throws — skip render-dependent assertions
+      // renderPart TODO stub throws, so skip render-dependent assertions
       return;
     }
 

@@ -1,8 +1,8 @@
-# Strict Schemas, Custom Dimensions, and Version Reporting — Implementation Plan
+# Strict Schemas, Custom Dimensions, and Version Reporting: Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Make `quoteforge validate` mean "this file will render correctly" — reject unknown keys, honour `size: "custom"` dimensions, and report the real version.
+**Goal:** Make `quoteforge validate` mean "this file will render correctly", reject unknown keys, honour `size: "custom"` dimensions, and report the real version.
 
 **Architecture:** A single `resolveDimensions()` function becomes the only path from validated content to concrete pixel dimensions, so the `{ w: 0, h: 0 }` sentinel in `SIZES.custom` can never reach Puppeteer or the type-scale maths again. Schema strictness is applied per-object (including each discriminated-union member) after the new `width`/`height` keys are legitimate.
 
@@ -13,8 +13,8 @@
 ## Global Constraints
 
 - Runtime is Bun. Tests run with `bun test`. Never introduce npm scripts or Node-only APIs.
-- TypeScript strict mode. No `any` — use `unknown` and narrow.
-- `src/cli/utils/validator.ts` is the schema authority. `SIZES` is mirrored in `studio/src/types/index.ts` and counted in `src/__tests__/validator.test.ts` — all three stay in sync.
+- TypeScript strict mode. No `any`: use `unknown` and narrow.
+- `src/cli/utils/validator.ts` is the schema authority. `SIZES` is mirrored in `studio/src/types/index.ts` and counted in `src/__tests__/validator.test.ts`: all three stay in sync.
 - No size is added or removed in this plan. The existing count of **17** sizes must remain 17.
 - Custom dimension bounds: integers, minimum **1**, maximum **8000**.
 - Zod v4: `.strict()` must be applied **before** `.superRefine()`. `superRefine()` returns a `ZodEffects`, which has no `.strict()` method. Verified: `.strict().superRefine(...)` keeps strictness active and fires the refinement.
@@ -75,7 +75,7 @@ literal. A hardcoded expectation would go stale exactly like the bug it guards.
 - [ ] **Step 2: Run test to verify it fails**
 
 Run: `bun test src/__tests__/version.test.ts`
-Expected: FAIL — `Cannot find module '../version.js'`.
+Expected: FAIL, `Cannot find module '../version.js'`.
 
 - [ ] **Step 3: Create the version module**
 
@@ -264,7 +264,7 @@ rejected rather than tolerated.
 - [ ] **Step 2: Run tests to verify they fail**
 
 Run: `bun test src/__tests__/validator.test.ts`
-Expected: FAIL — the "accepts size 'custom' with width and height" test fails because
+Expected: FAIL, the "accepts size 'custom' with width and height" test fails because
 `width` is stripped and `parsed.width` is `undefined`; the rejection tests fail
 because nothing throws.
 
@@ -452,7 +452,7 @@ one of the 16 presets must still resolve to exactly its `SIZES` entry.
 - [ ] **Step 2: Run test to verify it fails**
 
 Run: `bun test src/__tests__/dimensions.test.ts`
-Expected: FAIL — `Cannot find module '../renderer/dimensions.js'`.
+Expected: FAIL, `Cannot find module '../renderer/dimensions.js'`.
 
 - [ ] **Step 3: Create the resolver**
 
@@ -543,7 +543,7 @@ Run: `bun test src/__tests__/dimensions.test.ts`
 Expected: PASS.
 
 Run: `bun test`
-Expected: PASS, whole suite green — in particular
+Expected: PASS, whole suite green, in particular
 `src/__tests__/template-engine-scaling.test.ts`, which pins the computed scales for
 preset sizes and would catch any drift in the maths.
 
@@ -690,7 +690,7 @@ import { resolve } from "node:path";
 
 The "misspelled field inside a block" case is the one that fails if strictness is
 applied only at the root. `parts` is required, so `part` produces a missing-field
-error regardless — but only per-member strictness also reports the stray `part` key.
+error regardless, but only per-member strictness also reports the stray `part` key.
 
 - [ ] **Step 2: Replace the hand-listed example test with a glob**
 
@@ -773,7 +773,7 @@ describe("dark-teal theme values", () => {
 ```
 
 The previous version named three files by hand. Under strict validation every shipped
-file is a potential casualty, so the net has to cover all of them — a stray key in an
+file is a potential casualty, so the net has to cover all of them, a stray key in an
 untested example would otherwise ship broken.
 
 The "at least one" guards exist because `test.each([])` silently registers zero tests;
@@ -782,7 +782,7 @@ without them an empty glob would look like a pass.
 - [ ] **Step 3: Run tests to verify they fail**
 
 Run: `bun test src/__tests__/validator.test.ts src/__tests__/examples.test.ts`
-Expected: the strictness tests FAIL (nothing throws — unknown keys are stripped). The
+Expected: the strictness tests FAIL (nothing throws, unknown keys are stripped). The
 example tests should PASS already; if any fails now, that file has a real stray key
 that must be fixed in Step 5.
 
@@ -818,7 +818,7 @@ Each of the eight block schemas must get its own `.strict()`. Strictness on the
 `z.discriminatedUnion` wrapper does not propagate to its members.
 
 For the three schemas that Task 2 gave a `.superRefine()`, `.strict()` goes **before**
-it — `superRefine()` returns a `ZodEffects`, which has no `.strict()` method:
+it, `superRefine()` returns a `ZodEffects`, which has no `.strict()` method:
 
 ```ts
 export const CardContentSchema = z.object({
@@ -834,7 +834,7 @@ Run: `bun test`
 Expected: PASS.
 
 If a shipped example or theme now fails, read the error, remove the stray key from
-that JSON file, and re-run. Do not relax a schema to accommodate a shipped file — the
+that JSON file, and re-run. Do not relax a schema to accommodate a shipped file, the
 stray key is the bug.
 
 Run: `bun run typecheck`
@@ -842,7 +842,7 @@ Expected: no errors.
 
 - [ ] **Step 6: Verify the original reproduction is now rejected**
 
-Create `/tmp/qf-bad.json` — the file from the bug report, with dimensions on a preset
+Create `/tmp/qf-bad.json`, the file from the bug report, with dimensions on a preset
 size:
 
 ```json
@@ -887,7 +887,7 @@ git commit -m "feat(quoteforge[schema]): reject unknown keys in all content and 
 - Produces: no code.
 
 Verified before writing this task: `docs/references/content-schema.md` does not exist
-in this repo — the schema reference lives at `site/src/docs/content-schema.mdx`, and
+in this repo, the schema reference lives at `site/src/docs/content-schema.mdx`, and
 its sizes table carries the `custom` row at line 183. `CHANGELOG.md` does not exist
 and is created here.
 
@@ -943,7 +943,7 @@ is usually enough to match an existing brand:
 quoteforge themes duplicate terminal-green my-brand
 ```
 
-That writes `~/.config/quoteforge/themes/my-brand.json` — plain, hand-editable JSON.
+That writes `~/.config/quoteforge/themes/my-brand.json`, plain, hand-editable JSON.
 Change the accent:
 
 ```json
@@ -965,7 +965,7 @@ quoteforge generate card.json --theme my-brand
 `quoteforge themes show my-brand` prints the resolved theme with colour swatches, and
 `quoteforge themes list` includes it alongside the built-ins.
 
-`terminal-green` is a good base for a dark developer palette — JetBrains Mono on a
+`terminal-green` is a good base for a dark developer palette. JetBrains Mono on a
 near-black background. `paper-cream` and `light-minimal` suit editorial and print-like
 work.
 ````
@@ -1027,8 +1027,8 @@ git commit -m "docs(quoteforge[schema]): document custom dimensions and theme fo
 
 After all five tasks:
 
-- [ ] `bun test` — whole suite passes.
-- [ ] `bun run typecheck` — no errors.
+- [ ] `bun test`: whole suite passes.
+- [ ] `bun run typecheck`: no errors.
 - [ ] `bun quoteforge --version` prints `0.4.0` after the release bump (it prints the
       current `package.json` version before the bump, which is correct behaviour).
 - [ ] The reproduction file from the bug report renders at 2400×1800 with visible text.

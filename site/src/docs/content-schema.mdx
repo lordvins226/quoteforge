@@ -25,13 +25,14 @@ Every card and deck is a JSON document validated by Zod. Files are auto-detected
 
 | Field | Type | Required | Notes |
 |-------|------|----------|-------|
-| `type` | `"card"` | optional | Cards are the default — omitting is fine |
+| `type` | `"card"` | optional | Cards are the default: omitting is fine |
 | `template` | string | yes | `"manifesto"`, `"quote"`, `"list"`, or `"minimal"` |
 | `theme` | string | yes | Name matching a file in `themes/` |
 | `size` | SizeName | yes | One of 22 presets (see below) |
 | `blocks` | Block[] | yes (≥1) | Ordered list of content blocks |
 | `align` | string | optional | `"top"` \| `"center"` \| `"bottom"` \| `"spread"` (default: `"center"`) |
-| `meta` | object | optional | `title`, `created`, `tags` — used by the studio |
+| `eyebrow` | string | optional | Kicker line above the content, max 48 chars. See Template chrome below |
+| `meta` | object | optional | `title`, `created`, `tags`: used by the studio |
 
 ## Deck shape
 
@@ -52,11 +53,33 @@ Every card and deck is a JSON document validated by Zod. Files are auto-detected
 
 Each slide inherits from `defaults`; any field on the slide overrides it. Slides require a unique `id`.
 
+## Template chrome
+
+`eyebrow` is a small kicker line rendered above the main content. It is an optional string of at most 48 characters, and it sits at the same level as `template`: on a card root, on a single slide, or in a deck's `defaults`.
+
+```json
+{
+  "template": "cover",
+  "theme": "paper-cream",
+  "size": "og",
+  "eyebrow": "Issue 01",
+  "blocks": []
+}
+```
+
+In a deck, a slide's own `eyebrow` wins over the one in `defaults`, and a slide with neither renders none.
+
+Only 8 of the 28 templates have a slot for it: `cover`, `memo`, `receipt`, `split`, `spotlight`, `terminal`, `ticket`, and `window`. Set it on any other template and the field is ignored, but the CLI says so rather than dropping it silently:
+
+```
+⚠ Template "manifesto" has no eyebrow slot, so the "eyebrow" field will not render.
+```
+
 ## Block types
 
-Eight block types live in `BlockSchema`:
+Eleven block types live in `BlockSchema`:
 
-### `headline` — display text
+### `headline`: display text
 ```json
 {
   "id": "h",
@@ -68,7 +91,7 @@ Eight block types live in `BlockSchema`:
 }
 ```
 
-### `blockquote` — pull quotes with a border
+### `blockquote`: pull quotes with a border
 ```json
 {
   "id": "q",
@@ -79,12 +102,12 @@ Eight block types live in `BlockSchema`:
 }
 ```
 
-### `text` — paragraph copy
+### `text`: paragraph copy
 ```json
 { "id": "p", "type": "text", "content": "Plain-text paragraph." }
 ```
 
-### `bullet-list` — labeled rows
+### `bullet-list`: labeled rows
 ```json
 {
   "id": "list",
@@ -96,7 +119,7 @@ Eight block types live in `BlockSchema`:
 }
 ```
 
-### `callout` — boxed highlights (same shape as bullet-list)
+### `callout`: boxed highlights (same shape as bullet-list)
 ```json
 {
   "id": "call",
@@ -107,19 +130,19 @@ Eight block types live in `BlockSchema`:
 }
 ```
 
-### `divider` — horizontal rule
+### `divider`: horizontal rule
 ```json
 { "id": "d", "type": "divider" }
 ```
 
-### `spacer` — explicit vertical gap
+### `spacer`: explicit vertical gap
 ```json
 { "id": "gap", "type": "spacer", "size": "md" }
 ```
 
 `size` is `"sm" | "md" | "lg"`.
 
-### `image` — inline image
+### `image`: inline image
 ```json
 {
   "id": "img",
@@ -131,17 +154,60 @@ Eight block types live in `BlockSchema`:
 }
 ```
 
-- `src` — a remote URL (`https://…`), a local file path, or a `data:` URI. Local
+- `src`: a remote URL (`https://...`), a local file path, or a `data:` URI. Local
   paths are resolved relative to the content file's directory and inlined at render
   time (`png`/`jpg`/`jpeg`/`webp`/`gif`/`svg`). For security, the Studio server only
-  accepts `http(s):`/`data:` sources — local file paths work via the CLI only.
-- `alt` — optional alternative text.
-- `width` — `"sm" | "md" | "lg" | "full"` (33% / 50% / 75% / 100% of the content
+  accepts `http(s):`/`data:` sources, local file paths work via the CLI only.
+- `alt`: optional alternative text.
+- `width`: `"sm" | "md" | "lg" | "full"` (33% / 50% / 75% / 100% of the content
   column). Defaults to `"full"`.
-- `align` — `"left" | "center" | "right"`. Defaults to `"center"`.
+- `align`: `"left" | "center" | "right"`. Defaults to `"center"`.
 
 In the Studio, add an Image block and either paste a URL or upload a file (the upload
 is embedded as a `data:` URI, so the card stays self-contained).
+
+### `stat`: one oversized figure
+```json
+{ "id": "s", "type": "stat", "value": "28", "unit": "×", "label": "Templates", "note": "in five families" }
+```
+
+`value` is a string, so `"1.2M"` and `"99.9"` are both fine. `unit`, `label`, and `note`
+are optional. Suits the `stat` template, which scales the figure to the canvas.
+
+### `code`: numbered source lines
+```json
+{
+  "id": "c",
+  "type": "code",
+  "filename": "render.ts",
+  "lang": "ts",
+  "lines": ["const card = load(file);", "await render(card, theme);"]
+}
+```
+
+`lines` is an array of strings, one per rendered line, and is the only required field.
+The template numbers the lines. `filename` renders as a tab above the block. `lang` is
+accepted by the schema but no built-in template renders it today, so treat it as metadata
+for your own tooling. There is no syntax highlighting: the block is monospace text in the
+theme's colors.
+
+### `chart`: horizontal bars
+```json
+{
+  "id": "ch",
+  "type": "chart",
+  "unit": "%",
+  "rows": [
+    { "label": "Bun", "value": 92 },
+    { "label": "Node", "value": 61, "muted": true }
+  ]
+}
+```
+
+Each row needs a `label` and a `value` between 0 and 100, used directly as the bar's
+width percentage. `unit` is the suffix shown next to each value and defaults to `%`.
+`muted` renders the bar in the body color at 45% opacity instead of the accent. Pure CSS,
+no chart library.
 
 ## Part styles
 

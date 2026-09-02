@@ -1,4 +1,4 @@
-/* Frame — bordered plate with corner marks, inherently centered */
+/* Frame: bordered plate with corner marks, inherently centered */
 
 .card.frame {
   display: flex;

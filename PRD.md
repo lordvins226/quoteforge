@@ -1,4 +1,4 @@
-# QuoteForge — Full Project Document
+# QuoteForge: Full Project Document
 > Typographic social media card generator · CLI + Web UI · Slides/Carousel support
 > Author: lordvins226 · Version 1.1
 
@@ -15,7 +15,7 @@
 7. [Web UI Specification](#7-web-ui-specification)
 8. [Templates & Themes System](#8-templates--themes-system)
 9. [Build Plan (Phases)](#9-build-plan-phases)
-10. [CLAUDE.md — Project Constraints](#10-claudemd--project-constraints)
+10. [CLAUDE.md: Project Constraints](#10-claudemd--project-constraints)
 11. [Prompt Contracts for Claude Code](#11-prompt-contracts-for-claude-code)
 
 ---
@@ -35,19 +35,19 @@ carousels from structured content definitions with full control over typography 
 QuoteForge is a **developer-native content card and slide deck generator**. You define
 content in JSON, pick a theme, run one command, and get production-ready PNGs or a ZIP
 of carousel slides. Optionally, open a live WYSIWYG Web UI with a full multi-slide
-deck editor. Everything is local — no cloud, no subscriptions, no API keys needed.
+deck editor. Everything is local, no cloud, no subscriptions, no API keys needed.
 
 ### 1.3 Goals
 
 | Priority | Goal |
 |----------|------|
 | P0 | Generate a pixel-perfect PNG from a JSON content file in one command |
-| P0 | Support all major social media formats — Twitter, LinkedIn, Instagram, **Facebook**, Story |
-| P0 | Full color theme system — swap any theme with a single flag |
+| P0 | Support all major social media formats: Twitter, LinkedIn, Instagram, **Facebook**, Story |
+| P0 | Full color theme system: swap any theme with a single flag |
 | P0 | Generate a slide deck (carousel) as a numbered PNG sequence from a single JSON file |
 | P1 | Live Web UI preview with hot-reload |
 | P1 | WYSIWYG block editor in the Web UI |
-| P1 | Slide deck editor — add/remove/reorder slides, preview all slides in sequence |
+| P1 | Slide deck editor: add/remove/reorder slides, preview all slides in sequence |
 | P2 | Theme editor (create/edit themes visually) |
 | P2 | Batch generation from a directory of JSON files |
 | P2 | Export slide deck as a ZIP of numbered PNGs ready for carousel upload |
@@ -80,7 +80,7 @@ US-11  Preview all slides in sequence in the Web UI with slide navigation
 US-12  Export a slide deck as a ZIP of numbered PNGs ready to upload as a carousel
 US-13  Share a theme and template across all slides in a deck, override per slide
 US-14  Regenerate a single slide from a deck by index (--slide 3)
-US-15  Show a slide counter overlay on each slide (e.g. "3 / 7") — toggleable
+US-15  Show a slide counter overlay on each slide (e.g. "3 / 7"), toggleable
 ```
 
 ### 1.6 Success Metrics
@@ -107,12 +107,12 @@ quoteforge/
 │   ├── cli/
 │   │   ├── index.ts                  # CLI entrypoint (Commander.js)
 │   │   ├── commands/
-│   │   │   ├── generate.ts           # bun qf generate <file>     — single card → PNG
-│   │   │   ├── slides.ts             # bun qf slides <deck-file>  — deck → PNGs + ZIP
-│   │   │   ├── preview.ts            # bun qf preview <file>      — live browser preview
-│   │   │   ├── new.ts                # bun qf new                 — interactive creator
-│   │   │   ├── themes.ts             # bun qf themes list|create|…
-│   │   │   └── batch.ts              # bun qf batch <dir>         — folder → PNGs
+│   │   │   ├── generate.ts           # bun qf generate <file>    , single card → PNG
+│   │   │   ├── slides.ts             # bun qf slides <deck-file> , deck → PNGs + ZIP
+│   │   │   ├── preview.ts            # bun qf preview <file>     , live browser preview
+│   │   │   ├── new.ts                # bun qf new                , interactive creator
+│   │   │   ├── themes.ts             # bun qf themes list|create|...
+│   │   │   └── batch.ts              # bun qf batch <dir>        , folder → PNGs
 │   │   └── utils/
 │   │       ├── logger.ts             # Chalk logger (info|success|error|warn)
 │   │       ├── validator.ts          # Zod schemas for cards, decks, themes
@@ -277,12 +277,12 @@ quoteforge/
 
 | Type | Description | Key Fields |
 |------|-------------|------------|
-| `headline` | Large display text — supports mixed inline styles | `parts[]` |
+| `headline` | Large display text: supports mixed inline styles | `parts[]` |
 | `blockquote` | Left-bordered quote block | `parts[]` |
 | `bullet-list` | Label + text items with accent dot | `items[]{label, text}` |
 | `callout` | Rounded box highlight | `items[]{label, text}` |
 | `text` | Plain body paragraph | `content` |
-| `divider` | Full-width horizontal rule | — |
+| `divider` | Full-width horizontal rule | - |
 | `spacer` | Vertical whitespace | `size: sm\|md\|lg` |
 
 ### 3.3 Inline Part Styles
@@ -361,7 +361,7 @@ export const SIZES = {
   "facebook-event":        { w: 1920, h: 1080, ratio: "16:9",   label: "Facebook event cover" },
   "facebook-group-cover":  { w: 1640, h: 856,  ratio: "1.91:1", label: "Facebook group cover" },
 
-  // Stories — same dimensions across Instagram, Facebook, TikTok
+  // Stories, same dimensions across Instagram, Facebook, TikTok
   "story":                 { w: 1080, h: 1920, ratio: "9:16",   label: "Story (IG / FB / TW)" },
 
   // Custom
@@ -372,11 +372,11 @@ export const SIZES = {
 ### Facebook usage notes
 
 - `facebook-post` (1200×630): Standard single-image post and link previews.
-- `facebook-square` (1080×1080): Best choice for **Facebook carousels** — renders equally
+- `facebook-square` (1080×1080): Best choice for **Facebook carousels**, renders equally
   well in feed and when shared. Recommended for all FB carousel decks.
-- `facebook-cover` (1640×624): Very wide aspect ratio — use `minimal` or `list` templates,
+- `facebook-cover` (1640×624): Very wide aspect ratio, use `minimal` or `list` templates,
   not `manifesto` (headline will overflow).
-- `facebook-event` (1920×1080): 16:9 — identical layout to `twitter`, just larger canvas.
+- `facebook-event` (1920×1080): 16:9, identical layout to `twitter`, just larger canvas.
 - `facebook-group-cover` (1640×856): Group page header banner.
 - When generating a carousel deck for Facebook, always use `--size facebook-square`.
   The CLI will warn if a non-square size is used with a deck targeting Facebook.
@@ -406,7 +406,7 @@ Each slide is a standalone card using the same block model, sharing deck-level d
 (theme, size, template) but able to override any of them individually.
 
 The `slides` command outputs:
-- N numbered PNGs: `deck-name-01.png`, `deck-name-02.png`, …
+- N numbered PNGs: `deck-name-01.png`, `deck-name-02.png`, ...
 - One ZIP: `deck-name.zip` containing all slides in order
 
 ### 5.2 Deck Content File Schema
@@ -499,7 +499,7 @@ Each slide can override these deck `defaults` fields:
 |-------|------|-------|
 | `template` | string | Use a different template for this slide only |
 | `theme` | string | Use a different theme for this slide only |
-| `size` | SizeName | Override size — caution: ZIP should be consistent |
+| `size` | SizeName | Override size: caution: ZIP should be consistent |
 | `showCounter` | boolean | Hide/show counter for this slide only |
 | `counter` | object | Override counter format/position/style for this slide |
 
@@ -547,13 +547,13 @@ slide-renderer.ts
     │
     ├── Buffer[] collected (concurrency: P-limit, default 4)
     │
-    ├── Write files: outputs/deck-name/deck-name-01.png …
+    ├── Write files: outputs/deck-name/deck-name-01.png ...
     │                (zero-padded to deck length)
     │
     └── zip.ts → outputs/deck-name.zip
 ```
 
-### 5.6 Web UI — Deck Mode
+### 5.6 Web UI: Deck Mode
 
 Mode is auto-detected: if the loaded file has `"type": "deck"`, the UI switches to
 deck mode. The user can also toggle manually via a pill toggle in the toolbar.
@@ -581,13 +581,13 @@ deck mode. The user can also toggle manually via a pill toggle in the toolbar.
 └─────────────────┴──────────────────────────┴──────────────────────────────┘
 ```
 
-**DeckStrip** — horizontal scrollable filmstrip at the bottom of the preview panel:
+**DeckStrip**, horizontal scrollable filmstrip at the bottom of the preview panel:
 - 120px-wide thumbnails fetched lazily from `GET /preview?slide=N&thumb=true&w=120`
 - Active slide has a 2px accent-colored border
 - Clicking a thumbnail activates that slide
 
-**SlideList** — left panel:
-- Rows: `[⠿] [01] [Cover — editable label] [×]`
+**SlideList**, left panel:
+- Rows: `[⠿] [01] [Cover, editable label] [×]`
 - Drag-to-reorder via dnd-kit
 - Right-click: Duplicate / Delete / Move to top / Move to bottom
 - `[+ Add Slide]` appends a blank slide inheriting deck defaults
@@ -607,7 +607,7 @@ bun link   # optional: enables `qf` global alias
 
 ### 6.2 Commands
 
-#### `generate` — Single card → PNG
+#### `generate`: Single card → PNG
 
 ```bash
 quoteforge generate <content-file> [options]
@@ -624,7 +624,7 @@ Examples:
   quoteforge generate content/wiki-post.json --size facebook-post --theme dark-orange
 ```
 
-#### `slides` — Slide deck → numbered PNGs + ZIP
+#### `slides`: Slide deck → numbered PNGs + ZIP
 
 ```bash
 quoteforge slides <deck-file> [options]
@@ -652,7 +652,7 @@ Examples:
   quoteforge slides decks/intro-deck.json --no-counter --size instagram-sq
 ```
 
-#### `preview` — Live browser preview
+#### `preview`: Live browser preview
 
 ```bash
 quoteforge preview <content-or-deck-file> [options]
@@ -666,7 +666,7 @@ Behavior:
   - Deck files: shows ← → nav, keyboard arrow keys work
 ```
 
-#### `studio` — Full WYSIWYG Web UI
+#### `studio`: Full WYSIWYG Web UI
 
 ```bash
 quoteforge studio [content-or-deck-file] [options]
@@ -683,7 +683,7 @@ Examples:
   quoteforge studio decks/intro-deck.json   # opens in deck mode
 ```
 
-#### `new` — Interactive creator
+#### `new`: Interactive creator
 
 ```bash
 quoteforge new [options]
@@ -696,7 +696,7 @@ quoteforge new [options]
   --name <filename>
 ```
 
-#### `themes` — Theme management
+#### `themes`: Theme management
 
 ```bash
 quoteforge themes list
@@ -706,7 +706,7 @@ quoteforge themes duplicate <name> <new-name>
 quoteforge themes validate <file>
 ```
 
-#### `batch` — Folder → multiple PNGs
+#### `batch`: Folder → multiple PNGs
 
 ```bash
 quoteforge batch <directory> [options]
@@ -718,7 +718,7 @@ quoteforge batch <directory> [options]
   --decks              Also process deck files → individual ZIPs
 ```
 
-#### `validate` — Validate a card or deck file
+#### `validate`: Validate a card or deck file
 
 ```bash
 quoteforge validate <file>
@@ -748,7 +748,7 @@ quoteforge validate <file>
 |-|-----------|-----------|
 | **Loaded from** | file with `"type": "card"` or no type | file with `"type": "deck"` |
 | **Left panel** | Block list | Slide list |
-| **Bottom of preview** | — | DeckStrip (thumbnail filmstrip) |
+| **Bottom of preview** | - | DeckStrip (thumbnail filmstrip) |
 | **Export** | Export PNG | Export PNG (active slide) + Export Deck ZIP |
 | **Undo/redo scope** | Block changes | Block + slide changes |
 
@@ -849,13 +849,13 @@ interface DeckStore {
 
 Every template receives:
 
-- `card` — the current slide/card content object
-- `theme` — the resolved theme object
-- `meta` — `{ slideIndex: number, slideTotal: number, showCounter: boolean, counter: CounterConfig }`
+- `card`: the current slide/card content object
+- `theme`: the resolved theme object
+- `meta`: `{ slideIndex: number, slideTotal: number, showCounter: boolean, counter: CounterConfig }`
 
 ### 8.2 CSS Custom Properties (injected at :root)
 
-All colors come from the theme via CSS vars — never hardcoded:
+All colors come from the theme via CSS vars, never hardcoded:
 
 ```css
 :root {
@@ -912,7 +912,7 @@ All colors come from the theme via CSS vars — never hardcoded:
 
 ## 9. Build Plan (Phases)
 
-### Phase 0 — Bootstrap (Day 1, ~2h)
+### Phase 0: Bootstrap (Day 1, ~2h)
 
 - [ ] Bun project + TypeScript strict config
 - [ ] Full directory structure from §2
@@ -929,7 +929,7 @@ All colors come from the theme via CSS vars — never hardcoded:
 
 ---
 
-### Phase 1 — Single Card Renderer (Day 1–2, ~3h)
+### Phase 1: Single Card Renderer (Day 1-2, ~3h)
 
 - [ ] `template-engine.ts`: Nunjucks + CSS var injection
 - [ ] `renderer.ts`: Puppeteer pipeline (retina 2x, networkidle0)
@@ -942,13 +942,13 @@ a pixel-perfect replica of the reference image. `--size facebook-post` produces 
 
 ---
 
-### Phase 2 — Slides / Carousel Renderer (Day 2–3, ~3h)
+### Phase 2: Slides / Carousel Renderer (Day 2-3, ~3h)
 
 - [ ] `slide-renderer.ts`: deck merge logic (defaults ← per-slide overrides)
 - [ ] Slide counter partial (all 3 styles, 4 positions)
 - [ ] `zip.ts`: archiver-based ZIP builder
 - [ ] `slides` command: `--slide`, `--no-zip`, `--no-counter`, `--concurrency`
-- [ ] Zero-padded filenames (`01`, `02` … or `001` if deck > 99 slides)
+- [ ] Zero-padded filenames (`01`, `02` ... or `001` if deck > 99 slides)
 - [ ] Facebook non-square size warning in `slides` command
 - [ ] `decks/examples/intro-deck.json` generates 5 PNGs + 1 ZIP
 
@@ -957,7 +957,7 @@ a pixel-perfect replica of the reference image. `--size facebook-post` produces 
 
 ---
 
-### Phase 3 — Full CLI Suite (Day 3–4, ~3h)
+### Phase 3: Full CLI Suite (Day 3-4, ~3h)
 
 - [ ] `new` command (`@clack/prompts`, `--type card|deck`)
 - [ ] `preview` command (Bun.serve + chokidar + SSE + deck slide nav + arrow keys)
@@ -970,7 +970,7 @@ a pixel-perfect replica of the reference image. `--size facebook-post` produces 
 
 ---
 
-### Phase 4 — Web UI Core (Day 4–6, ~6h)
+### Phase 4: Web UI Core (Day 4-6, ~6h)
 
 - [ ] Vite + React in `studio/`
 - [ ] `studio` command (proxies Vite through Bun, single port 4242)
@@ -987,7 +987,7 @@ editor. Slides navigable, blocks editable, Export Deck ZIP downloads correctly.
 
 ---
 
-### Phase 5 — Polish (Day 6–7, ~3h)
+### Phase 5: Polish (Day 6-7, ~3h)
 
 - [ ] Theme Editor modal (create new themes from UI)
 - [ ] Undo/Redo (both stores, max 50, immutable snapshots)
@@ -999,43 +999,43 @@ editor. Slides navigable, blocks editable, Export Deck ZIP downloads correctly.
 
 ---
 
-## 10. CLAUDE.md — Project Constraints
+## 10. CLAUDE.md: Project Constraints
 
 ```markdown
-# CLAUDE.md — QuoteForge Constraints
+# CLAUDE.md: QuoteForge Constraints
 # Read this FIRST every session.
 # Echo the stack and the 3 most important hard rules before doing anything.
 
 ## Stack (non-negotiable)
 
 - Runtime:           Bun (not Node.js, not npm scripts)
-- Language:          TypeScript strict mode everywhere — no `any`, use `unknown`
+- Language:          TypeScript strict mode everywhere, no `any`, use `unknown`
 - CLI:               Commander.js (not yargs, not meow)
 - Templating:        Nunjucks (not Handlebars, not EJS, not JSX for templates)
 - Rendering:         Puppeteer (not node-canvas, not sharp, not playwright)
 - Validation:        Zod for all content, deck, and theme schemas
 - ZIP:               archiver (not adm-zip, not jszip, not fflate)
 - Web UI:            Vite + React 18 (not Next.js, not Remix, not Astro)
-- Web UI state:      Zustand — cardStore.ts (single card) + deckStore.ts (deck)
+- Web UI state:      Zustand, cardStore.ts (single card) + deckStore.ts (deck)
 - Web UI DnD:        dnd-kit (not react-beautiful-dnd)
 - Web UI styling:    Tailwind CSS utility classes only (no CSS modules, no styled-components)
-- Web UI icons:      lucide-react — import individually (no barrel: `import { X } from 'lucide-react'`)
+- Web UI icons:      lucide-react, import individually (no barrel: `import { X } from 'lucide-react'`)
 - CLI prompts:       @clack/prompts (not inquirer)
 - CLI logger:        chalk (not picocolors)
 
 ## Hard Rules
 
 1. NEVER install a package without asking the user first
-2. NEVER use a UI component library — no shadcn, Radix, MUI, Ant Design, PrimeNG, etc.
+2. NEVER use a UI component library: no shadcn, Radix, MUI, Ant Design, PrimeNG, etc.
    All Web UI components are built from scratch with Tailwind
-3. NEVER hardcode colors in template CSS — every color is a CSS custom property
+3. NEVER hardcode colors in template CSS: every color is a CSS custom property
    injected from the theme JSON at :root level
 4. NEVER write to a file unless the user explicitly triggers it
    (--output flag, Save button, or Ctrl+S)
-5. NEVER put business logic inside CLI command files — commands are thin:
+5. NEVER put business logic inside CLI command files: commands are thin:
    parse args → validate with Zod → call renderer → log result
-6. outputs/ is gitignored — never treat it as a source of truth
-7. React components MUST NOT make direct filesystem calls — all FS goes
+6. outputs/ is gitignored: never treat it as a source of truth
+7. React components MUST NOT make direct filesystem calls: all FS goes
    through Bun server routes (/export, /export-deck, /themes, etc.)
 8. Facebook carousel decks should use facebook-square (1080×1080).
    Warn (don't block) if the user picks a non-square size for a deck.
@@ -1068,7 +1068,7 @@ Start every Claude Code session with:
 
 ---
 
-### Contract 0 — Bootstrap
+### Contract 0: Bootstrap
 
 > Bootstrap the QuoteForge project: structure, schemas, example files, validate command
 >
@@ -1082,14 +1082,14 @@ Start every Claude Code session with:
 > - Install only: puppeteer, nunjucks, commander, zod, chalk, @clack/prompts, archiver
 > - Zod schemas in src/cli/utils/validator.ts: CardContent, DeckContent, Theme, all Blocks
 > - manifesto-wiki.json must have all 4 block types from the reference image
-> - dark-teal.json: bg #1a1a1a, accent #4ecdc4 — exact match to reference
+> - dark-teal.json: bg #1a1a1a, accent #4ecdc4, exact match to reference
 > - intro-deck.json must have "type": "deck" at root and 5 slides
 > - validate auto-detects card vs deck from "type" field
 >
 > FORMAT:
-> 1. package.json — deps + "quoteforge"/"qf" bin entries
-> 2. tsconfig.json — strict mode
-> 3. src/cli/utils/validator.ts — all Zod schemas
+> 1. package.json: deps + "quoteforge"/"qf" bin entries
+> 2. tsconfig.json: strict mode
+> 3. src/cli/utils/validator.ts: all Zod schemas
 > 4. content/_schema.json · decks/_schema.json · themes/_schema.json
 > 5. content/examples/manifesto-wiki.json
 > 6. decks/examples/intro-deck.json (5 slides, "type": "deck")
@@ -1106,7 +1106,7 @@ Start every Claude Code session with:
 
 ---
 
-### Contract 1 — Single Card Renderer
+### Contract 1: Single Card Renderer
 
 > Implement single-card rendering: CardContent + Theme → PNG via Puppeteer
 >
@@ -1116,18 +1116,18 @@ Start every Claude Code session with:
 >
 > CONSTRAINTS:
 > - renderer.ts: pure function (content, theme, size, scale) → Promise<Buffer>
-> - No hardcoded colors in any CSS — all CSS custom properties
+> - No hardcoded colors in any CSS: all CSS custom properties
 > - Puppeteer: waitUntil 'networkidle0', deviceScaleFactor 2
 > - All 14 sizes from §4 in the SIZES constant (including all 5 Facebook formats)
-> - generate command: thin — only arg parse + Zod validate + call renderCard + log
+> - generate command: thin, only arg parse + Zod validate + call renderCard + log
 >
 > FORMAT:
-> 1. src/renderer/renderer.ts — renderCard(…) → Promise<Buffer>
-> 2. src/renderer/template-engine.ts — renderTemplate(content, theme, meta?) → string
+> 1. src/renderer/renderer.ts: renderCard(...) → Promise<Buffer>
+> 2. src/renderer/template-engine.ts: renderTemplate(content, theme, meta?) → string
 > 3. src/renderer/font-loader.ts
-> 4. templates/_blocks/ — all 7 block partials + slide-counter.njk
+> 4. templates/_blocks/: all 7 block partials + slide-counter.njk
 > 5. templates/manifesto/template.njk + style.css (zero hardcoded colors)
-> 6. src/cli/commands/generate.ts — thin command
+> 6. src/cli/commands/generate.ts: thin command
 > 7. src/cli/index.ts (generate wired)
 >
 > FAILURE CONDITIONS:
@@ -1139,7 +1139,7 @@ Start every Claude Code session with:
 
 ---
 
-### Contract 2 — Slides / Carousel Renderer
+### Contract 2: Slides / Carousel Renderer
 
 > Add full deck rendering: DeckContent → N PNGs + ZIP
 >
@@ -1152,16 +1152,16 @@ Start every Claude Code session with:
 > - slide-renderer.ts: pure (deck, opts?) → Promise<Buffer[]>
 > - Merge order: deck.defaults ← slide overrides (all 5 overrideable fields)
 > - Zero-padding: 2 digits for decks ≤ 99 slides, 3 for > 99
-> - archiver only for ZIP — no other library
+> - archiver only for ZIP: no other library
 > - Concurrency: p-limit or manual semaphore, default 4 workers
 > - Facebook non-square deck: log a yellow chalk warning (don't block)
 > - --slide N: render only that slide, skip ZIP entirely
 >
 > FORMAT:
 > 1. src/renderer/slide-renderer.ts
-> 2. src/cli/utils/zip.ts — buildZip(buffers, names) → Promise<Buffer>
+> 2. src/cli/utils/zip.ts: buildZip(buffers, names) → Promise<Buffer>
 > 3. templates/_blocks/slide-counter.njk (all 3 styles, 4 positions)
-> 4. src/cli/commands/slides.ts — thin command
+> 4. src/cli/commands/slides.ts: thin command
 > 5. src/cli/index.ts (slides wired)
 >
 > FAILURE CONDITIONS:
@@ -1173,7 +1173,7 @@ Start every Claude Code session with:
 
 ---
 
-### Contract 3 — Full CLI Suite
+### Contract 3: Full CLI Suite
 
 > Complete all remaining CLI commands
 >
@@ -1198,7 +1198,7 @@ Start every Claude Code session with:
 > 5. src/cli/utils/logger.ts
 > 6. themes/dark-orange.json · light-minimal.json · brand-midnight.json
 > 7. templates/quote/ · list/ · minimal/ (template.njk + style.css each)
-> 8. src/cli/index.ts — all commands wired, --help polished
+> 8. src/cli/index.ts: all commands wired, --help polished
 >
 > FAILURE CONDITIONS:
 > - preview opens browser before server is ready
@@ -1209,7 +1209,7 @@ Start every Claude Code session with:
 
 ---
 
-### Contract 4 — Web UI (Studio)
+### Contract 4: Web UI (Studio)
 
 > Build the Vite + React WYSIWYG studio: card mode + deck mode
 >
@@ -1221,7 +1221,7 @@ Start every Claude Code session with:
 >
 > CONSTRAINTS:
 > - NO UI component libraries
-> - cardStore.ts + deckStore.ts (Zustand) — no Context for global state
+> - cardStore.ts + deckStore.ts (Zustand): no Context for global state
 > - Mode auto-detected from "type" field on load
 > - dnd-kit for all drag-and-drop (slide list + block list)
 > - Preview <iframe> updated via WS push (not page navigation)
@@ -1233,11 +1233,11 @@ Start every Claude Code session with:
 > 1. studio/vite.config.ts
 > 2. studio/src/types/index.ts
 > 3. studio/src/store/cardStore.ts + deckStore.ts (full per §7.5)
-> 4. studio/src/hooks/ — useCard, useDeck, useTheme, useLivePreview
-> 5. studio/src/components/Editor/ — BlockList, BlockEditor, SlideList, SlideNav,
+> 4. studio/src/hooks/: useCard, useDeck, useTheme, useLivePreview
+> 5. studio/src/components/Editor/: BlockList, BlockEditor, SlideList, SlideNav,
      >    ThemePicker, SizePicker (with platform groups), Toolbar
-> 6. studio/src/components/Preview/ — PreviewPane, PreviewControls, DeckStrip
-> 7. studio/src/components/ui/ — Button, Input, Select, ColorPicker, Modal, Toast
+> 6. studio/src/components/Preview/: PreviewPane, PreviewControls, DeckStrip
+> 7. studio/src/components/ui/: Button, Input, Select, ColorPicker, Modal, Toast
 > 8. studio/src/App.tsx (mode switch)
 > 9. src/server/server.ts + routes/ (preview, export, export-deck, themes) + ws.ts
 > 10. src/cli/commands/studio.ts
@@ -1253,7 +1253,7 @@ Start every Claude Code session with:
 
 ---
 
-### Contract 5 — Polish & Theme Editor
+### Contract 5: Polish & Theme Editor
 
 > Add Theme Editor, undo/redo, keyboard shortcuts, error states
 >
@@ -1264,21 +1264,21 @@ Start every Claude Code session with:
 >
 > CONSTRAINTS:
 > - Undo/redo: immutable snapshots in Zustand, max 50, works for both stores
-> - Color inputs: native <input type="color"> — no third-party color picker library
+> - Color inputs: native <input type="color">, no third-party color picker library
 > - Google Fonts list: fetched once, cached in sessionStorage
-> - Toasts built from scratch — no react-hot-toast, sonner, or any toast library
+> - Toasts built from scratch: no react-hot-toast, sonner, or any toast library
 > - Error boundaries wrap preview iframe AND editor panel separately
 > - Facebook size warning is non-blocking (yellow inline text, not a modal)
 >
 > FORMAT:
 > 1. studio/src/components/Editor/ThemeEditorModal.tsx
-> 2. studio/src/store/cardStore.ts — add past[], future[], undo(), redo()
-> 3. studio/src/store/deckStore.ts — add past[], future[], undo(), redo()
+> 2. studio/src/store/cardStore.ts: add past[], future[], undo(), redo()
+> 3. studio/src/store/deckStore.ts: add past[], future[], undo(), redo()
 > 4. studio/src/hooks/useKeyboardShortcuts.ts (Ctrl+S, Z, Y, E)
-> 5. studio/src/components/ui/Toast.tsx — queue, auto-dismiss 4s
-> 6. studio/src/components/ui/Modal.tsx — accessible wrapper
-> 7. studio/src/hooks/useFontList.ts — Google Fonts API + sessionStorage cache
-> 8. src/server/routes/themes.ts — POST + PUT /themes/:name
+> 5. studio/src/components/ui/Toast.tsx: queue, auto-dismiss 4s
+> 6. studio/src/components/ui/Modal.tsx: accessible wrapper
+> 7. studio/src/hooks/useFontList.ts: Google Fonts API + sessionStorage cache
+> 8. src/server/routes/themes.ts: POST + PUT /themes/:name
 > 9. README.md (install, CLI reference, size table with Facebook formats)
 >
 > FAILURE CONDITIONS:

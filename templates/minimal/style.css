@@ -1,4 +1,4 @@
-/* Minimal — restrained, generous whitespace, wide-format friendly */
+/* Minimal: restrained, generous whitespace, wide-format friendly */
 
 .card {
   padding: clamp(32px, 6vh, calc(var(--padding) * 1.25));
